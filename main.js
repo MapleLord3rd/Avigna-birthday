@@ -4993,7 +4993,7 @@ function triggerRootAccessSecret() {
             );
 
             heroName.textContent =
-                "BIRTHDAY GIRL";
+                "GIRL";
 
             pageGlow(
                 heroName,
