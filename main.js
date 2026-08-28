@@ -1,50 +1,50 @@
 /* ==========================================================================
    BIRTHDAY.EXE — MAIN JAVASCRIPT
 
-   CORE SYSTEMS
+   CORE
    - Birthday countdown + IST lock
-   - Countdown visual stages
-   - 10-minute / 1-minute birthday parties
-   - Blue / Pink theme
-   - Background / birthday / dance / click audio
-   - Money generation
-   - Hunger system
-   - Food restaurant
-   - Shop progression
-   - Gift progression
-   - Dance mode
-   - Cinema mode + exit
-   - Books / birthday diary poem
+   - Countdown effects
+   - Countdown parties
+   - Theme switch
+   - Audio
+   - Money
+   - Hunger
+   - Food
+   - Chat
+   - Shop
+   - Gift
+   - Dance
+   - Cinema
+   - Books / poem
    - Idle system
-   - Final gift + confetti
 
    CLICK / HOLD SECRETS
-   - A. logo ×5
-   - A. logo long press
-   - Avigna ×3
-   - Eyebrow ×3
-   - Quote mark ×4
+   - A. x5
+   - A. long press
+   - Avigna x3
+   - Eyebrow x3
+   - Quote mark x4
    - Quote double click
    - Stats sequence
    - Judgement long press
-   - Birthday message ×6
-   - Money display ×8
-   - Food card ×4
-   - Hunger bar ×5
-   - Gift lock clicks
-   - Mute ×10
-   - Theme icon ×7
+   - Message x6
+   - Money x8
+   - Food card x4
+   - Hunger bar x5
+   - Gift lock
+   - Mute x10
+   - Theme icon x7
    - Start button long press
-   - Shop description ×3
+   - Shop description x3
    - Food section double click
    - Right click
    - Middle click
    - Shift click
-   - Dance ×10
-   - Movies ×10
-   - Books ×10
+   - Dance x10
+   - Movies x10
+   - Books x10
 
-   TYPING SECRETS
+   TYPING
    - avigna
    - secret
    - cake
@@ -61,24 +61,20 @@
    - trail
    - invert
 
-   KEYBOARD CODES
+   KEYBOARD
    - Konami
    - Anti-Konami
 
-   INTENTIONAL EXPLORATION SECRETS
-   - Return to tab after 10+ seconds
-   - Reverse scroll direction 3 times
-   - Pause over birthday message for 8 seconds
-   - Reach 100% page completion
-   - Reach exactly $500
-   - Reach 100% hunger and eat
+   EXPLORATION
+   - Tab return after 10 seconds
+   - Reverse scroll
+   - Pause over message
+   - Reach page bottom
+   - Reach $500
+   - Survive 100% hunger
 
    TAB TITLE
-   - Leaving the tab changes title to "come back pleamseee 🥺"
-
-   IMPORTANT
-   All secret effects are connected to Avigna's birthday
-   and the fictional system BIRTHDAY.EXE.
+   - "come back pleamseee 🥺"
 ========================================================================== */
 
 
@@ -89,11 +85,7 @@
 window.history.scrollRestoration = "manual";
 
 window.addEventListener("load", function () {
-    if (
-        document.body.classList.contains(
-            "birthday-unlocked"
-        )
-    ) {
+    if (document.body.classList.contains("birthday-unlocked")) {
         window.scrollTo(0, 0);
     }
 });
@@ -103,337 +95,143 @@ window.addEventListener("load", function () {
    ELEMENT REFERENCES
 ========================================================================== */
 
-const lockScreen =
-    document.getElementById(
-        "birthday-lock-screen"
-    );
+const lockScreen = document.getElementById("birthday-lock-screen");
 
-const countdownDays =
-    document.getElementById(
-        "countdown-days"
-    );
+const countdownDays = document.getElementById("countdown-days");
+const countdownHours = document.getElementById("countdown-hours");
+const countdownMinutes = document.getElementById("countdown-minutes");
+const countdownSeconds = document.getElementById("countdown-seconds");
+const countdownStatus = document.getElementById("countdown-status");
 
-const countdownHours =
-    document.getElementById(
-        "countdown-hours"
-    );
+const themeSwitch = document.getElementById("theme-switch");
+const themeSwitchText = document.getElementById("theme-switch-text");
+const themeIcon = document.getElementById("theme-icon");
 
-const countdownMinutes =
-    document.getElementById(
-        "countdown-minutes"
-    );
+const blackOut = document.querySelector(".black-screen");
 
-const countdownSeconds =
-    document.getElementById(
-        "countdown-seconds"
-    );
+const foodButtons = document.querySelectorAll(".food-button");
+const foodCards = document.querySelectorAll(".food-card");
 
-const countdownStatus =
-    document.getElementById(
-        "countdown-status"
-    );
+const shopButtons = document.querySelectorAll(".shop-button");
 
+const affordText = document.getElementById("afford-text");
+const shopAffordText = document.getElementById("shop-afford-text");
 
-const themeSwitch =
-    document.getElementById(
-        "theme-switch"
-    );
+const chat = document.getElementById("msg-card");
+const nextMsg = document.getElementById("nextMessage");
 
-const themeSwitchText =
-    document.getElementById(
-        "theme-switch-text"
-    );
+const clickAudio = document.getElementById("click-audio");
+const backgroundAudio = document.getElementById("background-audio");
+const bdayAudio = document.getElementById("bday-audio");
+const danceAudio = document.getElementById("dance-audio");
 
-const themeIcon =
-    document.getElementById(
-        "theme-icon"
-    );
+const pageContent = document.getElementById("page-content");
 
+const muteBtn = document.getElementById("mute-toggle");
+const scrollProgress = document.getElementById("scroll-progress");
 
-const blackOut =
-    document.querySelector(
-        ".black-screen"
-    );
+const avignaToast = document.getElementById("avigna-toast");
 
+const secretLogo = document.getElementById("secret-logo");
 
-const foodButtons =
-    document.querySelectorAll(
-        ".food-button"
-    );
+const birthdayMessage = document.getElementById("message");
 
-const foodCards =
-    document.querySelectorAll(
-        ".food-card"
-    );
-
-
-const shopButtons =
-    document.querySelectorAll(
-        ".shop-button"
-    );
-
-
-const affordText =
-    document.getElementById(
-        "afford-text"
-    );
-
-const shopAffordText =
-    document.getElementById(
-        "shop-afford-text"
-    );
-
-
-const chat =
-    document.getElementById(
-        "msg-card"
-    );
-
-const nextMsg =
-    document.getElementById(
-        "nextMessage"
-    );
-
-
-const clickAudio =
-    document.getElementById(
-        "click-audio"
-    );
-
-const backgroundAudio =
-    document.getElementById(
-        "background-audio"
-    );
-
-const bdayAudio =
-    document.getElementById(
-        "bday-audio"
-    );
-
-const danceAudio =
-    document.getElementById(
-        "dance-audio"
-    );
-
-
-const pageContent =
-    document.getElementById(
-        "page-content"
-    );
-
-
-const muteBtn =
-    document.getElementById(
-        "mute-toggle"
-    );
-
-
-const scrollProgress =
-    document.getElementById(
-        "scroll-progress"
-    );
-
-
-const avignaToast =
-    document.getElementById(
-        "avigna-toast"
-    );
-
-
-const secretLogo =
-    document.getElementById(
-        "secret-logo"
-    );
-
-
-const birthdayMessage =
-    document.getElementById(
-        "message"
-    );
-
-
-const quoteSection =
-    document.querySelector(
-        ".trust-text"
-    );
-
-
-const quoteMark =
-    document.querySelector(
-        ".quote-mark"
-    );
-
-
-const quoteMaker =
-    document.querySelector(
-        ".quote-maker"
-    );
+const quoteSection = document.querySelector(".trust-text");
+const quoteMark = document.querySelector(".quote-mark");
+const quoteMaker = document.querySelector(".quote-maker");
 
 
 /* ==========================================================================
-   GAME STATE
+   GAME VARIABLES
 ========================================================================== */
 
 let money = 0;
-
 let hungerPercent = 0;
-
 let foodBought = 0;
-
 
 let msgIndex = 0;
 
-
 let boughtConvo = false;
-
 let boughtMsg = false;
-
 let boughtBlur = false;
-
 
 let doBlur = true;
 
-
 let movieModeOn = false;
-
 let cinemaModeOn = false;
 
-
 let discoModeOn = false;
-
 let rainbowModeOn = false;
 
+let foodieEndingTriggered = false;
+let confettiStarted = false;
 
-let foodieEndingTriggered =
-    false;
+let audioStarted = false;
+let isMuted = false;
 
-let confettiStarted =
-    false;
+let typedBuffer = "";
 
+let konamiIndex = 0;
+let antiKonamiIndex = 0;
 
-let audioStarted =
-    false;
+let idleTimer = null;
+let idleNudgeCount = 0;
 
-let isMuted =
-    false;
+let avignaToastTimeout = null;
+let cinemaExitButton = null;
 
+let birthdayCountdownInterval = null;
+let countdownEffectStage = "normal";
+let tenMinutePartyStarted = false;
+let oneMinutePartyStarted = false;
 
-let typedBuffer =
-    "";
+let warningGiven = false;
 
+let hungerInterval = null;
 
-let konamiIndex =
-    0;
-
-let antiKonamiIndex =
-    0;
-
-
-let idleTimer =
-    null;
-
-let idleNudgeCount =
-    0;
-
-
-let cinemaExitButton =
-    null;
-
-
-let rainbowInterval =
-    null;
-
-let debugHudInterval =
-    null;
-
-
-let avignaToastTimeout =
-    null;
+let rainbowInterval = null;
+let debugHudInterval = null;
 
 
 /* ==========================================================================
-   COUNTDOWN STATE
+   EXPLORATION SECRET VARIABLES
 ========================================================================== */
 
-let birthdayCountdownInterval =
-    null;
-
-let countdownEffectStage =
-    "normal";
-
-let tenMinutePartyStarted =
-    false;
-
-let oneMinutePartyStarted =
-    false;
-
-
-/* ==========================================================================
-   OTHER STATE
-========================================================================== */
-
-let warningGiven =
-    false;
-
-
-/* ==========================================================================
-   EXPLORATION SECRET STATE
-========================================================================== */
-
-/* Return to tab */
+/* TAB RETURN */
 
 let hiddenAt = null;
 
 
-/* Reverse scrolling */
+/* REVERSE SCROLL */
 
-let lastScrollPosition =
-    window.scrollY;
-
-let lastScrollDirection =
-    0;
-
-let scrollDirectionChanges =
-    0;
-
-let scrollComboTimer =
-    null;
-
-let scrollComboTriggered =
-    false;
+let lastScrollPosition = window.scrollY;
+let lastScrollDirection = 0;
+let scrollDirectionChanges = 0;
+let scrollComboTimer = null;
+let scrollComboTriggered = false;
 
 
-/* Perfect pause */
+/* PERFECT PAUSE */
 
-let pauseTimer =
-    null;
-
-let pauseCandidate =
-    false;
-
-let pauseTriggered =
-    false;
+let pauseTimer = null;
+let pauseCandidate = false;
+let pauseTriggered = false;
 
 
-/* Page completion */
+/* COMPLETION */
 
-let completionSecretTriggered =
-    false;
-
-
-/* $500 */
-
-let fiveHundredTriggered =
-    false;
+let completionSecretTriggered = false;
 
 
-/* Hunger survival */
+/* MONEY */
 
-let hungerReachedMaximum =
-    false;
+let fiveHundredTriggered = false;
 
-let hungerSurvivalTriggered =
-    false;
+
+/* HUNGER */
+
+let hungerReachedMaximum = false;
+let hungerSurvivalTriggered = false;
 
 
 /* ==========================================================================
@@ -441,25 +239,18 @@ let hungerSurvivalTriggered =
 ========================================================================== */
 
 function isUnlocked() {
-    return document.body.classList.contains(
-        "birthday-unlocked"
-    );
+    return document.body.classList.contains("birthday-unlocked");
 }
 
 
 function playClick() {
-    if (
-        !isUnlocked() ||
-        !clickAudio
-    ) {
+    if (!isUnlocked() || !clickAudio) {
         return;
     }
 
     clickAudio.currentTime = 0;
 
-    clickAudio.play().catch(
-        function () {}
-    );
+    clickAudio.play().catch(function () {});
 }
 
 
@@ -468,223 +259,127 @@ function showAvignaToast(message) {
         return;
     }
 
-    clearTimeout(
-        avignaToastTimeout
-    );
+    clearTimeout(avignaToastTimeout);
 
-    avignaToast.textContent =
-        message;
+    avignaToast.textContent = message;
 
-    avignaToast.classList.add(
-        "show"
-    );
+    avignaToast.classList.add("show");
 
-    avignaToastTimeout =
-        setTimeout(
-            function () {
-                avignaToast.classList.remove(
-                    "show"
-                );
-            },
-            2600
-        );
+    avignaToastTimeout = setTimeout(function () {
+        avignaToast.classList.remove("show");
+    }, 2600);
 }
 
 
 function showSecretToast(message) {
-    showAvignaToast(
-        "🎂 BIRTHDAY.EXE // " +
-        message
-    );
+    showAvignaToast("🎂 BIRTHDAY.EXE // " + message);
 }
 
 
-function flashPage(
-    color,
-    duration
-) {
-    const flash =
-        document.createElement(
-            "div"
-        );
+function flashPage(color, duration) {
+    const flash = document.createElement("div");
 
-    flash.className =
-        "secret-page-flash";
+    flash.className = "secret-page-flash";
 
     if (color) {
-        flash.style.background =
-            color;
+        flash.style.background = color;
     }
 
-    document.body.appendChild(
-        flash
-    );
+    document.body.appendChild(flash);
 
-    requestAnimationFrame(
-        function () {
-            flash.classList.add(
-                "visible"
-            );
-        }
-    );
+    requestAnimationFrame(function () {
+        flash.classList.add("visible");
+    });
 
-    setTimeout(
-        function () {
-            flash.classList.remove(
-                "visible"
-            );
-        },
-        Math.max(
-            150,
-            duration / 2
-        )
-    );
+    setTimeout(function () {
+        flash.classList.remove("visible");
+    }, Math.max(150, duration / 2));
 
-    setTimeout(
-        function () {
-            flash.remove();
-        },
-        duration
-    );
+    setTimeout(function () {
+        flash.remove();
+    }, duration);
 }
 
 
 function createScanline(color) {
-    const scanline =
-        document.createElement(
-            "div"
-        );
+    const scanline = document.createElement("div");
 
-    scanline.className =
-        "secret-scanline";
+    scanline.className = "secret-scanline";
 
     if (color) {
-        scanline.style.color =
-            color;
+        scanline.style.color = color;
     }
 
-    document.body.appendChild(
-        scanline
-    );
+    document.body.appendChild(scanline);
 
-    setTimeout(
-        function () {
-            scanline.remove();
-        },
-        1400
-    );
+    setTimeout(function () {
+        scanline.remove();
+    }, 1400);
 }
 
 
 function createShockwave() {
-    const wave =
-        document.createElement(
-            "div"
-        );
+    const wave = document.createElement("div");
 
-    wave.className =
-        "secret-shockwave";
+    wave.className = "secret-shockwave";
 
-    document.body.appendChild(
-        wave
-    );
+    document.body.appendChild(wave);
 
-    setTimeout(
-        function () {
-            wave.remove();
-        },
-        1100
-    );
+    setTimeout(function () {
+        wave.remove();
+    }, 1100);
 }
 
 
-function glitchElement(
-    element
-) {
+function glitchElement(element) {
     if (!element) {
         return;
     }
 
-    element.classList.remove(
-        "secret-glitch"
-    );
+    element.classList.remove("secret-glitch");
 
     void element.offsetWidth;
 
-    element.classList.add(
-        "secret-glitch"
-    );
+    element.classList.add("secret-glitch");
 
-    setTimeout(
-        function () {
-            element.classList.remove(
-                "secret-glitch"
-            );
-        },
-        700
-    );
+    setTimeout(function () {
+        element.classList.remove("secret-glitch");
+    }, 700);
 }
 
 
-function pageGlow(
-    element,
-    duration
-) {
+function pageGlow(element, duration) {
     if (!element) {
         return;
     }
 
-    element.classList.remove(
-        "secret-glow-pulse"
-    );
+    element.classList.remove("secret-glow-pulse");
 
     void element.offsetWidth;
 
-    element.classList.add(
-        "secret-glow-pulse"
-    );
+    element.classList.add("secret-glow-pulse");
 
-    setTimeout(
-        function () {
-            element.classList.remove(
-                "secret-glow-pulse"
-            );
-        },
-        duration || 1200
-    );
+    setTimeout(function () {
+        element.classList.remove("secret-glow-pulse");
+    }, duration || 1200);
 }
 
 
-function spotlightElement(
-    element,
-    duration
-) {
+function spotlightElement(element, duration) {
     if (!element) {
         return;
     }
 
-    const rect =
-        element.getBoundingClientRect();
+    const rect = element.getBoundingClientRect();
 
-    const spotlight =
-        document.createElement(
-            "div"
-        );
+    const spotlight = document.createElement("div");
 
-    spotlight.className =
-        "secret-spotlight";
+    spotlight.className = "secret-spotlight";
 
-    spotlight.style.position =
-        "fixed";
-
-    spotlight.style.inset =
-        "0";
-
-    spotlight.style.zIndex =
-        "29900";
-
-    spotlight.style.pointerEvents =
-        "none";
+    spotlight.style.position = "fixed";
+    spotlight.style.inset = "0";
+    spotlight.style.zIndex = "29900";
+    spotlight.style.pointerEvents = "none";
 
     spotlight.style.background =
         `radial-gradient(
@@ -697,228 +392,116 @@ function spotlightElement(
             rgba(0,0,0,.82) 100%
         )`;
 
-    spotlight.style.opacity =
-        "0";
+    spotlight.style.opacity = "0";
+    spotlight.style.transition = "opacity .5s ease";
 
-    spotlight.style.transition =
-        "opacity .5s ease";
+    document.body.appendChild(spotlight);
 
-    document.body.appendChild(
-        spotlight
-    );
+    element.classList.add("secret-target-highlight");
 
-    element.classList.add(
-        "secret-target-highlight"
-    );
+    requestAnimationFrame(function () {
+        spotlight.style.opacity = "1";
+    });
 
-    requestAnimationFrame(
-        function () {
-            spotlight.style.opacity =
-                "1";
-        }
-    );
+    setTimeout(function () {
+        spotlight.style.opacity = "0";
+        element.classList.remove("secret-target-highlight");
+    }, duration || 2200);
 
-    setTimeout(
-        function () {
-            spotlight.style.opacity =
-                "0";
-
-            element.classList.remove(
-                "secret-target-highlight"
-            );
-        },
-        duration || 2200
-    );
-
-    setTimeout(
-        function () {
-            spotlight.remove();
-        },
-        (duration || 2200) + 600
-    );
+    setTimeout(function () {
+        spotlight.remove();
+    }, (duration || 2200) + 600);
 }
 
 
-function starBurst(
-    x,
-    y,
-    symbols
-) {
-    const list =
-        symbols ||
-        [
-            "🎂",
-            "✨",
-            "🎈",
-            "★"
-        ];
+function starBurst(x, y, symbols) {
+    const list = symbols || ["🎂", "✨", "🎈", "★"];
 
-    for (
-        let i = 0;
-        i < 14;
-        i++
-    ) {
-        const star =
-            document.createElement(
-                "div"
-            );
+    for (let i = 0; i < 14; i++) {
+        const star = document.createElement("div");
 
-        star.className =
-            "secret-star";
+        star.className = "secret-star";
 
         star.textContent =
-            list[
-                Math.floor(
-                    Math.random() *
-                    list.length
-                )
-            ];
+            list[Math.floor(Math.random() * list.length)];
 
-        star.style.left =
-            x + "px";
+        star.style.left = x + "px";
+        star.style.top = y + "px";
 
-        star.style.top =
-            y + "px";
+        star.style.setProperty("--sx", Math.random() * 2 - 1);
+        star.style.setProperty("--sy", Math.random() * 2 - 1);
 
-        star.style.setProperty(
-            "--sx",
-            Math.random() * 2 - 1
-        );
+        document.body.appendChild(star);
 
-        star.style.setProperty(
-            "--sy",
-            Math.random() * 2 - 1
-        );
-
-        document.body.appendChild(
-            star
-        );
-
-        setTimeout(
-            function () {
-                star.remove();
-            },
-            1300
-        );
+        setTimeout(function () {
+            star.remove();
+        }, 1300);
     }
 }
 
 
 /* ==========================================================================
-   INDIA / IST TIME
+   IST TIME
 ========================================================================== */
 
 function getIndiaDateParts() {
-    const formatter =
-        new Intl.DateTimeFormat(
-            "en-CA",
-            {
-                timeZone:
-                    "Asia/Kolkata",
+    const formatter = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Kolkata",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hourCycle: "h23"
+    });
 
-                year:
-                    "numeric",
-
-                month:
-                    "2-digit",
-
-                day:
-                    "2-digit",
-
-                hour:
-                    "2-digit",
-
-                minute:
-                    "2-digit",
-
-                second:
-                    "2-digit",
-
-                hourCycle:
-                    "h23"
-            }
-        );
-
-    const parts =
-        formatter.formatToParts(
-            new Date()
-        );
-
+    const parts = formatter.formatToParts(new Date());
     const values = {};
 
-    parts.forEach(
-        function (part) {
-
-            if (
-                part.type !==
-                "literal"
-            ) {
-                values[
-                    part.type
-                ] =
-                    part.value;
-            }
-
+    parts.forEach(function (part) {
+        if (part.type !== "literal") {
+            values[part.type] = part.value;
         }
-    );
+    });
 
     return {
-
-        year:
-            Number(
-                values.year
-            ),
-
-        month:
-            Number(
-                values.month
-            ),
-
-        day:
-            Number(
-                values.day
-            ),
-
-        hour:
-            Number(
-                values.hour
-            ),
-
-        minute:
-            Number(
-                values.minute
-            ),
-
-        second:
-            Number(
-                values.second
-            )
-
+        year: Number(values.year),
+        month: Number(values.month),
+        day: Number(values.day),
+        hour: Number(values.hour),
+        minute: Number(values.minute),
+        second: Number(values.second)
     };
 }
 
 
 function isBirthdayToday() {
+    const india = getIndiaDateParts();
 
-    const india =
-        getIndiaDateParts();
-
-    return (
-        india.month === 8 &&
-        india.day === 29
-    );
+    return india.month === 8 && india.day === 29;
 }
 
 
 function getBirthdayTarget() {
+    const india = getIndiaDateParts();
 
-    const india =
-        getIndiaDateParts();
+    let target = new Date(
+        Date.UTC(
+            india.year,
+            7,
+            28,
+            18,
+            30,
+            0,
+            0
+        )
+    );
 
-    let target =
-        new Date(
+    if (india.month === 8 && india.day >= 29) {
+        target = new Date(
             Date.UTC(
-                india.year,
+                india.year + 1,
                 7,
                 28,
                 18,
@@ -927,39 +510,14 @@ function getBirthdayTarget() {
                 0
             )
         );
-
-    if (
-        india.month === 8 &&
-        india.day >= 29
-    ) {
-
-        target =
-            new Date(
-                Date.UTC(
-                    india.year + 1,
-                    7,
-                    28,
-                    18,
-                    30,
-                    0,
-                    0
-                )
-            );
     }
 
     return target;
 }
 
 
-function formatNumber(
-    number
-) {
-
-    return String(number)
-        .padStart(
-            2,
-            "0"
-        );
+function formatNumber(number) {
+    return String(number).padStart(2, "0");
 }
 
 
@@ -968,7 +526,6 @@ function formatNumber(
 ========================================================================== */
 
 function resetCountdownEffectClasses() {
-
     document.body.classList.remove(
         "countdown-normal",
         "countdown-3-hours",
@@ -981,225 +538,114 @@ function resetCountdownEffectClasses() {
 }
 
 
-function updateCountdownEffects(
-    totalSeconds
-) {
+function updateCountdownEffects(totalSeconds) {
+    let newStage = "normal";
 
-    let newStage =
-        "normal";
-
-    if (
-        totalSeconds <= 60
-    ) {
-
-        newStage =
-            "1-minute";
-
+    if (totalSeconds <= 60) {
+        newStage = "1-minute";
+    } else if (totalSeconds <= 600) {
+        newStage = "10-minutes";
+    } else if (totalSeconds <= 1800) {
+        newStage = "30-minutes";
+    } else if (totalSeconds <= 3600) {
+        newStage = "1-hour";
+    } else if (totalSeconds <= 7200) {
+        newStage = "2-hours";
+    } else if (totalSeconds <= 10800) {
+        newStage = "3-hours";
     }
 
-    else if (
-        totalSeconds <= 600
-    ) {
-
-        newStage =
-            "10-minutes";
-
-    }
-
-    else if (
-        totalSeconds <= 1800
-    ) {
-
-        newStage =
-            "30-minutes";
-
-    }
-
-    else if (
-        totalSeconds <= 3600
-    ) {
-
-        newStage =
-            "1-hour";
-
-    }
-
-    else if (
-        totalSeconds <= 7200
-    ) {
-
-        newStage =
-            "2-hours";
-
-    }
-
-    else if (
-        totalSeconds <= 10800
-    ) {
-
-        newStage =
-            "3-hours";
-
-    }
-
-
-    if (
-        newStage !==
-        countdownEffectStage
-    ) {
-
-        countdownEffectStage =
-            newStage;
+    if (newStage !== countdownEffectStage) {
+        countdownEffectStage = newStage;
 
         resetCountdownEffectClasses();
 
         document.body.classList.add(
-            "countdown-" +
-            newStage
+            "countdown-" + newStage
         );
     }
-
 
     if (
         totalSeconds <= 600 &&
         !tenMinutePartyStarted
     ) {
-
-        tenMinutePartyStarted =
-            true;
-
+        tenMinutePartyStarted = true;
         triggerTenMinuteParty();
     }
-
 
     if (
         totalSeconds <= 60 &&
         !oneMinutePartyStarted
     ) {
-
-        oneMinutePartyStarted =
-            true;
-
+        oneMinutePartyStarted = true;
         triggerOneMinuteParty();
     }
 }
 
 
 function updateBirthdayCountdown() {
-
     if (!lockScreen) {
         return;
     }
 
-
     if (isBirthdayToday()) {
-
         unlockBirthdayWebsite();
-
         return;
     }
 
-
-    const target =
-        getBirthdayTarget();
-
+    const target = getBirthdayTarget();
 
     const difference =
-        target.getTime() -
-        Date.now();
+        target.getTime() - Date.now();
 
-
-    if (
-        difference <= 0
-    ) {
-
+    if (difference <= 0) {
         unlockBirthdayWebsite();
-
         return;
     }
 
-
     const totalSeconds =
-        Math.floor(
-            difference /
-            1000
-        );
-
+        Math.floor(difference / 1000);
 
     const days =
-        Math.floor(
-            totalSeconds /
-            86400
-        );
-
+        Math.floor(totalSeconds / 86400);
 
     const hours =
         Math.floor(
-            (
-                totalSeconds %
-                86400
-            ) /
-            3600
+            (totalSeconds % 86400) / 3600
         );
-
 
     const minutes =
         Math.floor(
-            (
-                totalSeconds %
-                3600
-            ) /
-            60
+            (totalSeconds % 3600) / 60
         );
 
-
     const seconds =
-        totalSeconds %
-        60;
-
+        totalSeconds % 60;
 
     if (countdownDays) {
-
         countdownDays.textContent =
-            formatNumber(
-                days
-            );
+            formatNumber(days);
     }
-
 
     if (countdownHours) {
-
         countdownHours.textContent =
-            formatNumber(
-                hours
-            );
+            formatNumber(hours);
     }
-
 
     if (countdownMinutes) {
-
         countdownMinutes.textContent =
-            formatNumber(
-                minutes
-            );
+            formatNumber(minutes);
     }
-
 
     if (countdownSeconds) {
-
         countdownSeconds.textContent =
-            formatNumber(
-                seconds
-            );
+            formatNumber(seconds);
     }
 
-
     if (countdownStatus) {
-
         countdownStatus.textContent =
             "SYSTEM LOCKED";
     }
-
 
     updateCountdownEffects(
         totalSeconds
@@ -1208,103 +654,71 @@ function updateBirthdayCountdown() {
 
 
 function unlockBirthdayWebsite() {
-
-    if (
-        birthdayCountdownInterval
-    ) {
-
+    if (birthdayCountdownInterval) {
         clearInterval(
             birthdayCountdownInterval
         );
 
-        birthdayCountdownInterval =
-            null;
+        birthdayCountdownInterval = null;
     }
 
-
     resetCountdownEffectClasses();
-
 
     document.body.classList.remove(
         "birthday-locked"
     );
 
-
     document.body.classList.add(
         "birthday-unlocked"
     );
 
-
     if (countdownStatus) {
-
         countdownStatus.textContent =
             "ACCESS GRANTED";
     }
-
 
     flashPage(
         "rgba(255,216,107,.16)",
         1000
     );
 
-
     showAvignaToast(
         "🎂 BIRTHDAY.EXE // ACCESS GRANTED"
     );
 
-
-    setTimeout(
-        function () {
-
-            if (lockScreen) {
-                lockScreen.remove();
-            }
-
-        },
-        2200
-    );
+    setTimeout(function () {
+        if (lockScreen) {
+            lockScreen.remove();
+        }
+    }, 2200);
 }
 
 
 function initializeBirthdayLock() {
-
     if (isBirthdayToday()) {
-
         document.body.classList.add(
             "birthday-unlocked"
         );
 
-
         if (countdownStatus) {
-
             countdownStatus.textContent =
                 "ACCESS GRANTED";
         }
 
-
-        setTimeout(
-            function () {
-
-                if (lockScreen) {
-                    lockScreen.remove();
-                }
-
-            },
-            2200
-        );
-
+        setTimeout(function () {
+            if (lockScreen) {
+                lockScreen.remove();
+            }
+        }, 2200);
 
         return;
     }
-
 
     document.body.classList.add(
         "birthday-locked"
     );
 
-
     updateBirthdayCountdown();
-
 
     birthdayCountdownInterval =
         setInterval(
@@ -1313,385 +727,219 @@ function initializeBirthdayLock() {
         );
 }
 
-
 initializeBirthdayLock();
 
 
 /* ==========================================================================
-   COUNTDOWN PARTIES
+   COUNTDOWN PARTY
 ========================================================================== */
 
 function triggerTenMinuteParty() {
-
     flashPage(
         "rgba(255,216,107,.13)",
         850
     );
 
-
     showAvignaToast(
         "🎉 BIRTHDAY.EXE // PARTY INITIALIZED"
     );
 
-
-    if (
-        typeof confetti !==
-        "function"
-    ) {
+    if (typeof confetti !== "function") {
         return;
     }
 
-
     confetti({
-
-        particleCount:
-            180,
-
-        spread:
-            160,
-
-        startVelocity:
-            55,
-
-        gravity:
-            .8,
-
-        ticks:
-            300,
-
+        particleCount: 180,
+        spread: 160,
+        startVelocity: 55,
+        gravity: 0.8,
+        ticks: 300,
         origin: {
-            x:
-                .5,
-
-            y:
-                .65
+            x: 0.5,
+            y: 0.65
         }
-
     });
-
 
     let bursts = 0;
 
-
     const partyInterval =
-        setInterval(
-            function () {
+        setInterval(function () {
 
-                confetti({
-
-                    particleCount:
-                        18,
-
-                    spread:
-                        100,
-
-                    startVelocity:
-                        35,
-
-                    gravity:
-                        .8,
-
-                    origin: {
-                        x:
-                            Math.random() *
-                            .35,
-
-                        y:
-                            .9
-                    }
-
-                });
-
-
-                confetti({
-
-                    particleCount:
-                        18,
-
-                    spread:
-                        100,
-
-                    startVelocity:
-                        35,
-
-                    gravity:
-                        .8,
-
-                    origin: {
-                        x:
-                            .65 +
-                            Math.random() *
-                            .35,
-
-                        y:
-                            .9
-                    }
-
-                });
-
-
-                bursts++;
-
-
-                if (
-                    bursts >= 15
-                ) {
-
-                    clearInterval(
-                        partyInterval
-                    );
+            confetti({
+                particleCount: 18,
+                spread: 100,
+                startVelocity: 35,
+                gravity: 0.8,
+                origin: {
+                    x: Math.random() * 0.35,
+                    y: 0.9
                 }
+            });
 
-            },
-            450
-        );
+            confetti({
+                particleCount: 18,
+                spread: 100,
+                startVelocity: 35,
+                gravity: 0.8,
+                origin: {
+                    x: 0.65 + Math.random() * 0.35,
+                    y: 0.9
+                }
+            });
+
+            bursts++;
+
+            if (bursts >= 15) {
+                clearInterval(
+                    partyInterval
+                );
+            }
+
+        }, 450);
 }
 
 
 function triggerOneMinuteParty() {
-
     flashPage(
         "rgba(255,216,107,.18)",
         1000
     );
 
-
     createShockwave();
-
 
     showAvignaToast(
         "🎂 BIRTHDAY.EXE // FINAL COUNTDOWN"
     );
 
-
-    if (
-        typeof confetti ===
-        "function"
-    ) {
-
+    if (typeof confetti === "function") {
         confetti({
-
-            particleCount:
-                350,
-
-            spread:
-                180,
-
-            startVelocity:
-                70,
-
-            gravity:
-                .75,
-
-            ticks:
-                400,
-
+            particleCount: 350,
+            spread: 180,
+            startVelocity: 70,
+            gravity: 0.75,
+            ticks: 400,
             origin: {
-                x:
-                    .5,
-
-                y:
-                    .6
+                x: 0.5,
+                y: 0.6
             }
-
         });
 
-
         confetti({
-
-            particleCount:
-                150,
-
-            angle:
-                60,
-
-            spread:
-                55,
-
-            startVelocity:
-                60,
-
-            gravity:
-                .8,
-
+            particleCount: 150,
+            angle: 60,
+            spread: 55,
+            startVelocity: 60,
+            gravity: 0.8,
             origin: {
-                x:
-                    0,
-
-                y:
-                    1
+                x: 0,
+                y: 1
             }
-
         });
 
-
         confetti({
-
-            particleCount:
-                150,
-
-            angle:
-                120,
-
-            spread:
-                55,
-
-            startVelocity:
-                60,
-
-            gravity:
-                .8,
-
+            particleCount: 150,
+            angle: 120,
+            spread: 55,
+            startVelocity: 60,
+            gravity: 0.8,
             origin: {
-                x:
-                    1,
-
-                y:
-                    1
+                x: 1,
+                y: 1
             }
-
         });
-
     }
-
 
     startCountdownPartyObjects();
 }
 
 
 function startCountdownPartyObjects() {
-
     let objectCount = 0;
 
-
     const objectInterval =
-        setInterval(
-            function () {
+        setInterval(function () {
 
-                createCountdownPartyObject();
+            createCountdownPartyObject();
 
+            objectCount++;
 
-                objectCount++;
+            if (objectCount >= 45) {
+                clearInterval(
+                    objectInterval
+                );
+            }
 
-
-                if (
-                    objectCount >=
-                    45
-                ) {
-
-                    clearInterval(
-                        objectInterval
-                    );
-                }
-
-            },
-            250
-        );
+        }, 250);
 }
 
 
 function createCountdownPartyObject() {
-
     const object =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     object.className =
         "countdown-party-object";
 
-
-    if (
-        Math.random() <
-        .55
-    ) {
-
+    if (Math.random() < 0.55) {
         object.classList.add(
             "countdown-balloon"
         );
 
-        object.textContent =
-            "🎈";
-
-    }
-
-    else {
-
+        object.textContent = "🎈";
+    } else {
         object.classList.add(
             "countdown-cake"
         );
 
         object.textContent =
-            Math.random() <
-            .5
+            Math.random() < 0.5
                 ? "🎂"
                 : "🧁";
     }
 
-
     object.style.left =
-        Math.random() *
-        100 +
-        "vw";
-
+        Math.random() * 100 + "vw";
 
     object.style.animationDuration =
-        3 +
-        Math.random() *
-        3 +
-        "s";
-
+        3 + Math.random() * 3 + "s";
 
     document.body.appendChild(
         object
     );
 
-
-    setTimeout(
-        function () {
-            object.remove();
-        },
-        7000
-    );
+    setTimeout(function () {
+        object.remove();
+    }, 7000);
 }
 
 
 /* ==========================================================================
-   THEME SWITCH
+   THEME
 ========================================================================== */
 
 function updateThemeButton() {
-
     const pinkMode =
         document.body.classList.contains(
             "theme-pink"
         );
 
-
     if (themeSwitchText) {
-
         themeSwitchText.textContent =
             pinkMode
                 ? "PINK MODE"
                 : "BLUE MODE";
     }
 
-
     if (themeIcon) {
-
         themeIcon.textContent =
             pinkMode
                 ? "🌸"
                 : "🌲";
     }
 
-
     if (themeSwitch) {
-
         themeSwitch.setAttribute(
             "aria-label",
-
             pinkMode
                 ? "Switch to blue theme"
                 : "Switch to pink theme"
@@ -1701,17 +949,14 @@ function updateThemeButton() {
 
 
 function toggleTheme() {
-
     document.body.classList.toggle(
         "theme-pink"
     );
-
 
     const pinkMode =
         document.body.classList.contains(
             "theme-pink"
         );
-
 
     localStorage.setItem(
         "birthday-theme",
@@ -1719,7 +964,6 @@ function toggleTheme() {
             ? "pink"
             : "blue"
     );
-
 
     updateThemeButton();
 }
@@ -1730,7 +974,6 @@ if (
         "birthday-theme"
     ) === "pink"
 ) {
-
     document.body.classList.add(
         "theme-pink"
     );
@@ -1738,7 +981,6 @@ if (
 
 
 if (themeSwitch) {
-
     themeSwitch.addEventListener(
         "click",
         function () {
@@ -1760,7 +1002,6 @@ updateThemeButton();
 ========================================================================== */
 
 function startBackgroundAudio() {
-
     if (
         !isUnlocked() ||
         audioStarted ||
@@ -1769,20 +1010,13 @@ function startBackgroundAudio() {
         return;
     }
 
+    audioStarted = true;
 
-    audioStarted =
-        true;
+    backgroundAudio.loop = true;
 
-
-    backgroundAudio.loop =
-        true;
-
-
-    backgroundAudio
-        .play()
-        .catch(
-            function () {}
-        );
+    backgroundAudio.play().catch(
+        function () {}
+    );
 }
 
 
@@ -1793,7 +1027,6 @@ document.addEventListener(
 
 
 if (danceAudio) {
-
     danceAudio.addEventListener(
         "ended",
         function () {
@@ -1802,23 +1035,17 @@ if (danceAudio) {
                 return;
             }
 
+            backgroundAudio.currentTime = 0;
 
-            backgroundAudio.currentTime =
-                0;
-
-
-            backgroundAudio
-                .play()
-                .catch(
-                    function () {}
-                );
+            backgroundAudio.play().catch(
+                function () {}
+            );
         }
     );
 }
 
 
 if (bdayAudio) {
-
     bdayAudio.addEventListener(
         "ended",
         function () {
@@ -1827,16 +1054,11 @@ if (bdayAudio) {
                 return;
             }
 
+            backgroundAudio.currentTime = 0;
 
-            backgroundAudio.currentTime =
-                0;
-
-
-            backgroundAudio
-                .play()
-                .catch(
-                    function () {}
-                );
+            backgroundAudio.play().catch(
+                function () {}
+            );
         }
     );
 }
@@ -1847,14 +1069,11 @@ if (bdayAudio) {
 ========================================================================== */
 
 if (muteBtn) {
-
     muteBtn.addEventListener(
         "click",
         function () {
 
-            isMuted =
-                !isMuted;
-
+            isMuted = !isMuted;
 
             [
                 backgroundAudio,
@@ -1865,13 +1084,11 @@ if (muteBtn) {
                 function (audio) {
 
                     if (audio) {
-                        audio.muted =
-                            isMuted;
+                        audio.muted = isMuted;
                     }
 
                 }
             );
-
 
             muteBtn.textContent =
                 isMuted
@@ -1888,25 +1105,19 @@ if (muteBtn) {
 ========================================================================== */
 
 function updatePageFilter() {
-
     if (!pageContent) {
         return;
     }
 
-
     const filters = [];
 
-
     if (doBlur) {
-
         filters.push(
             `blur(${hungerPercent / 65}px)`
         );
     }
 
-
     if (movieModeOn) {
-
         filters.push(
             "grayscale(.6)"
         );
@@ -1916,9 +1127,7 @@ function updatePageFilter() {
         );
     }
 
-
     if (rainbowModeOn) {
-
         filters.push(
             "hue-rotate(var(--rainbow-hue,0deg))"
         );
@@ -1927,7 +1136,6 @@ function updatePageFilter() {
             "saturate(1.6)"
         );
     }
-
 
     pageContent.style.filter =
         filters.join(" ");
@@ -1939,71 +1147,47 @@ function updatePageFilter() {
 ========================================================================== */
 
 function refreshMoneyDisplay() {
-
     const display =
         document.getElementById(
             "display-money"
         );
 
-
     if (display) {
-
         display.textContent =
-            "Money: $" +
-            money;
+            "Money: $" + money;
     }
 
-
     if (affordText) {
-
         affordText.innerHTML =
             `<p>Money: $${money}</p>`;
     }
 
-
     if (shopAffordText) {
-
         shopAffordText.innerHTML =
             `<p>Money: $${money}</p>`;
     }
 }
 
 
-function reduceMoney(
-    price
-) {
+function reduceMoney(price) {
+    money -= price;
 
-    money -=
-        price;
-
-
-    if (
-        money <
-        0
-    ) {
-
-        money =
-            0;
+    if (money < 0) {
+        money = 0;
     }
-
 
     refreshMoneyDisplay();
 }
 
 
 function updateMoney() {
-
     if (!isUnlocked()) {
         return;
     }
 
-
-    money +=
-        25;
-
+    money += 25;
 
     refreshMoneyDisplay();
-
 
     checkMoneyMilestone();
 }
@@ -2016,11 +1200,10 @@ setInterval(
 
 
 /* ==========================================================================
-   $500 BIRTHDAY BUDGET SECRET
+   $500 SECRET
 ========================================================================== */
 
 function checkMoneyMilestone() {
-
     if (
         fiveHundredTriggered ||
         money !== 500
@@ -2028,121 +1211,61 @@ function checkMoneyMilestone() {
         return;
     }
 
-
-    fiveHundredTriggered =
-        true;
-
-
-    const display =
-        document.getElementById(
-            "display-money"
-        );
-
-
-    if (display) {
-
-        display.classList.add(
-            "secret-money-milestone"
-        );
-    }
-
+    fiveHundredTriggered = true;
 
     showSecretToast(
         "$500 BIRTHDAY BUDGET"
     );
-
 
     flashPage(
         "rgba(255,216,107,.18)",
         900
     );
 
-
     const badge =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     badge.className =
         "money-milestone-badge";
 
-
     badge.innerHTML = `
-
-        <strong>
-            BIRTHDAY BUDGET: $500
-        </strong>
-
-        <span>
-            BIRTHDAY.EXE financial milestone reached.
-        </span>
-
+        <strong>BIRTHDAY BUDGET: $500</strong>
+        <span>BIRTHDAY.EXE financial milestone reached.</span>
     `;
-
 
     document.body.appendChild(
         badge
     );
 
-
     requestAnimationFrame(
         function () {
-
-            badge.classList.add(
-                "visible"
-            );
-
+            badge.classList.add("visible");
         }
     );
 
-
     setTimeout(
         function () {
-
-            badge.classList.remove(
-                "visible"
-            );
-
+            badge.classList.remove("visible");
         },
         4200
     );
 
-
     setTimeout(
         function () {
-
             badge.remove();
-
         },
         4800
     );
 
-
-    if (
-        typeof confetti ===
-        "function"
-    ) {
-
+    if (typeof confetti === "function") {
         confetti({
-
-            particleCount:
-                100,
-
-            spread:
-                100,
-
-            startVelocity:
-                45,
-
+            particleCount: 100,
+            spread: 100,
+            startVelocity: 45,
             origin: {
-                x:
-                    .5,
-
-                y:
-                    .3
+                x: 0.5,
+                y: 0.3
             }
-
         });
     }
 }
@@ -2153,37 +1276,29 @@ function checkMoneyMilestone() {
 ========================================================================== */
 
 function refreshHungerDisplay() {
-
     const hungerBar =
         document.querySelector(
             ".hunger-bar"
         );
-
 
     const hungerLabel =
         document.querySelector(
             ".hunger-percentage"
         );
 
-
     if (hungerBar) {
-
         hungerBar.innerHTML =
             `<span style="width:${hungerPercent}%"></span>`;
     }
 
-
     if (hungerLabel) {
-
         hungerLabel.textContent =
-            hungerPercent +
-            "%";
+            hungerPercent + "%";
     }
 }
 
 
 function hungerUpdate() {
-
     if (
         !isUnlocked() ||
         foodieEndingTriggered ||
@@ -2192,52 +1307,38 @@ function hungerUpdate() {
         return;
     }
 
-
     if (
-        hungerPercent <
-        100
+        hungerPercent < 100
     ) {
-
         hungerPercent++;
     }
 
-
     if (
-        hungerPercent >=
-        100
+        hungerPercent >= 100
     ) {
-
-        hungerPercent =
-            100;
-
-        hungerReachedMaximum =
-            true;
+        hungerPercent = 100;
+        hungerReachedMaximum = true;
     }
-
 
     refreshHungerDisplay();
 
     updatePageFilter();
-
 
     const bar =
         document.querySelector(
             ".hunger-bar"
         );
 
-
     if (bar) {
-
         bar.classList.toggle(
             "critical-hunger",
-            hungerPercent >=
-            90
+            hungerPercent >= 90
         );
     }
 }
 
 
-let hungerInterval =
+hungerInterval =
     setInterval(
         hungerUpdate,
         1000
@@ -2250,22 +1351,16 @@ let hungerInterval =
 
 function triggerHungerSurvivalSecret() {
 
-    if (
-        hungerSurvivalTriggered
-    ) {
+    if (hungerSurvivalTriggered) {
         return;
     }
 
-
-    hungerSurvivalTriggered =
-        true;
-
+    hungerSurvivalTriggered = true;
 
     const section =
         document.querySelector(
             ".eat-section"
         );
-
 
     if (section) {
 
@@ -2273,87 +1368,62 @@ function triggerHungerSurvivalSecret() {
             "hunger-recovery-mode"
         );
 
-
         setTimeout(
             function () {
-
                 section.classList.remove(
                     "hunger-recovery-mode"
                 );
-
             },
             3500
         );
     }
 
-
     showSecretToast(
         "BIRTHDAY BUFFET SURVIVOR"
     );
-
 
     flashPage(
         "rgba(255,216,107,.13)",
         700
     );
 
-
     const recovery =
         document.createElement(
             "div"
         );
 
-
     recovery.className =
         "hunger-recovery-secret";
 
-
     recovery.innerHTML = `
-
-        <strong>
-            BIRTHDAY BUFFET SURVIVOR
-        </strong>
-
-        <span>
-            You actually waited until 100% hunger.
-        </span>
-
+        <strong>BIRTHDAY BUFFET SURVIVOR</strong>
+        <span>You actually waited until 100% hunger.</span>
     `;
-
 
     document.body.appendChild(
         recovery
     );
 
-
     requestAnimationFrame(
         function () {
-
             recovery.classList.add(
                 "visible"
             );
-
         }
     );
 
-
     setTimeout(
         function () {
-
             recovery.classList.remove(
                 "visible"
             );
-
         },
         3800
     );
 
-
     setTimeout(
         function () {
-
             recovery.remove();
-
         },
         4500
     );
@@ -2365,37 +1435,25 @@ function triggerHungerSurvivalSecret() {
 ========================================================================== */
 
 function updateScrollProgress() {
-
     if (!scrollProgress) {
         return;
     }
 
-
     const scrollTop =
         window.scrollY ||
-        document.documentElement
-            .scrollTop;
-
+        document.documentElement.scrollTop;
 
     const documentHeight =
-        document.documentElement
-            .scrollHeight -
+        document.documentElement.scrollHeight -
         window.innerHeight;
-
 
     const percent =
         documentHeight > 0
-            ? (
-                scrollTop /
-                documentHeight
-            ) * 100
+            ? (scrollTop / documentHeight) * 100
             : 0;
 
-
     scrollProgress.style.width =
-        percent +
-        "%";
-
+        percent + "%";
 
     if (
         !completionSecretTriggered &&
@@ -2403,8 +1461,7 @@ function updateScrollProgress() {
         isUnlocked()
     ) {
 
-        completionSecretTriggered =
-            true;
+        completionSecretTriggered = true;
 
         triggerCompletionSecret();
     }
@@ -2415,8 +1472,7 @@ window.addEventListener(
     "scroll",
     updateScrollProgress,
     {
-        passive:
-            true
+        passive: true
     }
 );
 
@@ -2433,56 +1489,44 @@ function triggerCompletionSecret() {
         "BIRTHDAY JOURNEY COMPLETE"
     );
 
-
     flashPage(
         "rgba(79,255,232,.12)",
         700
     );
 
-
     if (scrollProgress) {
-
         scrollProgress.classList.add(
             "completion-progress"
         );
     }
-
 
     const badge =
         document.createElement(
             "div"
         );
 
-
     badge.className =
         "completion-secret";
 
-
     badge.textContent =
         "🎂 BIRTHDAY JOURNEY COMPLETE";
-
 
     document.body.appendChild(
         badge
     );
 
-
     requestAnimationFrame(
         function () {
-
             badge.classList.add(
                 "visible"
             );
-
         }
     );
-
 
     const serials =
         document.querySelectorAll(
             ".serial-number"
         );
-
 
     serials.forEach(
         function (
@@ -2497,7 +1541,6 @@ function triggerCompletionSecret() {
                         "secret-target-highlight"
                     );
 
-
                     setTimeout(
                         function () {
 
@@ -2510,12 +1553,11 @@ function triggerCompletionSecret() {
                     );
 
                 },
-                index *
-                120
+                index * 120
             );
+
         }
     );
-
 
     setTimeout(
         function () {
@@ -2528,7 +1570,6 @@ function triggerCompletionSecret() {
         3200
     );
 
-
     setTimeout(
         function () {
 
@@ -2538,9 +1579,6 @@ function triggerCompletionSecret() {
         3800
     );
 }
-
-
-updateScrollProgress();
 
 
 /* ==========================================================================
@@ -2555,15 +1593,12 @@ window.addEventListener(
             return;
         }
 
-
         const currentPosition =
             window.scrollY;
-
 
         const delta =
             currentPosition -
             lastScrollPosition;
-
 
         if (
             Math.abs(delta) <
@@ -2572,78 +1607,61 @@ window.addEventListener(
             return;
         }
 
-
         const direction =
             delta > 0
                 ? 1
                 : -1;
 
-
         if (
-            lastScrollDirection !==
-                0 &&
+            lastScrollDirection !== 0 &&
             direction !==
                 lastScrollDirection
         ) {
 
             scrollDirectionChanges++;
 
-
             clearTimeout(
                 scrollComboTimer
             );
 
-
             scrollComboTimer =
                 setTimeout(
                     function () {
-
                         scrollDirectionChanges =
                             0;
-
                     },
                     2500
                 );
 
-
             if (
-                scrollDirectionChanges >=
-                    3 &&
+                scrollDirectionChanges >= 3 &&
                 !scrollComboTriggered
             ) {
 
-                scrollComboTriggered =
-                    true;
-
+                scrollComboTriggered = true;
 
                 showSecretToast(
                     "BIRTHDAY TIMELINE REWOUND"
                 );
 
-
                 document.body.classList.add(
                     "scroll-rewind-secret"
                 );
 
-
                 if (scrollProgress) {
-
                     scrollProgress.classList.add(
                         "rewind-progress"
                     );
                 }
-
 
                 flashPage(
                     "rgba(181,140,255,.12)",
                     650
                 );
 
-
                 createScanline(
                     "#ff8cd9"
                 );
-
 
                 setTimeout(
                     function () {
@@ -2652,9 +1670,7 @@ window.addEventListener(
                             "scroll-rewind-secret"
                         );
 
-
                         if (scrollProgress) {
-
                             scrollProgress.classList.remove(
                                 "rewind-progress"
                             );
@@ -2666,18 +1682,15 @@ window.addEventListener(
             }
         }
 
-
         lastScrollDirection =
             direction;
-
 
         lastScrollPosition =
             currentPosition;
 
     },
     {
-        passive:
-            true
+        passive: true
     }
 );
 
@@ -2699,32 +1712,23 @@ if (birthdayMessage) {
                 return;
             }
 
-
-            pauseCandidate =
-                true;
-
+            pauseCandidate = true;
 
             clearTimeout(
                 pauseTimer
             );
 
-
             pauseTimer =
                 setTimeout(
                     function () {
 
-                        if (
-                            pauseCandidate
-                        ) {
-
+                        if (pauseCandidate) {
                             triggerPerfectPauseSecret();
-
                         }
 
                     },
                     8000
                 );
-
         }
     );
 
@@ -2733,13 +1737,12 @@ if (birthdayMessage) {
         "mouseleave",
         function () {
 
-            pauseCandidate =
-                false;
-
+            pauseCandidate = false;
 
             clearTimeout(
                 pauseTimer
             );
+
         }
     );
 }
@@ -2751,23 +1754,18 @@ function triggerPerfectPauseSecret() {
         return;
     }
 
-
-    pauseTriggered =
-        true;
-
+    pauseTriggered = true;
 
     const messageArea =
         document.querySelector(
             ".message-area"
         );
 
-
     if (messageArea) {
 
         messageArea.classList.add(
             "memory-mode"
         );
-
 
         setTimeout(
             function () {
@@ -2781,57 +1779,39 @@ function triggerPerfectPauseSecret() {
         );
     }
 
-
     spotlightElement(
         birthdayMessage,
         2200
     );
-
 
     const memory =
         document.createElement(
             "div"
         );
 
-
     memory.className =
         "memory-secret";
 
-
     memory.innerHTML = `
-
-        <strong>
-            BIRTHDAY MEMORY FOUND
-        </strong>
-
-        <span>
-            You stopped long enough to actually read it.
-        </span>
-
+        <strong>BIRTHDAY MEMORY FOUND</strong>
+        <span>You stopped long enough to actually read it.</span>
     `;
-
 
     document.body.appendChild(
         memory
     );
 
-
     showSecretToast(
         "BIRTHDAY MEMORY FOUND"
     );
 
-
-    setTimeout(
+    requestAnimationFrame(
         function () {
-
             memory.classList.add(
                 "visible"
             );
-
-        },
-        40
+        }
     );
-
 
     setTimeout(
         function () {
@@ -2843,7 +1823,6 @@ function triggerPerfectPauseSecret() {
         },
         3800
     );
-
 
     setTimeout(
         function () {
@@ -2863,91 +1842,62 @@ function triggerPerfectPauseSecret() {
 const messages = [
 
     {
-        name:
-            "Neerav",
-
-        text:
-            "Hailoooo"
+        name: "Neerav",
+        text: "Hailoooo"
     },
 
     {
-        name:
-            "Avigna",
-
-        text:
-            "helloo"
+        name: "Avigna",
+        text: "helloo"
     },
 
     {
-        name:
-            "Neerav",
-
+        name: "Neerav",
         text:
             "Well there wasn't really any secret, it was a scam...500$ gone..."
     },
 
     {
-        name:
-            "Avigna",
-
-        text:
-            "fck u"
+        name: "Avigna",
+        text: "fck u"
     },
 
     {
-        name:
-            "Neerav",
-
+        name: "Neerav",
         text:
             "areeeee using such language on ur bday, so uncivilised"
     },
 
     {
-        name:
-            "Avigna",
-
-        text:
-            "......"
+        name: "Avigna",
+        text: "......"
     },
 
     {
-        name:
-            "Neerav",
-
+        name: "Neerav",
         text:
             "acha acha, happy birthday, eat some aloo, be better"
     },
 
     {
-        name:
-            "Avigna",
-
-        text:
-            "Thanksss"
+        name: "Avigna",
+        text: "Thanksss"
     },
 
     {
-        name:
-            "Neerav",
-
+        name: "Neerav",
         text:
             "btw there is a secret...but u will not get it, it is something u need to guess"
     },
 
     {
-        name:
-            "Avigna",
-
-        text:
-            "ki baje....bol naaaa"
+        name: "Avigna",
+        text: "ki baje....bol naaaa"
     },
 
     {
-        name:
-            "Neerav",
-
-        text:
-            "😜😜😜😜 nahii"
+        name: "Neerav",
+        text: "😜😜😜😜 nahii"
     }
 
 ];
@@ -2961,7 +1911,6 @@ if (nextMsg) {
 
             playClick();
 
-
             if (!boughtConvo) {
 
                 showAvignaToast(
@@ -2971,7 +1920,6 @@ if (nextMsg) {
                 return;
             }
 
-
             if (
                 msgIndex >=
                 messages.length
@@ -2979,40 +1927,34 @@ if (nextMsg) {
                 return;
             }
 
-
             if (!chat) {
                 return;
             }
-
 
             const message =
                 messages[
                     msgIndex
                 ];
 
-
             const p =
                 document.createElement(
                     "p"
                 );
 
-
             p.className =
                 "messages";
 
-
             p.innerHTML =
                 `<strong>${message.name}:</strong> ${message.text}`;
-
 
             chat.appendChild(
                 p
             );
 
-
             msgIndex++;
         }
     );
+
 }
 
 
@@ -3033,21 +1975,17 @@ foodButtons.forEach(
                     return;
                 }
 
-
                 playClick();
-
 
                 const price =
                     Number(
                         button.dataset.price
                     );
 
-
                 const saturation =
                     Number(
                         button.dataset.saturation
                     );
-
 
                 if (
                     money <
@@ -3061,64 +1999,48 @@ foodButtons.forEach(
                     return;
                 }
 
-
                 const survivedMaximumHunger =
                     hungerReachedMaximum;
-
 
                 reduceMoney(
                     price
                 );
 
-
                 foodBought++;
-
 
                 hungerPercent -=
                     saturation;
 
-
                 if (
-                    hungerPercent <
-                    0
+                    hungerPercent < 0
                 ) {
-
-                    hungerPercent =
-                        0;
+                    hungerPercent = 0;
                 }
-
 
                 refreshHungerDisplay();
 
                 updatePageFilter();
 
-
                 if (
                     survivedMaximumHunger
                 ) {
-
                     triggerHungerSurvivalSecret();
                 }
-
 
                 if (
                     foodBought > 45 &&
                     !warningGiven
                 ) {
 
-                    warningGiven =
-                        true;
-
+                    warningGiven = true;
 
                     alert(
                         "Birthday.EXE warning: stomach capacity reaching concerning levels."
                     );
                 }
 
-
                 if (
-                    foodBought >=
-                    25
+                    foodBought >= 25
                 ) {
 
                     activateFoodieEnding();
@@ -3143,33 +2065,26 @@ function activateFoodieEnding() {
         return;
     }
 
-
     foodieEndingTriggered =
         true;
-
 
     clearInterval(
         hungerInterval
     );
 
-
     if (blackOut) {
-
         blackOut.classList.add(
             "black-out"
         );
     }
-
 
     const ending =
         document.createElement(
             "div"
         );
 
-
     ending.className =
         "foodie-ending-text";
-
 
     ending.innerHTML = `
 
@@ -3177,13 +2092,11 @@ function activateFoodieEnding() {
             🎂 BIRTHDAY FOOD EMERGENCY 🎂
         </div>
 
-
         <p>
             BIRTHDAY.EXE has detected
             an absolutely unreasonable
             amount of food consumption.
         </p>
-
 
         <p>
             Pizza? Gone.
@@ -3193,11 +2106,9 @@ function activateFoodieEnding() {
             Momos? Absolutely demolished.
         </p>
 
-
         <p>
             Aur phir bhi ruk nahi rahi thi sali. 💀
         </p>
-
 
         <p>
             Itna khaya sala restaurant
@@ -3205,12 +2116,10 @@ function activateFoodieEnding() {
             koi sharam hai.
         </p>
 
-
         <p>
             The birthday buffet has officially
             entered emergency mode.
         </p>
-
 
         <p>
             <strong>
@@ -3220,7 +2129,6 @@ function activateFoodieEnding() {
             </strong>
         </p>
 
-
         <p>
             Next birthday,
             maybe eat slightly less.
@@ -3228,11 +2136,9 @@ function activateFoodieEnding() {
 
     `;
 
-
     document.body.appendChild(
         ending
     );
-
 
     createRestartButton();
 }
@@ -3252,30 +2158,23 @@ function createRestartButton() {
         return;
     }
 
-
     const button =
         document.createElement(
             "button"
         );
 
-
     button.className =
         "restart-button";
-
 
     button.textContent =
         "Restart Birthday.EXE";
 
-
     button.addEventListener(
         "click",
         function () {
-
             location.reload();
-
         }
     );
-
 
     document.body.appendChild(
         button
@@ -3287,235 +2186,178 @@ function createRestartButton() {
    SHOP
 ========================================================================== */
 
-shopButtons.forEach(
-    function (button) {
+shopButtons.forEach(function (button) {
 
-        button.addEventListener(
-            "click",
-            function () {
+    button.addEventListener("click", function () {
 
-                playClick();
+        playClick();
 
+        const price =
+            Number(button.dataset.price);
 
-                const price =
-                    Number(
-                        button.dataset.price
-                    );
+        const unlock =
+            button.dataset.unlock;
 
 
-                const unlock =
-                    button.dataset.unlock;
+        /* Already bought */
+        if (
+            (unlock === "conversation" && boughtConvo) ||
+            (unlock === "message" && boughtMsg) ||
+            (unlock === "blur" && boughtBlur)
+        ) {
+            return;
+        }
 
 
-                if (
-                    (
-                        unlock ===
-                        "conversation" &&
-                        boughtConvo
-                    ) ||
-                    (
-                        unlock ===
-                        "message" &&
-                        boughtMsg
-                    ) ||
-                    (
-                        unlock ===
-                        "blur" &&
-                        boughtBlur
-                    )
-                ) {
+        /* Not enough money */
+        if (money < price) {
 
-                    return;
-                }
+            showAvignaToast(
+                "💸 BIRTHDAY.EXE // INSUFFICIENT FUNDS"
+            );
+
+            return;
+        }
 
 
-                if (
-                    money <
-                    price
-                ) {
-
-                    showAvignaToast(
-                        "💸 BIRTHDAY.EXE // INSUFFICIENT FUNDS"
-                    );
-
-                    return;
-                }
+        /* Pay */
+        reduceMoney(price);
 
 
-                reduceMoney(
-                    price
+        /* Conversation */
+        if (unlock === "conversation") {
+
+            boughtConvo = true;
+
+            const lockedChat =
+                document.getElementById(
+                    "locked-chat"
                 );
 
-
-                if (
-                    unlock ===
-                    "conversation"
-                ) {
-
-                    boughtConvo =
-                        true;
-
-
-                    const lockedChat =
-                        document.getElementById(
-                            "locked-chat"
-                        );
-
-
-                    if (lockedChat) {
-
-                        lockedChat.textContent =
-                            "🔓";
-                    }
-
-
-                    showAvignaToast(
-                        "🎂 BIRTHDAY CHAT UNLOCKED"
-                    );
-                }
-
-
-                if (
-                    unlock ===
-                    "message"
-                ) {
-
-                    boughtMsg =
-                        true;
-
-
-                    const message =
-                        document.getElementById(
-                            "message"
-                        );
-
-
-                    const lockedMessage =
-                        document.getElementById(
-                            "locked-message"
-                        );
-
-
-                    if (message) {
-
-                        message.classList.add(
-                            "message-animation"
-                        );
-
-
-                        message.style.opacity =
-                            "1";
-                    }
-
-
-                    if (lockedMessage) {
-
-                        lockedMessage.textContent =
-                            "🔓";
-                    }
-
-
-                    showAvignaToast(
-                        "💌 BIRTHDAY MESSAGE UNLOCKED"
-                    );
-                }
-
-
-                if (
-                    unlock ===
-                    "blur"
-                ) {
-
-                    doBlur =
-                        false;
-
-
-                    boughtBlur =
-                        true;
-
-
-                    clearInterval(
-                        hungerInterval
-                    );
-
-
-                    updatePageFilter();
-
-
-                    showAvignaToast(
-                        "✨ BIRTHDAY DEFECT REMOVED"
-                    );
-                }
-
-
-                button.textContent =
-                    "Bought";
-
-
-                button.style.background =
-                    "black";
-
-
-                const option =
-                    button.closest(
-                        ".shop-option"
-                    );
-
-
-                if (option) {
-
-                    option.classList.add(
-                        "secret-border"
-                    );
-
-
-                    if (
-                        !option.querySelector(
-                            ".secret-installation"
-                        )
-                    ) {
-
-                        const install =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        install.className =
-                            "secret-installation";
-
-
-                        install.textContent =
-                            "✓ BIRTHDAY.EXE INSTALLED";
-
-
-                        option.appendChild(
-                            install
-                        );
-
-
-                        requestAnimationFrame(
-                            function () {
-
-                                install.classList.add(
-                                    "visible"
-                                );
-
-                            }
-                        );
-                    }
-                }
-
-
-                refreshMoneyDisplay();
-
-                checkGiftUnlock();
-
+            if (lockedChat) {
+                lockedChat.textContent = "🔓";
             }
-        );
 
-    }
-);
+            showAvignaToast(
+                "🎂 BIRTHDAY CHAT UNLOCKED"
+            );
+        }
+
+
+        /* Message */
+        if (unlock === "message") {
+
+            boughtMsg = true;
+
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+            const lockedMessage =
+                document.getElementById(
+                    "locked-message"
+                );
+
+            if (message) {
+
+                message.classList.add(
+                    "message-animation"
+                );
+
+                message.style.opacity = "1";
+            }
+
+            if (lockedMessage) {
+                lockedMessage.textContent = "🔓";
+            }
+
+            showAvignaToast(
+                "💌 BIRTHDAY MESSAGE UNLOCKED"
+            );
+        }
+
+
+        /* Remove blur */
+        if (unlock === "blur") {
+
+            doBlur = false;
+
+            boughtBlur = true;
+
+            clearInterval(
+                hungerInterval
+            );
+
+            updatePageFilter();
+
+            showAvignaToast(
+                "✨ BIRTHDAY DEFECT REMOVED"
+            );
+        }
+
+
+        /* Button state */
+        button.textContent =
+            "Bought";
+
+        button.style.background =
+            "black";
+
+
+        /* Installation animation */
+        const option =
+            button.closest(
+                ".shop-option"
+            );
+
+        if (option) {
+
+            option.classList.add(
+                "secret-border"
+            );
+
+            if (
+                !option.querySelector(
+                    ".secret-installation"
+                )
+            ) {
+
+                const install =
+                    document.createElement(
+                        "div"
+                    );
+
+                install.className =
+                    "secret-installation";
+
+                install.textContent =
+                    "✓ BIRTHDAY.EXE INSTALLED";
+
+                option.appendChild(
+                    install
+                );
+
+                requestAnimationFrame(
+                    function () {
+
+                        install.classList.add(
+                            "visible"
+                        );
+
+                    }
+                );
+            }
+        }
+
+
+        refreshMoneyDisplay();
+
+        checkGiftUnlock();
+
+    });
+
+});
 
 
 function checkGiftUnlock() {
@@ -3531,31 +2373,25 @@ function checkGiftUnlock() {
                 "gift-locked-notice"
             );
 
-
         const giftSection =
             document.getElementById(
                 "gift-section"
             );
 
-
         if (lockedNotice) {
-
             lockedNotice.style.display =
                 "none";
         }
-
 
         if (giftSection) {
 
             giftSection.style.display =
                 "block";
 
-
             pageGlow(
                 giftSection,
                 1200
             );
-
 
             showAvignaToast(
                 "🎁 BIRTHDAY GIFT UNLOCKED"
@@ -3576,11 +2412,9 @@ function checkGiftUnlock() {
             "gift-locked-notice"
         );
 
-
     if (!lockedNotice) {
         return;
     }
-
 
     const taunts = [
 
@@ -3595,11 +2429,10 @@ function checkGiftUnlock() {
         "🔒 clicking harder won't help.",
 
         "🔒 you know what to do."
+
     ];
 
-
     let index = 0;
-
 
     lockedNotice.addEventListener(
         "click",
@@ -3613,22 +2446,17 @@ function checkGiftUnlock() {
                 return;
             }
 
-
             playClick();
-
 
             lockedNotice.classList.remove(
                 "gift-taunt-shake"
             );
 
-
             void lockedNotice.offsetWidth;
-
 
             lockedNotice.classList.add(
                 "gift-taunt-shake"
             );
-
 
             showAvignaToast(
                 taunts[
@@ -3636,7 +2464,6 @@ function checkGiftUnlock() {
                     taunts.length
                 ]
             );
-
 
             index++;
         }
@@ -3665,24 +2492,18 @@ if (initialGiftButton) {
                 return;
             }
 
-
             pageContent.classList.add(
                 "gift-layout"
             );
 
-
             pageContent.style.filter =
                 "none";
 
-
             pageContent.innerHTML = `
 
-                <h2
-                    class="section-header white appear"
-                >
+                <h2 class="section-header white appear">
                     🎂 Gift Unlocked 🎂
                 </h2>
-
 
                 <img
                     src="image/Screenshot 2026-08-19 181429.png"
@@ -3690,14 +2511,10 @@ if (initialGiftButton) {
                     class="appear"
                 >
 
-
-                <p
-                    class="white appear"
-                >
+                <p class="white appear">
                     The audacity for u to ask more
                     after all this btw... sighhh
                 </p>
-
 
                 <button
                     class="gift-button appear"
@@ -3708,26 +2525,20 @@ if (initialGiftButton) {
 
             `;
 
-
             playClick();
-
 
             flashPage(
                 "rgba(255,216,107,.16)",
                 850
             );
 
-
             showAvignaToast(
                 "🎁 BIRTHDAY.EXE // FINAL GIFT"
             );
 
-
             if (backgroundAudio) {
-
                 backgroundAudio.pause();
             }
-
 
             if (bdayAudio) {
 
@@ -3742,18 +2553,11 @@ if (initialGiftButton) {
                 );
             }
 
-
             window.scrollTo({
-                top:
-                    0,
-
-                left:
-                    0,
-
-                behavior:
-                    "instant"
+                top: 0,
+                left: 0,
+                behavior: "instant"
             });
-
 
             setupFinalConfetti();
 
@@ -3775,11 +2579,9 @@ function setupFinalConfetti() {
             "final-confetti-button"
         );
 
-
     if (!button) {
         return;
     }
-
 
     button.addEventListener(
         "click",
@@ -3787,46 +2589,35 @@ function setupFinalConfetti() {
 
             if (
                 confettiStarted ||
-                typeof confetti !==
-                    "function"
+                typeof confetti !== "function"
             ) {
                 return;
             }
 
-
-            confettiStarted =
-                true;
-
+            confettiStarted = true;
 
             showAvignaToast(
                 "🎉 BIRTHDAY.EXE // PARTY MODE"
             );
-
 
             const canvas =
                 document.createElement(
                     "canvas"
                 );
 
-
             canvas.className =
                 "gift-confetti-canvas";
-
 
             document.body.appendChild(
                 canvas
             );
 
-
             const giftConfetti =
                 confetti.create(
                     canvas,
                     {
-                        resize:
-                            true,
-
-                        useWorker:
-                            true
+                        resize: true,
+                        useWorker: true
                     }
                 );
 
@@ -3835,64 +2626,46 @@ function setupFinalConfetti() {
 
                 giftConfetti({
 
-                    particleCount:
-                        18,
+                    particleCount: 18,
 
-                    angle:
-                        60,
+                    angle: 60,
 
-                    spread:
-                        50,
+                    spread: 50,
 
-                    startVelocity:
-                        80,
+                    startVelocity: 80,
 
-                    gravity:
-                        .8,
+                    gravity: 0.8,
 
-                    ticks:
-                        250,
+                    ticks: 250,
 
                     origin: {
-                        x:
-                            0,
-
-                        y:
-                            1
+                        x: 0,
+                        y: 1
                     }
 
                 });
-
 
                 giftConfetti({
 
-                    particleCount:
-                        18,
+                    particleCount: 18,
 
-                    angle:
-                        120,
+                    angle: 120,
 
-                    spread:
-                        50,
+                    spread: 50,
 
-                    startVelocity:
-                        80,
+                    startVelocity: 80,
 
-                    gravity:
-                        .8,
+                    gravity: 0.8,
 
-                    ticks:
-                        250,
+                    ticks: 250,
 
                     origin: {
-                        x:
-                            1,
-
-                        y:
-                            1
+                        x: 1,
+                        y: 1
                     }
 
                 });
+
             }
 
 
@@ -3910,7 +2683,7 @@ function setupFinalConfetti() {
 
 
 /* ==========================================================================
-   HOBBY EASTER EGG HELPER
+   HOBBY SYSTEM
 ========================================================================== */
 
 function setupHobbyEasterEgg(
@@ -3924,14 +2697,11 @@ function setupHobbyEasterEgg(
             selector
         );
 
-
     if (!card) {
         return;
     }
 
-
     let clicks = 0;
-
 
     card.addEventListener(
         "click",
@@ -3941,12 +2711,9 @@ function setupHobbyEasterEgg(
                 return;
             }
 
-
             clicks++;
 
-
             playClick();
-
 
             if (
                 clicks <
@@ -3955,20 +2722,17 @@ function setupHobbyEasterEgg(
                 return;
             }
 
-
             clicks = 0;
 
+            callback(card);
 
-            callback(
-                card
-            );
         }
     );
 }
 
 
 /* ==========================================================================
-   DANCE — ×10
+   DANCE
 ========================================================================== */
 
 setupHobbyEasterEgg(
@@ -3979,7 +2743,6 @@ setupHobbyEasterEgg(
         card.classList.add(
             "dance-mode"
         );
-
 
         if (
             !card.querySelector(
@@ -3992,49 +2755,39 @@ setupHobbyEasterEgg(
                     "p"
                 );
 
-
             label.className =
                 "hobby-unlock-text dance-label";
 
-
             label.textContent =
                 "BIRTHDAY PARTY MODE 💃";
-
 
             card.appendChild(
                 label
             );
         }
 
-
         showSecretToast(
             "BIRTHDAY PARTY MODE"
         );
-
 
         pageGlow(
             card,
             1500
         );
 
-
         if (backgroundAudio) {
-
             backgroundAudio.pause();
         }
-
 
         if (danceAudio) {
 
             danceAudio.currentTime =
                 0;
 
-
             danceAudio.play().catch(
                 function () {}
             );
         }
-
 
         if (
             typeof confetti ===
@@ -4054,15 +2807,14 @@ setupHobbyEasterEgg(
 
                 origin: {
                     x:
-                        .5,
+                        0.5,
 
                     y:
-                        .65
+                        0.65
                 }
 
             });
         }
-
 
         setTimeout(
             function () {
@@ -4080,7 +2832,7 @@ setupHobbyEasterEgg(
 
 
 /* ==========================================================================
-   MOVIES / CINEMA — ×10
+   MOVIES / CINEMA
 ========================================================================== */
 
 setupHobbyEasterEgg(
@@ -4096,66 +2848,48 @@ setupHobbyEasterEgg(
 );
 
 
-function startCinemaMode(
-    card
-) {
+function startCinemaMode(card) {
 
     if (cinemaModeOn) {
         return;
     }
 
-
-    cinemaModeOn =
-        true;
-
-
-    movieModeOn =
-        true;
-
+    cinemaModeOn = true;
+    movieModeOn = true;
 
     showSecretToast(
         "AVIGNA'S BIRTHDAY PREMIERE"
     );
-
 
     pageGlow(
         card,
         1000
     );
 
-
     const overlay =
         document.createElement(
             "div"
         );
 
-
     overlay.className =
         "movie-overlay";
 
-
     overlay.innerHTML = `
-
         <span class="movie-countdown">
             3
         </span>
-
     `;
-
 
     document.body.appendChild(
         overlay
     );
-
 
     const number =
         overlay.querySelector(
             ".movie-countdown"
         );
 
-
     let count = 3;
-
 
     const timer =
         setInterval(
@@ -4163,20 +2897,14 @@ function startCinemaMode(
 
                 count--;
 
-
-                if (
-                    count > 0
-                ) {
+                if (count > 0) {
 
                     number.textContent =
                         count;
 
                 }
 
-                else if (
-                    count ===
-                    0
-                ) {
+                else if (count === 0) {
 
                     number.textContent =
                         "AVIGNA'S BIRTHDAY PREMIERE 🎬";
@@ -4189,12 +2917,9 @@ function startCinemaMode(
                         timer
                     );
 
-
                     overlay.remove();
 
-
                     updatePageFilter();
-
 
                     activateCinemaBars();
 
@@ -4213,30 +2938,24 @@ function activateCinemaBars() {
             "div"
         );
 
-
     const bottom =
         document.createElement(
             "div"
         );
 
-
     top.className =
         "cinema-bars-secret top";
 
-
     bottom.className =
         "cinema-bars-secret bottom";
-
 
     document.body.appendChild(
         top
     );
 
-
     document.body.appendChild(
         bottom
     );
-
 
     if (pageContent) {
 
@@ -4245,7 +2964,6 @@ function activateCinemaBars() {
         );
     }
 
-
     requestAnimationFrame(
         function () {
 
@@ -4253,14 +2971,12 @@ function activateCinemaBars() {
                 "visible"
             );
 
-
             bottom.classList.add(
                 "visible"
             );
 
         }
     );
-
 
     createCinemaExitButton();
 }
@@ -4272,20 +2988,16 @@ function createCinemaExitButton() {
         return;
     }
 
-
     cinemaExitButton =
         document.createElement(
             "button"
         );
 
-
     cinemaExitButton.className =
         "cinema-exit-button";
 
-
     cinemaExitButton.textContent =
         "EXIT CINEMA MODE";
-
 
     cinemaExitButton.addEventListener(
         "click",
@@ -4297,7 +3009,6 @@ function createCinemaExitButton() {
 
         }
     );
-
 
     document.body.appendChild(
         cinemaExitButton
@@ -4311,14 +3022,11 @@ function exitCinemaMode() {
         return;
     }
 
-
     cinemaModeOn =
         false;
 
-
     movieModeOn =
         false;
-
 
     document
         .querySelectorAll(
@@ -4331,12 +3039,9 @@ function exitCinemaMode() {
                     "visible"
                 );
 
-
                 setTimeout(
                     function () {
-
                         bar.remove();
-
                     },
                     600
                 );
@@ -4344,27 +3049,21 @@ function exitCinemaMode() {
             }
         );
 
-
     if (pageContent) {
-
         pageContent.classList.remove(
             "secret-letterbox"
         );
     }
 
-
     if (cinemaExitButton) {
 
         cinemaExitButton.remove();
-
 
         cinemaExitButton =
             null;
     }
 
-
     updatePageFilter();
-
 
     showAvignaToast(
         "🎬 BIRTHDAY PREMIERE ENDED"
@@ -4377,11 +3076,9 @@ document.addEventListener(
     function (event) {
 
         if (
-            event.key ===
-                "Escape" &&
+            event.key === "Escape" &&
             cinemaModeOn
         ) {
-
             exitCinemaMode();
         }
 
@@ -4390,7 +3087,7 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   BOOKS — ×10
+   BOOKS / BIRTHDAY DIARY
 ========================================================================== */
 
 setupHobbyEasterEgg(
@@ -4401,7 +3098,6 @@ setupHobbyEasterEgg(
         card.classList.add(
             "book-mode"
         );
-
 
         if (
             !card.querySelector(
@@ -4414,26 +3110,21 @@ setupHobbyEasterEgg(
                     "p"
                 );
 
-
             label.className =
                 "hobby-unlock-text books-label";
 
-
             label.textContent =
                 "BIRTHDAY DIARY ENTRY UNLOCKED 📖";
-
 
             card.appendChild(
                 label
             );
         }
 
-
         spotlightElement(
             card,
             1800
         );
-
 
         showBirthdayPoem();
 
@@ -4448,28 +3139,22 @@ function showBirthdayPoem() {
             ".poem-overlay"
         )
     ) {
-
         return;
     }
 
-
     if (pageContent) {
-
         pageContent.classList.add(
             "page-fade-out"
         );
     }
-
 
     const poemOverlay =
         document.createElement(
             "div"
         );
 
-
     poemOverlay.className =
         "poem-overlay";
-
 
     poemOverlay.innerHTML = `
 
@@ -4483,6 +3168,7 @@ function showBirthdayPoem() {
 
             <p>
                 Today,
+
                 <br><br>
 
                 In the dead of night,
@@ -4549,35 +3235,28 @@ function showBirthdayPoem() {
 
         </div>
 
-
         <button class="button poem-return-button">
             ← Return to Birthday.EXE
         </button>
 
     `;
 
-
     document.body.appendChild(
         poemOverlay
     );
 
-
     requestAnimationFrame(
         function () {
-
             poemOverlay.classList.add(
                 "visible"
             );
-
         }
     );
-
 
     const returnButton =
         poemOverlay.querySelector(
             ".poem-return-button"
         );
-
 
     returnButton.addEventListener(
         "click",
@@ -4585,17 +3264,14 @@ function showBirthdayPoem() {
 
             playClick();
 
-
             poemOverlay.classList.remove(
                 "visible"
             );
-
 
             setTimeout(
                 function () {
 
                     poemOverlay.remove();
-
 
                     if (pageContent) {
 
@@ -4607,14 +3283,13 @@ function showBirthdayPoem() {
                 },
                 900
             );
-
         }
     );
 }
 
 
 /* ==========================================================================
-   TYPING SECRET — EMOJI RAIN
+   TYPING SECRET HELPERS
 ========================================================================== */
 
 function spawnEmojiRain(
@@ -4623,21 +3298,15 @@ function spawnEmojiRain(
     duration
 ) {
 
-    for (
-        let i = 0;
-        i < count;
-        i++
-    ) {
+    for (let i = 0; i < count; i++) {
 
         const drop =
             document.createElement(
                 "div"
             );
 
-
         drop.className =
             "rain-emoji";
-
 
         drop.textContent =
             emojiList[
@@ -4647,12 +3316,10 @@ function spawnEmojiRain(
                 )
             ];
 
-
         drop.style.left =
             Math.random() *
             100 +
             "vw";
-
 
         drop.style.animationDuration =
             duration +
@@ -4660,28 +3327,23 @@ function spawnEmojiRain(
             2 +
             "s";
 
-
         drop.style.fontSize =
             1.4 +
             Math.random() *
             1.8 +
             "rem";
 
-
         document.body.appendChild(
             drop
         );
-
 
         setTimeout(
             function () {
                 drop.remove();
             },
-            (
-                duration +
-                3
-            ) * 1000
+            (duration + 3) * 1000
         );
+
     }
 }
 
@@ -4696,13 +3358,11 @@ function activateAvignaTypingSecret() {
         "AVIGNA // BIRTHDAY GIRL IDENTIFIED"
     );
 
-
     if (pageContent) {
 
         pageContent.classList.add(
             "secret-chromatic"
         );
-
 
         setTimeout(
             function () {
@@ -4716,28 +3376,23 @@ function activateAvignaTypingSecret() {
         );
     }
 
-
     const heroName =
         document.querySelector(
             ".hero-title span:nth-child(3)"
         );
-
 
     if (heroName) {
 
         const original =
             heroName.textContent;
 
-
         heroName.textContent =
             "BIRTHDAY GIRL";
-
 
         pageGlow(
             heroName,
             1300
         );
-
 
         setTimeout(
             function () {
@@ -4750,20 +3405,15 @@ function activateAvignaTypingSecret() {
         );
     }
 
-
     starBurst(
-
         innerWidth / 2,
-
         innerHeight / 3,
-
         [
             "🎂",
             "💗",
             "🎈",
             "✨"
         ]
-
     );
 }
 
@@ -4778,27 +3428,22 @@ function activateSecretTypingSecret() {
         "CLASSIFIED: AVIGNA'S BIRTHDAY FILE"
     );
 
-
     flashPage(
         "rgba(181,140,255,.18)",
         800
     );
 
-
     createScanline(
         "#ff8cd9"
     );
-
 
     const file =
         document.createElement(
             "div"
         );
 
-
     file.className =
         "birthday-classified-secret";
-
 
     file.innerHTML = `
 
@@ -4820,41 +3465,30 @@ function activateSecretTypingSecret() {
 
     `;
 
-
     document.body.appendChild(
         file
     );
 
-
-    setTimeout(
+    requestAnimationFrame(
         function () {
-
             file.classList.add(
                 "visible"
             );
-
-        },
-        40
+        }
     );
-
 
     setTimeout(
         function () {
-
             file.classList.remove(
                 "visible"
             );
-
         },
         3500
     );
 
-
     setTimeout(
         function () {
-
             file.remove();
-
         },
         4200
     );
@@ -4870,7 +3504,6 @@ function activateCakeSecret() {
     showSecretToast(
         "BIRTHDAY CAKE PARADE"
     );
-
 
     spawnEmojiRain(
         [
@@ -4899,84 +3532,57 @@ function spawnMatrixRain() {
         return;
     }
 
-
     showSecretToast(
         "BIRTHDAY MATRIX // MEMORY OVERFLOW"
     );
-
 
     const canvas =
         document.createElement(
             "canvas"
         );
 
-
     canvas.className =
         "matrix-rain-canvas";
-
 
     Object.assign(
         canvas.style,
         {
-            position:
-                "fixed",
-
-            inset:
-                "0",
-
-            width:
-                "100vw",
-
-            height:
-                "100vh",
-
-            zIndex:
-                "29960",
-
-            pointerEvents:
-                "none",
-
-            opacity:
-                "0",
-
-            transition:
-                "opacity .5s ease"
+            position: "fixed",
+            inset: "0",
+            width: "100vw",
+            height: "100vh",
+            zIndex: "29960",
+            pointerEvents: "none",
+            opacity: "0",
+            transition: "opacity .5s ease"
         }
     );
-
 
     document.body.appendChild(
         canvas
     );
-
 
     const ctx =
         canvas.getContext(
             "2d"
         );
 
-
     function sizeCanvas() {
 
         canvas.width =
             window.innerWidth;
 
-
         canvas.height =
             window.innerHeight;
     }
 
-
     sizeCanvas();
-
 
     const chars =
         "29AUGUSTAVIGNA🎂🎈🎉✨0123456789BIRTHDAY";
 
-
     const fontSize =
         18;
-
 
     const columns =
         Math.ceil(
@@ -4984,12 +3590,10 @@ function spawnMatrixRain() {
             fontSize
         );
 
-
     const drops =
         new Array(
             columns
         ).fill(1);
-
 
     requestAnimationFrame(
         function () {
@@ -5000,9 +3604,7 @@ function spawnMatrixRain() {
         }
     );
 
-
     let frames = 0;
-
 
     const matrixTimer =
         setInterval(
@@ -5011,7 +3613,6 @@ function spawnMatrixRain() {
                 ctx.fillStyle =
                     "rgba(2,6,8,.18)";
 
-
                 ctx.fillRect(
                     0,
                     0,
@@ -5019,15 +3620,12 @@ function spawnMatrixRain() {
                     canvas.height
                 );
 
-
                 ctx.fillStyle =
                     "#4fffb0";
-
 
                 ctx.font =
                     fontSize +
                     "px monospace";
-
 
                 for (
                     let i = 0;
@@ -5043,37 +3641,26 @@ function spawnMatrixRain() {
                             )
                         ];
 
-
                     ctx.fillText(
                         glyph,
-
-                        i *
-                        fontSize,
-
-                        drops[i] *
-                        fontSize
+                        i * fontSize,
+                        drops[i] * fontSize
                     );
 
-
                     if (
-                        drops[i] *
-                            fontSize >
+                        drops[i] * fontSize >
                             canvas.height &&
                         Math.random() >
-                            .975
+                            0.975
                     ) {
 
-                        drops[i] =
-                            0;
+                        drops[i] = 0;
                     }
-
 
                     drops[i]++;
                 }
 
-
                 frames++;
-
 
                 if (
                     frames >=
@@ -5084,16 +3671,12 @@ function spawnMatrixRain() {
                         matrixTimer
                     );
 
-
                     canvas.style.opacity =
                         "0";
 
-
                     setTimeout(
                         function () {
-
                             canvas.remove();
-
                         },
                         700
                     );
@@ -5115,74 +3698,47 @@ function activateDiscoMode() {
         return;
     }
 
-
     discoModeOn =
         true;
-
 
     showSecretToast(
         "BIRTHDAY PARTY MODE"
     );
-
 
     const overlay =
         document.createElement(
             "div"
         );
 
-
     overlay.className =
         "disco-overlay";
-
 
     Object.assign(
         overlay.style,
         {
-            position:
-                "fixed",
-
-            inset:
-                "0",
-
-            zIndex:
-                "29955",
-
-            pointerEvents:
-                "none",
-
-            mixBlendMode:
-                "overlay",
-
-            opacity:
-                ".55"
+            position: "fixed",
+            inset: "0",
+            zIndex: "29955",
+            pointerEvents: "none",
+            mixBlendMode: "overlay",
+            opacity: ".55"
         }
     );
-
 
     document.body.appendChild(
         overlay
     );
 
-
     const colors = [
-
         "#ff3d9a",
-
         "#ffd93d",
-
         "#3dfff0",
-
         "#7b3dff",
-
         "#3dff6a",
-
         "#ff3d3d"
-
     ];
 
-
     let index = 0;
-
 
     const discoTimer =
         setInterval(
@@ -5194,13 +3750,11 @@ function activateDiscoMode() {
                         colors.length
                     ];
 
-
                 index++;
 
             },
             160
         );
-
 
     setTimeout(
         function () {
@@ -5209,9 +3763,7 @@ function activateDiscoMode() {
                 discoTimer
             );
 
-
             overlay.remove();
-
 
             discoModeOn =
                 false;
@@ -5232,19 +3784,14 @@ function activateRainbowMode() {
         return;
     }
 
-
     rainbowModeOn =
         true;
-
 
     showSecretToast(
         "BIRTHDAY RAINBOW MODE"
     );
 
-
-    let hue =
-        0;
-
+    let hue = 0;
 
     rainbowInterval =
         setInterval(
@@ -5254,26 +3801,22 @@ function activateRainbowMode() {
                     (
                         hue +
                         6
-                    ) % 360;
-
+                    ) %
+                    360;
 
                 if (pageContent) {
 
                     pageContent.style.setProperty(
                         "--rainbow-hue",
-
-                        hue +
-                        "deg"
+                        hue + "deg"
                     );
                 }
-
 
                 updatePageFilter();
 
             },
             40
         );
-
 
     setTimeout(
         function () {
@@ -5282,10 +3825,8 @@ function activateRainbowMode() {
                 rainbowInterval
             );
 
-
             rainbowModeOn =
                 false;
-
 
             if (pageContent) {
 
@@ -5293,7 +3834,6 @@ function activateRainbowMode() {
                     "--rainbow-hue"
                 );
             }
-
 
             updatePageFilter();
 
@@ -5313,19 +3853,15 @@ function activatePageFlip() {
         return;
     }
 
-
     showSecretToast(
         "BIRTHDAY HAS BEEN TURNED UPSIDE DOWN"
     );
 
-
     pageContent.style.transition =
         "transform 1s ease-in-out";
 
-
     pageContent.style.transform =
         "rotate(180deg)";
-
 
     setTimeout(
         function () {
@@ -5350,35 +3886,28 @@ function toggleDebugHud() {
             ".debug-hud"
         );
 
-
     if (existing) {
 
         clearInterval(
             debugHudInterval
         );
 
-
         existing.remove();
-
 
         return;
     }
 
-
     showSecretToast(
         "BIRTHDAY DIAGNOSTICS ONLINE"
     );
-
 
     const hud =
         document.createElement(
             "div"
         );
 
-
     hud.className =
         "debug-hud";
-
 
     function renderHud() {
 
@@ -5424,19 +3953,15 @@ function toggleDebugHud() {
                     ? "REMOVED"
                     : "ACTIVE"
             );
-
     }
 
-
     renderHud();
-
 
     debugHudInterval =
         setInterval(
             renderHud,
             1000
         );
-
 
     hud.addEventListener(
         "click",
@@ -5446,12 +3971,10 @@ function toggleDebugHud() {
                 debugHudInterval
             );
 
-
             hud.remove();
 
         }
     );
-
 
     document.body.appendChild(
         hud
@@ -5468,7 +3991,6 @@ function activateBananaSecret() {
     showSecretToast(
         "BIRTHDAY BANANA EMERGENCY"
     );
-
 
     spawnEmojiRain(
         [
@@ -5491,7 +4013,6 @@ function activateCatSecret() {
     showSecretToast(
         "MEOWDY BIRTHDAY"
     );
-
 
     spawnEmojiRain(
         [
@@ -5516,48 +4037,31 @@ function activatePizzaSecret() {
         "BIRTHDAY PIZZA DELIVERY"
     );
 
-
     const pizza =
         document.createElement(
             "div"
         );
 
-
     pizza.textContent =
         "🍕";
-
 
     Object.assign(
         pizza.style,
         {
-            position:
-                "fixed",
-
-            top:
-                "45%",
-
-            left:
-                "-120px",
-
-            fontSize:
-                "5rem",
-
-            zIndex:
-                "30000",
-
-            pointerEvents:
-                "none",
-
+            position: "fixed",
+            top: "45%",
+            left: "-120px",
+            fontSize: "5rem",
+            zIndex: "30000",
+            pointerEvents: "none",
             transition:
                 "transform 2.4s linear, opacity 2.4s linear"
         }
     );
 
-
     document.body.appendChild(
         pizza
     );
-
 
     requestAnimationFrame(
         function () {
@@ -5568,7 +4072,6 @@ function activatePizzaSecret() {
         }
     );
 
-
     setTimeout(
         function () {
 
@@ -5578,7 +4081,6 @@ function activatePizzaSecret() {
         },
         2000
     );
-
 
     setTimeout(
         function () {
@@ -5601,16 +4103,13 @@ function activateBoomSecret() {
         "BIRTHDAY.EXE HAS EXPLODED"
     );
 
-
     const overlay =
         document.createElement(
             "div"
         );
 
-
     overlay.className =
         "screen-crack-overlay";
-
 
     overlay.innerHTML = `
 
@@ -5645,11 +4144,9 @@ function activateBoomSecret() {
 
     `;
 
-
     document.body.appendChild(
         overlay
     );
-
 
     requestAnimationFrame(
         function () {
@@ -5661,14 +4158,11 @@ function activateBoomSecret() {
         }
     );
 
-
     document.body.classList.add(
         "screen-shake"
     );
 
-
     createShockwave();
-
 
     setTimeout(
         function () {
@@ -5681,7 +4175,6 @@ function activateBoomSecret() {
         400
     );
 
-
     setTimeout(
         function () {
 
@@ -5689,12 +4182,9 @@ function activateBoomSecret() {
                 "visible"
             );
 
-
             setTimeout(
                 function () {
-
                     overlay.remove();
-
                 },
                 300
             );
@@ -5715,43 +4205,34 @@ function activateYoloSecret() {
         return;
     }
 
-
     showSecretToast(
         "ANOTHER YEAR UNLOCKED"
     );
-
 
     const year =
         document.createElement(
             "div"
         );
 
-
     year.className =
         "birthday-year-secret";
 
-
     year.textContent =
         "+1 YEAR";
-
 
     document.body.appendChild(
         year
     );
 
-
     pageContent.classList.remove(
         "zoom-pulse"
     );
 
-
     void pageContent.offsetWidth;
-
 
     pageContent.classList.add(
         "zoom-pulse"
     );
-
 
     setTimeout(
         function () {
@@ -5763,7 +4244,6 @@ function activateYoloSecret() {
         },
         1500
     );
-
 
     setTimeout(
         function () {
@@ -5782,53 +4262,40 @@ function activateYoloSecret() {
 
 function activateTrailMode() {
 
-    if (
-        activateTrailMode.active
-    ) {
+    if (activateTrailMode.active) {
         return;
     }
 
-
     activateTrailMode.active =
         true;
-
 
     showSecretToast(
         "BIRTHDAY CELEBRATION TRAIL"
     );
 
-
     const trailEmojis = [
-
         "🎂",
         "✨",
         "🎈",
         "🎉"
-
     ];
 
-
-    function trailHandler(
-        event
-    ) {
+    function trailHandler(event) {
 
         if (
             Math.random() >
-            .35
+            0.35
         ) {
             return;
         }
-
 
         const trail =
             document.createElement(
                 "div"
             );
 
-
         trail.className =
             "mouse-trail-emoji";
-
 
         trail.textContent =
             trailEmojis[
@@ -5838,38 +4305,30 @@ function activateTrailMode() {
                 )
             ];
 
-
         trail.style.left =
             event.clientX +
             "px";
-
 
         trail.style.top =
             event.clientY +
             "px";
 
-
         document.body.appendChild(
             trail
         );
 
-
         setTimeout(
             function () {
-
                 trail.remove();
-
             },
             900
         );
     }
 
-
     document.addEventListener(
         "mousemove",
         trailHandler
     );
-
 
     setTimeout(
         function () {
@@ -5878,7 +4337,6 @@ function activateTrailMode() {
                 "mousemove",
                 trailHandler
             );
-
 
             activateTrailMode.active =
                 false;
@@ -5899,19 +4357,15 @@ function activateInvertSecret() {
         "ANTI-BIRTHDAY MODE"
     );
 
-
     document.body.classList.remove(
         "invert-flash"
     );
 
-
     void document.body.offsetWidth;
-
 
     document.body.classList.add(
         "invert-flash"
     );
-
 
     setTimeout(
         function () {
@@ -5991,10 +4445,8 @@ document.addEventListener(
             return;
         }
 
-
         typedBuffer +=
             event.key.toLowerCase();
-
 
         if (
             typedBuffer.length >
@@ -6007,12 +4459,10 @@ document.addEventListener(
                 );
         }
 
-
         const words =
             Object.keys(
                 typingSecrets
             );
-
 
         for (
             let i = 0;
@@ -6022,7 +4472,6 @@ document.addEventListener(
 
             const word =
                 words[i];
-
 
             if (
                 typedBuffer.endsWith(
@@ -6034,10 +4483,8 @@ document.addEventListener(
                     word
                 ]();
 
-
                 typedBuffer =
                     "";
-
 
                 break;
             }
@@ -6047,7 +4494,7 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   KONAMI CODE
+   KONAMI
 ========================================================================== */
 
 const konamiCode = [
@@ -6078,12 +4525,10 @@ document.addEventListener(
             return;
         }
 
-
         const key =
             event.key.length === 1
                 ? event.key.toLowerCase()
                 : event.key;
-
 
         if (
             key ===
@@ -6094,7 +4539,6 @@ document.addEventListener(
 
             konamiIndex++;
 
-
             if (
                 konamiIndex ===
                 konamiCode.length
@@ -6102,7 +4546,6 @@ document.addEventListener(
 
                 konamiIndex =
                     0;
-
 
                 activateKonamiCode();
             }
@@ -6128,32 +4571,24 @@ function activateKonamiCode() {
         "BIRTHDAY CHEAT CODE ACTIVATED"
     );
 
-
     document.body.classList.add(
         "arcade-secret-active"
     );
-
 
     flashPage(
         "rgba(255,216,107,.15)",
         700
     );
 
-
     createScanline(
         "#ff8cd9"
     );
-
 
     createScanline(
         "#4fffe8"
     );
 
-
-    if (
-        typeof confetti ===
-        "function"
-    ) {
+    if (typeof confetti === "function") {
 
         confetti({
 
@@ -6167,19 +4602,18 @@ function activateKonamiCode() {
                 65,
 
             gravity:
-                .75,
+                0.75,
 
             origin: {
                 x:
-                    .5,
+                    0.5,
 
                 y:
-                    .5
+                    0.5
             }
 
         });
     }
-
 
     setTimeout(
         function () {
@@ -6226,12 +4660,10 @@ document.addEventListener(
             return;
         }
 
-
         const key =
             event.key.length === 1
                 ? event.key.toLowerCase()
                 : event.key;
-
 
         if (
             key ===
@@ -6242,7 +4674,6 @@ document.addEventListener(
 
             antiKonamiIndex++;
 
-
             if (
                 antiKonamiIndex ===
                 antiKonamiCode.length
@@ -6251,14 +4682,11 @@ document.addEventListener(
                 antiKonamiIndex =
                     0;
 
-
                 showSecretToast(
                     "ANTI-BIRTHDAY CODE DETECTED"
                 );
 
-
                 activateInvertSecret();
-
 
                 createShockwave();
             }
@@ -6279,17 +4707,13 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   LOGO — FIVE CLICKS
+   A. LOGO — FIVE CLICKS
 ========================================================================== */
 
 if (secretLogo) {
 
-    let logoClicks =
-        0;
-
-
-    let logoTimer =
-        null;
+    let logoClicks = 0;
+    let logoTimer = null;
 
 
     secretLogo.addEventListener(
@@ -6300,29 +4724,21 @@ if (secretLogo) {
                 return;
             }
 
-
             logoClicks++;
 
-
             playClick();
-
 
             clearTimeout(
                 logoTimer
             );
 
-
             logoTimer =
                 setTimeout(
                     function () {
-
-                        logoClicks =
-                            0;
-
+                        logoClicks = 0;
                     },
                     1200
                 );
-
 
             if (
                 logoClicks <
@@ -6331,18 +4747,13 @@ if (secretLogo) {
                 return;
             }
 
-
-            logoClicks =
-                0;
-
+            logoClicks = 0;
 
             showSecretToast(
                 "BIRTHDAY ADMIN ACCESS"
             );
 
-
             secretLogo.animate(
-
                 [
                     {
                         transform:
@@ -6364,42 +4775,30 @@ if (secretLogo) {
                             "rotate(0deg) scale(1)"
                     }
                 ],
-
                 {
-                    duration:
-                        600,
-
-                    easing:
-                        "ease-in-out"
+                    duration: 600,
+                    easing: "ease-in-out"
                 }
-
             );
 
-
             starBurst(
-
                 60,
-
                 40,
-
                 [
                     "👑",
                     "🎂",
                     "✨",
                     "🔐"
                 ]
-
             );
 
         }
     );
 
 
-    /* LONG PRESS */
+    /* A. LONG PRESS */
 
-    let logoPressTimer =
-        null;
-
+    let logoPressTimer = null;
 
     secretLogo.addEventListener(
         "mousedown",
@@ -6410,53 +4809,52 @@ if (secretLogo) {
                     triggerRootAccessSecret,
                     2000
                 );
+
         }
     );
-
 
     secretLogo.addEventListener(
         "mouseup",
         function () {
-
             clearTimeout(
                 logoPressTimer
             );
         }
     );
-
 
     secretLogo.addEventListener(
         "mouseleave",
         function () {
-
             clearTimeout(
                 logoPressTimer
             );
         }
     );
+
 }
 
 
 /* ==========================================================================
-   LOGO LONG PRESS — ROOT ACCESS
+   A. LONG PRESS — ROOT
 ========================================================================== */
 
 function triggerRootAccessSecret() {
 
+    if (!isUnlocked()) {
+        return;
+    }
+
     showSecretToast(
         "BIRTHDAY ADMIN ACCESS GRANTED"
     );
-
 
     const panel =
         document.createElement(
             "div"
         );
 
-
     panel.className =
         "birthday-root-secret";
-
 
     panel.innerHTML = `
 
@@ -6482,11 +4880,9 @@ function triggerRootAccessSecret() {
 
     `;
 
-
     document.body.appendChild(
         panel
     );
-
 
     requestAnimationFrame(
         function () {
@@ -6498,24 +4894,20 @@ function triggerRootAccessSecret() {
         }
     );
 
-
     flashPage(
         "rgba(79,255,232,.18)",
         800
     );
 
-
     createScanline(
         "#4fffe8"
     );
-
 
     glitchElement(
         document.querySelector(
             ".hero"
         )
     );
-
 
     setTimeout(
         function () {
@@ -6527,7 +4919,6 @@ function triggerRootAccessSecret() {
         },
         3500
     );
-
 
     setTimeout(
         function () {
@@ -6541,7 +4932,7 @@ function triggerRootAccessSecret() {
 
 
 /* ==========================================================================
-   HERO NAME — TRIPLE CLICK
+   AVIGNA TRIPLE CLICK
 ========================================================================== */
 
 (function setupHeroNameSecret() {
@@ -6551,29 +4942,19 @@ function triggerRootAccessSecret() {
             ".hero-title span:nth-child(3)"
         );
 
-
     if (!heroName) {
         return;
     }
 
-
-    let clicks =
-        0;
-
-
-    let timer =
-        null;
-
+    let clicks = 0;
+    let timer = null;
 
     heroName.addEventListener(
         "dblclick",
         function (event) {
-
             event.preventDefault();
-
         }
     );
-
 
     heroName.addEventListener(
         "click",
@@ -6581,26 +4962,19 @@ function triggerRootAccessSecret() {
 
             clicks++;
 
-
             playClick();
-
 
             clearTimeout(
                 timer
             );
 
-
             timer =
                 setTimeout(
                     function () {
-
-                        clicks =
-                            0;
-
+                        clicks = 0;
                     },
                     700
                 );
-
 
             if (
                 clicks <
@@ -6609,41 +4983,28 @@ function triggerRootAccessSecret() {
                 return;
             }
 
-
-            clicks =
-                0;
-
+            clicks = 0;
 
             const original =
                 heroName.textContent;
-
 
             showSecretToast(
                 "BIRTHDAY GIRL IDENTIFIED"
             );
 
-
             heroName.textContent =
                 "BIRTHDAY GIRL";
-
 
             pageGlow(
                 heroName,
                 1300
             );
 
-
             starBurst(
+                heroName.getBoundingClientRect().left +
+                    heroName.offsetWidth / 2,
 
-                heroName
-                    .getBoundingClientRect()
-                    .left +
-                    heroName.offsetWidth /
-                    2,
-
-                heroName
-                    .getBoundingClientRect()
-                    .top +
+                heroName.getBoundingClientRect().top +
                     40,
 
                 [
@@ -6652,16 +5013,12 @@ function triggerRootAccessSecret() {
                     "🎈",
                     "✨"
                 ]
-
             );
-
 
             setTimeout(
                 function () {
-
                     heroName.textContent =
                         original;
-
                 },
                 1300
             );
@@ -6673,7 +5030,7 @@ function triggerRootAccessSecret() {
 
 
 /* ==========================================================================
-   HERO EYEBROW — TRIPLE CLICK
+   EYEBROW TRIPLE CLICK
 ========================================================================== */
 
 (function setupEyebrowSecret() {
@@ -6683,11 +5040,9 @@ function triggerRootAccessSecret() {
             ".eyebrow"
         );
 
-
     if (!eyebrow) {
         return;
     }
-
 
     const messages = [
 
@@ -6701,18 +5056,11 @@ function triggerRootAccessSecret() {
 
     ];
 
-
-    let clicks =
-        0;
-
-
-    let timer =
-        null;
-
+    let clicks = 0;
+    let timer = null;
 
     eyebrow.style.cursor =
         "pointer";
-
 
     eyebrow.addEventListener(
         "click",
@@ -6720,26 +5068,19 @@ function triggerRootAccessSecret() {
 
             clicks++;
 
-
             playClick();
-
 
             clearTimeout(
                 timer
             );
 
-
             timer =
                 setTimeout(
                     function () {
-
-                        clicks =
-                            0;
-
+                        clicks = 0;
                     },
                     700
                 );
-
 
             if (
                 clicks <
@@ -6748,28 +5089,21 @@ function triggerRootAccessSecret() {
                 return;
             }
 
-
-            clicks =
-                0;
-
-
-            const index =
-                Math.floor(
-                    Math.random() *
-                    messages.length
-                );
-
+            clicks = 0;
 
             showSecretToast(
-                messages[index]
+                messages[
+                    Math.floor(
+                        Math.random() *
+                        messages.length
+                    )
+                ]
             );
-
 
             flashPage(
                 "rgba(255,216,107,.07)",
                 450
             );
-
         }
     );
 
@@ -6777,7 +5111,7 @@ function triggerRootAccessSecret() {
 
 
 /* ==========================================================================
-   QUOTE MARK — FOUR CLICKS
+   QUOTE MARK FOUR CLICKS
 ========================================================================== */
 
 (function setupQuoteMarkSecret() {
@@ -6789,14 +5123,8 @@ function triggerRootAccessSecret() {
         return;
     }
 
-
-    let clicks =
-        0;
-
-
-    let revealed =
-        false;
-
+    let clicks = 0;
+    let revealed = false;
 
     quoteMark.addEventListener(
         "click",
@@ -6806,45 +5134,34 @@ function triggerRootAccessSecret() {
                 return;
             }
 
-
             clicks++;
-
 
             playClick();
 
-
             if (
-                clicks <
-                4 ||
+                clicks < 4 ||
                 revealed
             ) {
                 return;
             }
 
-
-            revealed =
-                true;
-
+            revealed = true;
 
             const secretLine =
                 document.createElement(
                     "span"
                 );
 
-
             secretLine.className =
                 "quote-secret-line";
 
-
             secretLine.textContent =
                 "(birthday diary entry #2: somehow you're still reading this.)";
-
 
             quoteMaker.insertAdjacentElement(
                 "afterend",
                 secretLine
             );
-
 
             requestAnimationFrame(
                 function () {
@@ -6856,11 +5173,9 @@ function triggerRootAccessSecret() {
                 }
             );
 
-
             showSecretToast(
                 "BIRTHDAY DIARY FOOTNOTE"
             );
-
 
             spotlightElement(
                 quoteMark,
@@ -6887,14 +5202,11 @@ if (quoteSection) {
                 return;
             }
 
-
             playClick();
-
 
             showAvignaToast(
                 "🎆 BIRTHDAY FIREWORK"
             );
-
 
             if (
                 typeof confetti ===
@@ -6926,11 +5238,12 @@ if (quoteSection) {
             }
         }
     );
+
 }
 
 
 /* ==========================================================================
-   STATS ORDER COMBO
+   STATS ORDER
 ========================================================================== */
 
 (function setupStatsCombo() {
@@ -6940,15 +5253,11 @@ if (quoteSection) {
             ".stats .stat"
         );
 
-
     if (!stats.length) {
         return;
     }
 
-
-    let index =
-        0;
-
+    let index = 0;
 
     stats.forEach(
         function (
@@ -6959,7 +5268,6 @@ if (quoteSection) {
             stat.style.cursor =
                 "pointer";
 
-
             stat.addEventListener(
                 "click",
                 function () {
@@ -6968,9 +5276,7 @@ if (quoteSection) {
                         return;
                     }
 
-
                     playClick();
-
 
                     if (
                         statIndex ===
@@ -6979,11 +5285,9 @@ if (quoteSection) {
 
                         index++;
 
-
                         stat.classList.add(
                             "secret-target-highlight"
                         );
-
 
                         setTimeout(
                             function () {
@@ -6996,20 +5300,16 @@ if (quoteSection) {
                             300
                         );
 
-
                         if (
                             index ===
                             stats.length
                         ) {
 
-                            index =
-                                0;
-
+                            index = 0;
 
                             showSecretToast(
                                 "BIRTHDAY STATISTICS VERIFIED"
                             );
-
 
                             spotlightElement(
                                 document.querySelector(
@@ -7018,11 +5318,9 @@ if (quoteSection) {
                                 1800
                             );
 
-
                             createScanline(
                                 "#ffd86b"
                             );
-
 
                             if (
                                 typeof confetti ===
@@ -7042,20 +5340,17 @@ if (quoteSection) {
 
                                     origin: {
                                         x:
-                                            .5,
+                                            0.5,
 
                                         y:
-                                            .4
+                                            0.4
                                     }
 
                                 });
                             }
-
                         }
 
-                    }
-
-                    else {
+                    } else {
 
                         index =
                             statIndex ===
@@ -7084,20 +5379,16 @@ if (quoteSection) {
             ".stats .stat"
         );
 
-
     const judgement =
         stats[
             stats.length - 1
         ];
 
-
     if (!judgement) {
         return;
     }
 
-
-    let timer =
-        null;
+    let timer = null;
 
 
     function revealJudgement() {
@@ -7110,30 +5401,24 @@ if (quoteSection) {
             return;
         }
 
-
         const tooltip =
             document.createElement(
                 "span"
             );
 
-
         tooltip.className =
             "roast-tooltip visible";
 
-
         tooltip.textContent =
             "(birthday judgement reviewed by Neerav, who is extremely biased)";
-
 
         judgement.appendChild(
             tooltip
         );
 
-
         showSecretToast(
             "BIRTHDAY JUDGEMENT FILE FOUND"
         );
-
 
         spotlightElement(
             judgement,
@@ -7165,28 +5450,23 @@ if (quoteSection) {
         startPress
     );
 
-
     judgement.addEventListener(
         "mouseup",
         cancelPress
     );
-
 
     judgement.addEventListener(
         "mouseleave",
         cancelPress
     );
 
-
     judgement.addEventListener(
         "touchstart",
         startPress,
         {
-            passive:
-                true
+            passive: true
         }
     );
-
 
     judgement.addEventListener(
         "touchend",
@@ -7197,7 +5477,7 @@ if (quoteSection) {
 
 
 /* ==========================================================================
-   MESSAGE — SIX CLICKS
+   MESSAGE SIX CLICKS
 ========================================================================== */
 
 (function setupMessageSecret() {
@@ -7206,10 +5486,7 @@ if (quoteSection) {
         return;
     }
 
-
-    let clicks =
-        0;
-
+    let clicks = 0;
 
     birthdayMessage.addEventListener(
         "click",
@@ -7222,12 +5499,9 @@ if (quoteSection) {
                 return;
             }
 
-
             clicks++;
 
-
             playClick();
-
 
             if (
                 clicks <
@@ -7235,7 +5509,6 @@ if (quoteSection) {
             ) {
                 return;
             }
-
 
             if (
                 birthdayMessage.querySelector(
@@ -7245,11 +5518,9 @@ if (quoteSection) {
                 return;
             }
 
-
             birthdayMessage.classList.add(
                 "message-corrupted"
             );
-
 
             setTimeout(
                 function () {
@@ -7258,25 +5529,20 @@ if (quoteSection) {
                         "message-corrupted"
                     );
 
-
                     const ps =
                         document.createElement(
                             "span"
                         );
 
-
                     ps.className =
                         "message-ps";
-
 
                     ps.textContent =
                         "P.S. — Birthday.EXE says you're still reading this. Respect.";
 
-
                     birthdayMessage.appendChild(
                         ps
                     );
-
 
                     requestAnimationFrame(
                         function () {
@@ -7288,11 +5554,9 @@ if (quoteSection) {
                         }
                     );
 
-
                     showSecretToast(
                         "HIDDEN BIRTHDAY POSTSCRIPT"
                     );
-
 
                     spotlightElement(
                         birthdayMessage,
@@ -7302,6 +5566,7 @@ if (quoteSection) {
                 },
                 500
             );
+
         }
     );
 
@@ -7309,7 +5574,7 @@ if (quoteSection) {
 
 
 /* ==========================================================================
-   MONEY DISPLAY — EIGHT CLICKS
+   MONEY DISPLAY EIGHT CLICKS
 ========================================================================== */
 
 (function setupMoneyATM() {
@@ -7319,23 +5584,13 @@ if (quoteSection) {
             "display-money"
         );
 
-
     if (!display) {
         return;
     }
 
-
-    let clicks =
-        0;
-
-
-    let timer =
-        null;
-
-
-    let cooldown =
-        false;
-
+    let clicks = 0;
+    let timer = null;
+    let cooldown = false;
 
     display.addEventListener(
         "click",
@@ -7348,29 +5603,21 @@ if (quoteSection) {
                 return;
             }
 
-
             playClick();
 
-
             clicks++;
-
 
             clearTimeout(
                 timer
             );
 
-
             timer =
                 setTimeout(
                     function () {
-
-                        clicks =
-                            0;
-
+                        clicks = 0;
                     },
                     2500
                 );
-
 
             if (
                 clicks <
@@ -7379,81 +5626,56 @@ if (quoteSection) {
                 return;
             }
 
+            clicks = 0;
+            cooldown = true;
 
-            clicks =
-                0;
-
-
-            cooldown =
-                true;
-
-
-            money +=
-                200;
-
+            money += 200;
 
             refreshMoneyDisplay();
-
 
             showSecretToast(
                 "BIRTHDAY FUND FOUND // +$200"
             );
-
 
             const amount =
                 document.createElement(
                     "div"
                 );
 
-
             amount.className =
                 "money-float-secret";
-
 
             amount.textContent =
                 "+$200 BIRTHDAY MONEY";
 
-
             const rect =
                 display.getBoundingClientRect();
 
-
             amount.style.left =
                 rect.left +
-                rect.width /
-                2 +
+                rect.width / 2 +
                 "px";
-
 
             amount.style.top =
                 rect.top +
                 "px";
 
-
             document.body.appendChild(
                 amount
             );
 
-
             setTimeout(
                 function () {
-
                     amount.remove();
-
                 },
                 1600
             );
 
-
             checkMoneyMilestone();
-
 
             setTimeout(
                 function () {
-
-                    cooldown =
-                        false;
-
+                    cooldown = false;
                 },
                 30000
             );
@@ -7465,19 +5687,14 @@ if (quoteSection) {
 
 
 /* ==========================================================================
-   FOOD CARD — FOUR CLICKS
+   FOOD CARD FOUR CLICKS
 ========================================================================== */
 
 foodCards.forEach(
     function (card) {
 
-        let clicks =
-            0;
-
-
-        let claimed =
-            false;
-
+        let clicks = 0;
+        let claimed = false;
 
         card.addEventListener(
             "click",
@@ -7490,7 +5707,6 @@ foodCards.forEach(
                     return;
                 }
 
-
                 if (
                     event.target.closest(
                         ".food-button"
@@ -7499,12 +5715,9 @@ foodCards.forEach(
                     return;
                 }
 
-
                 clicks++;
 
-
                 playClick();
-
 
                 if (
                     clicks <
@@ -7513,41 +5726,29 @@ foodCards.forEach(
                     return;
                 }
 
+                claimed = true;
 
-                claimed =
-                    true;
-
-
-                money +=
-                    30;
-
+                money += 30;
 
                 refreshMoneyDisplay();
-
 
                 card.classList.add(
                     "bonus-glow"
                 );
 
-
                 showSecretToast(
                     "BIRTHDAY SPECIAL // +$30"
                 );
 
-
                 const rect =
                     card.getBoundingClientRect();
 
-
                 starBurst(
-
                     rect.left +
-                        rect.width /
-                        2,
+                        rect.width / 2,
 
                     rect.top +
-                        rect.height /
-                        2,
+                        rect.height / 2,
 
                     [
                         "🎂",
@@ -7555,9 +5756,7 @@ foodCards.forEach(
                         "💰",
                         "✨"
                     ]
-
                 );
-
 
                 checkMoneyMilestone();
 
@@ -7569,7 +5768,7 @@ foodCards.forEach(
 
 
 /* ==========================================================================
-   HUNGER BAR — FIVE CLICKS
+   HUNGER BAR FIVE CLICKS
 ========================================================================== */
 
 (function setupHungerBarCheat() {
@@ -7579,15 +5778,11 @@ foodCards.forEach(
             ".hunger-bar"
         );
 
-
     if (!hungerBar) {
         return;
     }
 
-
-    let clicks =
-        0;
-
+    let clicks = 0;
 
     hungerBar.addEventListener(
         "click",
@@ -7597,12 +5792,9 @@ foodCards.forEach(
                 return;
             }
 
-
             clicks++;
 
-
             playClick();
-
 
             if (
                 clicks <
@@ -7611,25 +5803,17 @@ foodCards.forEach(
                 return;
             }
 
+            clicks = 0;
 
-            clicks =
-                0;
-
-
-            hungerPercent =
-                0;
-
+            hungerPercent = 0;
 
             refreshHungerDisplay();
 
-
             updatePageFilter();
-
 
             showSecretToast(
                 "BIRTHDAY BUFFET RESET"
             );
-
 
             spawnEmojiRain(
                 [
@@ -7650,7 +5834,7 @@ foodCards.forEach(
 
 
 /* ==========================================================================
-   MUTE BUTTON — TEN CLICKS
+   MUTE TEN CLICKS
 ========================================================================== */
 
 (function setupMuteSecret() {
@@ -7659,14 +5843,8 @@ foodCards.forEach(
         return;
     }
 
-
-    let clicks =
-        0;
-
-
-    let timer =
-        null;
-
+    let clicks = 0;
+    let timer = null;
 
     muteBtn.addEventListener(
         "click",
@@ -7676,26 +5854,19 @@ foodCards.forEach(
                 return;
             }
 
-
             clicks++;
-
 
             clearTimeout(
                 timer
             );
 
-
             timer =
                 setTimeout(
                     function () {
-
-                        clicks =
-                            0;
-
+                        clicks = 0;
                     },
                     2000
                 );
-
 
             if (
                 clicks <
@@ -7704,34 +5875,26 @@ foodCards.forEach(
                 return;
             }
 
-
-            clicks =
-                0;
-
+            clicks = 0;
 
             document.body.classList.remove(
                 "screen-shake"
             );
 
-
             void document.body.offsetWidth;
-
 
             document.body.classList.add(
                 "screen-shake"
             );
 
-
             showSecretToast(
                 "BIRTHDAY.EXE AUDIO SYSTEM PANIC"
             );
-
 
             flashPage(
                 "rgba(255,60,110,.08)",
                 450
             );
-
 
             setTimeout(
                 function () {
@@ -7751,7 +5914,7 @@ foodCards.forEach(
 
 
 /* ==========================================================================
-   THEME ICON — SEVEN CLICKS
+   THEME ICON SEVEN CLICKS
 ========================================================================== */
 
 (function setupMysteryMode() {
@@ -7760,14 +5923,8 @@ foodCards.forEach(
         return;
     }
 
-
-    let clicks =
-        0;
-
-
-    let timer =
-        null;
-
+    let clicks = 0;
+    let timer = null;
 
     themeIcon.addEventListener(
         "click",
@@ -7777,26 +5934,19 @@ foodCards.forEach(
                 return;
             }
 
-
             clicks++;
-
 
             clearTimeout(
                 timer
             );
 
-
             timer =
                 setTimeout(
                     function () {
-
-                        clicks =
-                            0;
-
+                        clicks = 0;
                     },
                     1800
                 );
-
 
             if (
                 clicks <
@@ -7805,30 +5955,22 @@ foodCards.forEach(
                 return;
             }
 
-
-            clicks =
-                0;
-
+            clicks = 0;
 
             event.stopPropagation();
-
 
             showSecretToast(
                 "BIRTHDAY MYSTERY MODE"
             );
 
-
             document.body.classList.remove(
                 "invert-flash"
             );
 
-
             void document.body.offsetWidth;
-
 
             document.body.style.filter =
                 "grayscale(1) invert(1)";
-
 
             setTimeout(
                 function () {
@@ -7848,7 +5990,7 @@ foodCards.forEach(
 
 
 /* ==========================================================================
-   START BUTTON — LONG PRESS
+   START BUTTON LONG PRESS
 ========================================================================== */
 
 (function setupFakeLoadingStart() {
@@ -7858,15 +6000,11 @@ foodCards.forEach(
             'a[href="#about"].button'
         );
 
-
     if (!startButton) {
         return;
     }
 
-
-    let pressTimer =
-        null;
-
+    let pressTimer = null;
 
     const loadingLines = [
 
@@ -7893,16 +6031,13 @@ foodCards.forEach(
 
                     playClick();
 
-
                     const overlay =
                         document.createElement(
                             "div"
                         );
 
-
                     overlay.className =
                         "fake-loading-overlay";
-
 
                     overlay.innerHTML = `
 
@@ -7930,35 +6065,25 @@ foodCards.forEach(
 
                     `;
 
-
                     document.body.appendChild(
                         overlay
                     );
-
 
                     const fill =
                         overlay.querySelector(
                             ".fake-loading-bar-fill"
                         );
 
-
                     const line =
                         overlay.querySelector(
                             ".fake-loading-line"
                         );
 
-
-                    let progress =
-                        0;
-
-
-                    let lineIndex =
-                        0;
-
+                    let progress = 0;
+                    let lineIndex = 0;
 
                     line.textContent =
                         loadingLines[0];
-
 
                     const timer =
                         setInterval(
@@ -7966,24 +6091,17 @@ foodCards.forEach(
 
                                 progress +=
                                     8 +
-                                    Math.random() *
-                                    10;
-
+                                    Math.random() * 10;
 
                                 if (
                                     progress >
                                     100
                                 ) {
-
-                                    progress =
-                                        100;
+                                    progress = 100;
                                 }
 
-
                                 fill.style.width =
-                                    progress +
-                                    "%";
-
+                                    progress + "%";
 
                                 const expected =
                                     Math.floor(
@@ -7993,7 +6111,6 @@ foodCards.forEach(
                                         ) *
                                         loadingLines.length
                                     );
-
 
                                 if (
                                     expected !==
@@ -8005,13 +6122,11 @@ foodCards.forEach(
                                     lineIndex =
                                         expected;
 
-
                                     line.textContent =
                                         loadingLines[
                                             lineIndex
                                         ];
                                 }
-
 
                                 if (
                                     progress >=
@@ -8022,18 +6137,15 @@ foodCards.forEach(
                                         timer
                                     );
 
-
                                     setTimeout(
                                         function () {
 
                                             overlay.remove();
 
-
                                             const about =
                                                 document.getElementById(
                                                     "about"
                                                 );
-
 
                                             if (about) {
 
@@ -8048,7 +6160,6 @@ foodCards.forEach(
                                         },
                                         500
                                     );
-
                                 }
 
                             },
@@ -8074,28 +6185,23 @@ foodCards.forEach(
         startPress
     );
 
-
     startButton.addEventListener(
         "mouseup",
         cancelPress
     );
-
 
     startButton.addEventListener(
         "mouseleave",
         cancelPress
     );
 
-
     startButton.addEventListener(
         "touchstart",
         startPress,
         {
-            passive:
-                true
+            passive: true
         }
     );
-
 
     startButton.addEventListener(
         "touchend",
@@ -8106,7 +6212,7 @@ foodCards.forEach(
 
 
 /* ==========================================================================
-   SHOP DESCRIPTION — THREE CLICKS
+   SHOP DESCRIPTION THREE CLICKS
 ========================================================================== */
 
 (function setupShopDescriptionSecret() {
@@ -8116,28 +6222,21 @@ foodCards.forEach(
             ".shop-option p"
         );
 
-
     if (!paragraphs.length) {
         return;
     }
 
-
     const paragraph =
         paragraphs[1];
-
 
     if (!paragraph) {
         return;
     }
 
-
-    let clicks =
-        0;
-
+    let clicks = 0;
 
     paragraph.style.cursor =
         "pointer";
-
 
     paragraph.addEventListener(
         "click",
@@ -8145,9 +6244,7 @@ foodCards.forEach(
 
             clicks++;
 
-
             playClick();
-
 
             if (
                 clicks <
@@ -8156,20 +6253,15 @@ foodCards.forEach(
                 return;
             }
 
-
-            clicks =
-                0;
-
+            clicks = 0;
 
             paragraph.classList.add(
                 "secret-target-highlight"
             );
 
-
             showSecretToast(
                 "HUNGER WAS A BIRTHDAY FEATURE"
             );
-
 
             setTimeout(
                 function () {
@@ -8199,11 +6291,9 @@ foodCards.forEach(
             ".eat-section"
         );
 
-
     if (!eatSection) {
         return;
     }
-
 
     eatSection.addEventListener(
         "dblclick",
@@ -8218,14 +6308,11 @@ foodCards.forEach(
                 return;
             }
 
-
             playClick();
-
 
             showSecretToast(
                 "BIRTHDAY BUFFET STORM"
             );
-
 
             spawnEmojiRain(
                 [
@@ -8258,18 +6345,16 @@ document.addEventListener(
             return;
         }
 
-
         event.preventDefault();
-
 
         showSecretToast(
             "BIRTHDAY.EXE // NICE TRY"
         );
 
-
         createScanline(
             "#4fffe8"
         );
+
     }
 );
 
@@ -8289,18 +6374,16 @@ document.addEventListener(
             return;
         }
 
-
         event.preventDefault();
-
 
         showSecretToast(
             "BIRTHDAY.EXE // MIDDLE CLICK?"
         );
 
-
         createScanline(
             "#ffd86b"
         );
+
     }
 );
 
@@ -8335,16 +6418,13 @@ document.addEventListener(
                 return;
             }
 
-
             const bubble =
                 document.createElement(
                     "div"
                 );
 
-
             bubble.className =
                 "meme-bubble";
-
 
             bubble.textContent =
                 lines[
@@ -8354,28 +6434,22 @@ document.addEventListener(
                     )
                 ];
 
-
             bubble.style.left =
                 event.clientX +
                 "px";
-
 
             bubble.style.top =
                 event.clientY -
                 20 +
                 "px";
 
-
             document.body.appendChild(
                 bubble
             );
 
-
             setTimeout(
                 function () {
-
                     bubble.remove();
-
                 },
                 2500
             );
@@ -8403,12 +6477,11 @@ document.addEventListener(
             document.title =
                 "come back pleamseee 🥺";
 
-        }
-
-        else {
+        } else {
 
             document.title =
                 originalTitle;
+
         }
 
     }
@@ -8416,7 +6489,7 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   TAB RETURN SECRET — 10+ SECONDS
+   TAB RETURN AFTER 10+ SECONDS
 ========================================================================== */
 
 document.addEventListener(
@@ -8431,7 +6504,6 @@ document.addEventListener(
             return;
         }
 
-
         if (
             !isUnlocked() ||
             hiddenAt === null
@@ -8439,15 +6511,11 @@ document.addEventListener(
             return;
         }
 
-
         const awayTime =
             Date.now() -
             hiddenAt;
 
-
-        hiddenAt =
-            null;
-
+        hiddenAt = null;
 
         if (
             awayTime >=
@@ -8458,16 +6526,13 @@ document.addEventListener(
                 "tab-return-flash"
             );
 
-
             showSecretToast(
                 "WELCOME BACK TO THE BIRTHDAY"
             );
 
-
             createScanline(
                 "#ffd86b"
             );
-
 
             if (
                 typeof confetti ===
@@ -8487,15 +6552,14 @@ document.addEventListener(
 
                     origin: {
                         x:
-                            .5,
+                            0.5,
 
                         y:
-                            .2
+                            0.2
                     }
 
                 });
             }
-
 
             setTimeout(
                 function () {
@@ -8538,11 +6602,9 @@ function resetIdleTimer() {
         return;
     }
 
-
     clearTimeout(
         idleTimer
     );
-
 
     idleTimer =
         setTimeout(
@@ -8558,7 +6620,6 @@ function showIdleNudge() {
         return;
     }
 
-
     showAvignaToast(
         idleMessages[
             idleNudgeCount %
@@ -8566,9 +6627,7 @@ function showIdleNudge() {
         ]
     );
 
-
     idleNudgeCount++;
-
 
     resetIdleTimer();
 }
@@ -8591,6 +6650,7 @@ function showIdleNudge() {
                     true
             }
         );
+
     }
 );
 
@@ -8626,7 +6686,7 @@ console.log(
 );
 
 console.log(
-    "%cThere are hidden features throughout the website.",
+    "%cThere are hidden birthday features throughout the website.",
     "font-size:13px;color:#baff6a;"
 );
 
