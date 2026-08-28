@@ -1,46 +1,166 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 
-/* =========================================================
-   ROOT / DEFAULT BLUE-GREEN THEME
-========================================================= */
+/* ==========================================================================
+   CSS CODE MAP
+
+   [ROOT VARIABLES]
+   Main colours, fonts and spacing.
+
+   [GLOBAL]
+   Page-wide defaults.
+
+   [THEME SWITCH]
+   Blue/green ↔ pink/purple.
+
+   [COUNTDOWN]
+   Lock screen and countdown.
+
+   [COUNTDOWN STAGES]
+   3h → 2h → 1h → 30m → 10m → 1m.
+
+   [HERO]
+   Landing section.
+
+   [INTRO]
+   Description section.
+
+   [QUOTE]
+   Quote section.
+
+   [STATS]
+   Statistics.
+
+   [HOBBIES]
+   Hobby cards and hover shine.
+
+   [MOVIES]
+   Cinema mode.
+
+   [BOOKS]
+   Book animation and poem.
+
+   [CHAT]
+   Conversation.
+
+   [FOOD]
+   Restaurant and hunger.
+
+   [ENDING]
+   Birthday message.
+
+   [SHOP]
+   Hidden features.
+
+   [GIFT]
+   Gift sections.
+
+   [FINAL GIFT LAYOUT]
+   Centered final gift screen.
+
+   [BLACK OUT]
+   Ending overlay.
+
+   [RESTART]
+   Restart button.
+
+   [FOODIE EMERGENCY]
+   Food ending.
+
+   [TOAST]
+   Secret notifications.
+
+   [FLOATING CAKES]
+   Typing "cake".
+
+   [COUNTDOWN PARTY]
+   Final countdown objects.
+
+   [PINK THEME]
+   Pink/purple overrides.
+
+   [RESPONSIVE]
+   Tablet/mobile.
+
+   ========================================================================== */
+
+
+/* ==========================================================================
+   ROOT
+========================================================================== */
 
 :root {
 
-    --bg: #050b0d;
-    --bg-soft: #09151a;
+    --bg:
+        #050b0d;
 
-    --text: #effffc;
-    --black: #020506;
-    --white: #ffffff;
+    --bg-soft:
+        #09151a;
 
-    --gray: #8ca5a5;
-    --light-gray: #d9eeee;
+    --text:
+        #effffc;
+
+    --black:
+        #020506;
+
+    --gray:
+        #8ca5a5;
+
+    --light-gray:
+        #d9eeee;
 
     --border-gray:
-        rgba(120, 220, 210, 0.16);
+        rgba(
+            120,
+            220,
+            210,
+            0.16
+        );
 
     --border-light:
-        rgba(150, 240, 230, 0.14);
+        rgba(
+            150,
+            240,
+            230,
+            0.14
+        );
 
-    --blue: #2f8fff;
-    --electric-blue: #42d9ff;
-    --cyan: #4fffe8;
+    --blue:
+        #2f8fff;
 
-    --green: #27d98b;
-    --emerald: #16a86b;
-    --forest: #0b5d46;
+    --electric-blue:
+        #42d9ff;
 
-    --lime: #baff6a;
+    --cyan:
+        #4fffe8;
+
+    --green:
+        #27d98b;
+
+    --emerald:
+        #16a86b;
+
+    --forest:
+        #0b5d46;
+
+    --lime:
+        #baff6a;
 
     --dark-bar:
-        rgba(150, 255, 230, 0.08);
+        rgba(
+            150,
+            255,
+            230,
+            0.08
+        );
 
     --glass:
-        rgba(100, 220, 210, 0.045);
-
-    --glass-strong:
-        rgba(100, 220, 210, 0.09);
+        rgba(
+            100,
+            220,
+            210,
+            0.045
+        );
 
     --font-main:
         "Space Grotesk",
@@ -54,43 +174,60 @@
         "Playfair Display",
         serif;
 
-    --space-sm: 20px;
-    --space-md: 28px;
-    --space-lg: 70px;
-    --space-xl: 125px;
-    --space-xxl: 150px;
+    --space-sm:
+        20px;
+
+    --space-md:
+        28px;
+
+    --space-lg:
+        70px;
+
+    --space-xl:
+        125px;
+
+    --space-xxl:
+        150px;
 
     --transition:
         0.3s ease;
 
     --shadow:
         0 18px 45px
-        rgba(0, 0, 0, 0.4);
+        rgba(
+            0,
+            0,
+            0,
+            0.4
+        );
 
 }
 
 
-/* =========================================================
-   RESET
-========================================================= */
+/* ==========================================================================
+   GLOBAL
+========================================================================== */
 
 * {
-    box-sizing: border-box;
+
+    box-sizing:
+        border-box;
+
 }
 
 
 html {
 
-    scroll-behavior: smooth;
-
-    scroll-padding-top: 0;
+    scroll-behavior:
+        smooth;
 
 }
 
 
 body {
 
-    margin: 0;
+    margin:
+        0;
 
     font-family:
         var(--font-main);
@@ -99,7 +236,6 @@ body {
         var(--text);
 
     background:
-
         radial-gradient(
             circle at 10% 10%,
             rgba(
@@ -144,50 +280,6 @@ body {
 }
 
 
-body::before {
-
-    content:
-        "";
-
-    position:
-        fixed;
-
-    inset:
-        0;
-
-    pointer-events:
-        none;
-
-    z-index:
-        -1;
-
-    background:
-
-        radial-gradient(
-            circle at 25% 40%,
-            rgba(
-                39,
-                217,
-                139,
-                0.05
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
-            circle at 75% 70%,
-            rgba(
-                47,
-                143,
-                255,
-                0.05
-            ),
-            transparent 22%
-        );
-
-}
-
-
 a {
 
     color:
@@ -208,9 +300,9 @@ svg {
 }
 
 
-/* =========================================================
+/* ==========================================================================
    THEME SWITCH
-========================================================= */
+========================================================================== */
 
 .theme-switch {
 
@@ -292,8 +384,7 @@ svg {
         transform 0.3s ease,
         background 0.6s ease,
         color 0.6s ease,
-        border-color 0.6s ease,
-        box-shadow 0.6s ease;
+        border-color 0.6s ease;
 
 }
 
@@ -304,15 +395,6 @@ svg {
         translateY(-3px)
         scale(1.03);
 
-    box-shadow:
-        0 15px 35px
-        rgba(
-            0,
-            0,
-            0,
-            0.35
-        );
-
 }
 
 
@@ -321,67 +403,12 @@ svg {
     font-size:
         1rem;
 
-    line-height:
-        1;
-
 }
 
 
-.theme-switch-text {
-
-    white-space:
-        nowrap;
-
-}
-
-
-/* =========================================================
-   SMOOTH THEME TRANSITIONS
-========================================================= */
-
-body,
-.hero,
-.intro,
-.trust-text,
-.stats,
-.hobbies,
-.chat-section,
-.eat-section,
-.ending,
-.shop-section,
-.gift-section,
-.gift-card,
-.food-card,
-.cards,
-.msg-card,
-.message-area,
-.button,
-.food-button,
-.shop-button,
-.gift-button,
-.no-cinema-button,
-#birthday-lock-screen,
-.countdown-title,
-.countdown-number,
-.countdown-colon,
-.countdown-status,
-.countdown-eyebrow,
-.avigna-toast {
-
-    transition:
-        background 0.7s ease,
-        background-color 0.7s ease,
-        color 0.5s ease,
-        border-color 0.5s ease,
-        box-shadow 0.7s ease,
-        text-shadow 0.7s ease;
-
-}
-
-
-/* =========================================================
-   BIRTHDAY LOCK SCREEN
-========================================================= */
+/* ==========================================================================
+   BIRTHDAY LOCK
+========================================================================== */
 
 #birthday-lock-screen {
 
@@ -407,7 +434,6 @@ body,
         center;
 
     background:
-
         radial-gradient(
             circle at center,
             rgba(
@@ -441,95 +467,7 @@ body,
 }
 
 
-#birthday-lock-screen::before {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    width:
-        55vw;
-
-    height:
-        55vw;
-
-    max-width:
-        700px;
-
-    max-height:
-        700px;
-
-    border-radius:
-        50%;
-
-    background:
-
-        radial-gradient(
-            circle,
-            rgba(
-                79,
-                255,
-                232,
-                0.055
-            ),
-            transparent 70%
-        );
-
-    animation:
-        lockGlow
-        5s ease-in-out
-        infinite;
-
-}
-
-
-#birthday-lock-screen::after {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    inset:
-        -20%;
-
-    background:
-
-        radial-gradient(
-            circle at 20% 30%,
-            rgba(
-                47,
-                143,
-                255,
-                0.05
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
-            circle at 80% 70%,
-            rgba(
-                39,
-                217,
-                139,
-                0.05
-            ),
-            transparent 20%
-        );
-
-    animation:
-        lockBackgroundMove
-        12s linear
-        infinite;
-
-}
-
-
-body.birthday-locked
-#page-content {
+body.birthday-locked #page-content {
 
     opacity:
         0;
@@ -570,9 +508,9 @@ body.birthday-unlocked
 }
 
 
-/* =========================================================
+/* ==========================================================================
    COUNTDOWN
-========================================================= */
+========================================================================== */
 
 .countdown-container {
 
@@ -587,12 +525,6 @@ body.birthday-unlocked
 
     padding:
         40px 20px;
-
-    position:
-        relative;
-
-    z-index:
-        2;
 
 }
 
@@ -632,9 +564,6 @@ body.birthday-unlocked
             7rem
         );
 
-    font-weight:
-        500;
-
     color:
         var(--text);
 
@@ -673,15 +602,6 @@ body.birthday-unlocked
     color:
         var(--cyan);
 
-    text-shadow:
-        0 0 15px
-        rgba(
-            79,
-            255,
-            232,
-            0.25
-        );
-
 }
 
 
@@ -705,7 +625,8 @@ body.birthday-unlocked
 
     animation:
         countdownPulse
-        2s ease-in-out
+        2s
+        ease-in-out
         infinite;
 
 }
@@ -803,56 +724,22 @@ body.birthday-unlocked
 
     animation:
         countdownBlink
-        1s infinite;
-
-    text-shadow:
-        0 0 12px
-        rgba(
-            79,
-            255,
-            232,
-            0.35
-        );
+        1s
+        infinite;
 
 }
 
 
-.countdown-status {
-
-    margin-top:
-        55px;
-
-    font-family:
-        var(--font-mono);
-
-    font-size:
-        0.75rem;
-
-    letter-spacing:
-        0.15em;
-
-    color:
-        var(--cyan);
-
-    opacity:
-        0.7;
-
-}
-
-
-/* =========================================================
-   DEFAULT COUNTDOWN STAGES — BLUE/GREEN
-========================================================= */
-
-
-/* 3 HOURS */
+/* ==========================================================================
+   COUNTDOWN STAGES
+========================================================================== */
 
 body.countdown-3-hours
 #birthday-lock-screen {
 
     background:
         radial-gradient(
-            circle at center,
+            circle,
             rgba(
                 47,
                 143,
@@ -866,28 +753,7 @@ body.countdown-3-hours
 
 
 body.countdown-3-hours
-.countdown-title {
-
-    color:
-        #dcefff;
-
-    text-shadow:
-        0 0 30px
-        rgba(
-            47,
-            143,
-            255,
-            0.35
-        );
-
-}
-
-
-body.countdown-3-hours
 .countdown-number {
-
-    color:
-        #e4f3ff;
 
     text-shadow:
         0 0 20px
@@ -901,23 +767,12 @@ body.countdown-3-hours
 }
 
 
-body.countdown-3-hours
-.countdown-colon {
-
-    color:
-        var(--blue);
-
-}
-
-
-/* 2 HOURS */
-
 body.countdown-2-hours
 #birthday-lock-screen {
 
     background:
         radial-gradient(
-            circle at center,
+            circle,
             rgba(
                 66,
                 217,
@@ -931,71 +786,26 @@ body.countdown-2-hours
 
 
 body.countdown-2-hours
-.countdown-title {
-
-    color:
-        var(--electric-blue);
-
-    text-shadow:
-        0 0 35px
-        rgba(
-            66,
-            217,
-            255,
-            0.55
-        );
-
-}
-
-
-body.countdown-2-hours
 .countdown-number {
 
-    color:
-        #e9fcff;
-
     text-shadow:
-
         0 0 22px
         rgba(
             66,
             217,
             255,
-            0.70
-        ),
-
-        0 0 50px
-        rgba(
-            66,
-            217,
-            255,
-            0.28
+            0.7
         );
 
 }
 
-
-body.countdown-2-hours
-.countdown-colon {
-
-    color:
-        var(--electric-blue);
-
-    text-shadow:
-        0 0 20px
-        var(--electric-blue);
-
-}
-
-
-/* 1 HOUR */
 
 body.countdown-1-hour
 #birthday-lock-screen {
 
     background:
         radial-gradient(
-            circle at center,
+            circle,
             rgba(
                 39,
                 217,
@@ -1007,26 +817,9 @@ body.countdown-1-hour
 
     animation:
         oneHourScreenPulse
-        2s ease-in-out
+        2s
+        ease-in-out
         infinite;
-
-}
-
-
-body.countdown-1-hour
-.countdown-title {
-
-    color:
-        #d8ffe9;
-
-    text-shadow:
-        0 0 35px
-        rgba(
-            39,
-            217,
-            139,
-            0.65
-        );
 
 }
 
@@ -1034,17 +827,13 @@ body.countdown-1-hour
 body.countdown-1-hour
 .countdown-number {
 
-    color:
-        #dffff2;
-
     text-shadow:
-
         0 0 28px
         rgba(
             39,
             217,
             139,
-            0.90
+            0.9
         ),
 
         0 0 65px
@@ -1058,28 +847,12 @@ body.countdown-1-hour
 }
 
 
-body.countdown-1-hour
-.countdown-colon {
-
-    color:
-        var(--green);
-
-    animation:
-        countdownBlink
-        0.55s
-        infinite;
-
-}
-
-
-/* 30 MINUTES */
-
 body.countdown-30-minutes
 #birthday-lock-screen {
 
     background:
         radial-gradient(
-            circle at center,
+            circle,
             rgba(
                 22,
                 168,
@@ -1091,35 +864,9 @@ body.countdown-30-minutes
 
     animation:
         thirtyMinutePulse
-        1.4s ease-in-out
+        1.4s
+        ease-in-out
         infinite;
-
-}
-
-
-body.countdown-30-minutes
-.countdown-title {
-
-    color:
-        var(--green);
-
-    text-shadow:
-
-        0 0 35px
-        rgba(
-            39,
-            217,
-            139,
-            0.80
-        ),
-
-        0 0 70px
-        rgba(
-            39,
-            217,
-            139,
-            0.3
-        );
 
 }
 
@@ -1127,18 +874,7 @@ body.countdown-30-minutes
 body.countdown-30-minutes
 .countdown-number {
 
-    color:
-        #ecfff6;
-
-    font-size:
-        clamp(
-            2.2rem,
-            6.5vw,
-            5.2rem
-        );
-
     text-shadow:
-
         0 0 28px
         var(--green),
 
@@ -1147,39 +883,14 @@ body.countdown-30-minutes
             39,
             217,
             139,
-            0.60
-        ),
-
-        0 0 110px
-        rgba(
-            39,
-            217,
-            139,
-            0.25
+            0.6
         );
 
 }
 
 
 body.countdown-30-minutes
-.countdown-colon {
-
-    color:
-        #9bffcf;
-
-    animation:
-        countdownBlink
-        0.45s
-        infinite;
-
-}
-
-
-body.countdown-30-minutes
 .countdown-status {
-
-    color:
-        #a5ffd2;
 
     opacity:
         1;
@@ -1195,37 +906,13 @@ body.countdown-30-minutes
 }
 
 
-/* 10 MINUTES */
-
 body.countdown-10-minutes
 #birthday-lock-screen {
 
     background:
 
         radial-gradient(
-            circle at 25% 30%,
-            rgba(
-                79,
-                255,
-                232,
-                0.12
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
-            circle at 75% 70%,
-            rgba(
-                186,
-                255,
-                106,
-                0.16
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at center,
+            circle,
             rgba(
                 186,
                 255,
@@ -1237,30 +924,9 @@ body.countdown-10-minutes
 
     animation:
         tenMinutePulse
-        1s ease-in-out
+        1s
+        ease-in-out
         infinite;
-
-}
-
-
-body.countdown-10-minutes
-.countdown-eyebrow {
-
-    color:
-        var(--lime);
-
-    text-shadow:
-        0 0 20px
-        rgba(
-            186,
-            255,
-            106,
-            0.5
-        );
-
-    animation:
-        eyebrowFlash
-        1s infinite;
 
 }
 
@@ -1272,7 +938,6 @@ body.countdown-10-minutes
         var(--lime);
 
     text-shadow:
-
         0 0 35px
         var(--lime),
 
@@ -1281,12 +946,13 @@ body.countdown-10-minutes
             186,
             255,
             106,
-            0.60
+            0.6
         );
 
     animation:
         titleFlash
-        1s infinite;
+        1s
+        infinite;
 
 }
 
@@ -1297,15 +963,7 @@ body.countdown-10-minutes
     color:
         #f5ffd9;
 
-    font-size:
-        clamp(
-            2.4rem,
-            7vw,
-            5.8rem
-        );
-
     text-shadow:
-
         0 0 25px
         var(--lime),
 
@@ -1317,57 +975,18 @@ body.countdown-10-minutes
             186,
             255,
             106,
-            0.60
+            0.6
         );
 
 }
 
 
-body.countdown-10-minutes
-.countdown-colon {
-
-    color:
-        var(--lime);
-
-    animation:
-        countdownBlink
-        0.35s
-        infinite;
-
-}
-
-
-/* 1 MINUTE */
-
 body.countdown-1-minute
 #birthday-lock-screen {
 
     background:
-
         radial-gradient(
-            circle at 15% 25%,
-            rgba(
-                47,
-                143,
-                255,
-                0.15
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
-            circle at 85% 30%,
-            rgba(
-                39,
-                217,
-                139,
-                0.20
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
-            circle at center,
+            circle,
             rgba(
                 79,
                 255,
@@ -1379,7 +998,8 @@ body.countdown-1-minute
 
     animation:
         finalScreenPulse
-        0.7s ease-in-out
+        0.7s
+        ease-in-out
         infinite;
 
 }
@@ -1392,7 +1012,6 @@ body.countdown-1-minute
         white;
 
     text-shadow:
-
         0 0 25px
         var(--cyan),
 
@@ -1404,7 +1023,8 @@ body.countdown-1-minute
 
     animation:
         finalTitlePulse
-        0.6s ease-in-out
+        0.6s
+        ease-in-out
         infinite;
 
 }
@@ -1416,15 +1036,7 @@ body.countdown-1-minute
     color:
         var(--lime);
 
-    font-size:
-        clamp(
-            2.6rem,
-            8vw,
-            6.5rem
-        );
-
     text-shadow:
-
         0 0 25px
         var(--cyan),
 
@@ -1432,29 +1044,7 @@ body.countdown-1-minute
         var(--green),
 
         0 0 110px
-        var(--lime),
-
-        0 0 160px
-        rgba(
-            186,
-            255,
-            106,
-            0.75
-        );
-
-}
-
-
-body.countdown-1-minute
-.countdown-colon {
-
-    color:
-        white;
-
-    animation:
-        countdownBlink
-        0.22s
-        infinite;
+        var(--lime);
 
 }
 
@@ -1465,19 +1055,8 @@ body.countdown-1-minute
     color:
         white;
 
-    opacity:
-        1;
-
     font-weight:
         bold;
-
-    text-shadow:
-
-        0 0 18px
-        var(--cyan),
-
-        0 0 40px
-        var(--green);
 
     animation:
         statusBlink
@@ -1487,9 +1066,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    COUNTDOWN ANIMATIONS
-========================================================= */
+========================================================================== */
 
 @keyframes countdownPulse {
 
@@ -1545,7 +1124,7 @@ body.countdown-1-minute
     50% {
 
         filter:
-            brightness(1.10);
+            brightness(1.1);
 
     }
 
@@ -1585,7 +1164,7 @@ body.countdown-1-minute
     50% {
 
         filter:
-            brightness(1.20);
+            brightness(1.2);
 
     }
 
@@ -1612,26 +1191,6 @@ body.countdown-1-minute
 }
 
 
-@keyframes titleFlash {
-
-    0%,
-    100% {
-
-        opacity:
-            1;
-
-    }
-
-    50% {
-
-        opacity:
-            0.60;
-
-    }
-
-}
-
-
 @keyframes finalTitlePulse {
 
     0%,
@@ -1646,6 +1205,26 @@ body.countdown-1-minute
 
         transform:
             scale(1.045);
+
+    }
+
+}
+
+
+@keyframes titleFlash {
+
+    0%,
+    100% {
+
+        opacity:
+            1;
+
+    }
+
+    50% {
+
+        opacity:
+            0.6;
 
     }
 
@@ -1672,84 +1251,9 @@ body.countdown-1-minute
 }
 
 
-@keyframes eyebrowFlash {
-
-    0%,
-    100% {
-
-        opacity:
-            1;
-
-    }
-
-    50% {
-
-        opacity:
-            0.45;
-
-    }
-
-}
-
-
-@keyframes lockGlow {
-
-    0%,
-    100% {
-
-        transform:
-            scale(1);
-
-        opacity:
-            0.7;
-
-    }
-
-    50% {
-
-        transform:
-            scale(1.15);
-
-        opacity:
-            1;
-
-    }
-
-}
-
-
-@keyframes lockBackgroundMove {
-
-    0% {
-
-        transform:
-            rotate(0deg)
-            scale(1);
-
-    }
-
-    50% {
-
-        transform:
-            rotate(8deg)
-            scale(1.05);
-
-    }
-
-    100% {
-
-        transform:
-            rotate(0deg)
-            scale(1);
-
-    }
-
-}
-
-
-/* =========================================================
+/* ==========================================================================
    SCROLL PROGRESS
-========================================================= */
+========================================================================== */
 
 #scroll-progress {
 
@@ -1780,28 +1284,15 @@ body.countdown-1-minute
     z-index:
         6000;
 
-    box-shadow:
-        0 0 12px
-        rgba(
-            66,
-            217,
-            255,
-            0.45
-        );
-
-    transition:
-        width
-        0.1s ease-out;
-
     pointer-events:
         none;
 
 }
 
 
-/* =========================================================
+/* ==========================================================================
    HERO
-========================================================= */
+========================================================================== */
 
 .hero {
 
@@ -1853,94 +1344,7 @@ body.countdown-1-minute
             transparent 25%
         ),
 
-        radial-gradient(
-            circle at 65% 90%,
-            rgba(
-                47,
-                143,
-                255,
-                0.09
-            ),
-            transparent 20%
-        ),
-
         #071015;
-
-}
-
-
-.hero::before {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    inset:
-        -30%;
-
-    background:
-
-        radial-gradient(
-            circle at 30% 30%,
-            rgba(
-                186,
-                255,
-                106,
-                0.05
-            ),
-            transparent 18%
-        ),
-
-        radial-gradient(
-            circle at 75% 55%,
-            rgba(
-                79,
-                255,
-                232,
-                0.06
-            ),
-            transparent 18%
-        );
-
-    animation:
-        heroFloat
-        14s ease-in-out
-        infinite;
-
-    pointer-events:
-        none;
-
-}
-
-
-@keyframes heroFloat {
-
-    0%,
-    100% {
-
-        transform:
-            translate3d(
-                0,
-                0,
-                0
-            )
-            rotate(0deg);
-
-    }
-
-    50% {
-
-        transform:
-            translate3d(
-                2%,
-                -2%,
-                0
-            )
-            rotate(2deg);
-
-    }
 
 }
 
@@ -1976,15 +1380,6 @@ body.countdown-1-minute
     content:
         "";
 
-    display:
-        block;
-
-    width:
-        100%;
-
-    height:
-        1px;
-
     position:
         absolute;
 
@@ -1993,6 +1388,12 @@ body.countdown-1-minute
 
     bottom:
         0;
+
+    width:
+        100%;
+
+    height:
+        1px;
 
     background:
         linear-gradient(
@@ -2031,31 +1432,6 @@ body.countdown-1-minute
 
     color:
         var(--cyan);
-
-    text-shadow:
-        0 0 18px
-        rgba(
-            79,
-            255,
-            232,
-            0.3
-        );
-
-    transition:
-        transform 0.25s ease,
-        color 0.25s ease;
-
-}
-
-
-#secret-logo:hover {
-
-    transform:
-        scale(1.12)
-        rotate(-4deg);
-
-    color:
-        var(--lime);
 
 }
 
@@ -2100,31 +1476,8 @@ body.countdown-1-minute
     cursor:
         pointer;
 
-    backdrop-filter:
-        blur(12px);
-
     font-family:
         var(--font-mono);
-
-    transition:
-        background 0.3s ease,
-        transform 0.3s ease;
-
-}
-
-
-.mute-btn:hover {
-
-    background:
-        rgba(
-            79,
-            255,
-            232,
-            0.08
-        );
-
-    transform:
-        translateY(-3px);
 
 }
 
@@ -2147,20 +1500,6 @@ body.countdown-1-minute
 
     color:
         var(--cyan);
-
-    letter-spacing:
-        0.08em;
-
-}
-
-
-.hero-title {
-
-    position:
-        relative;
-
-    z-index:
-        2;
 
 }
 
@@ -2186,27 +1525,10 @@ body.countdown-1-minute
 }
 
 
-.hero-title span:nth-child(1) {
-
-    color:
-        #f2ffff;
-
-}
-
-
 .hero-title span:nth-child(2) {
 
     color:
         var(--electric-blue);
-
-    text-shadow:
-        0 0 40px
-        rgba(
-            66,
-            217,
-            255,
-            0.20
-        );
 
 }
 
@@ -2216,38 +1538,12 @@ body.countdown-1-minute
     color:
         var(--lime);
 
-    text-shadow:
-        0 0 40px
-        rgba(
-            186,
-            255,
-            106,
-            0.15
-        );
-
 }
 
 
-.hero-subtitle {
-
-    font-size:
-        20px;
-
-    color:
-        #c1d5d5;
-
-    position:
-        relative;
-
-    z-index:
-        2;
-
-}
-
-
-/* =========================================================
-   BUTTONS + HOVER SHINE
-========================================================= */
+/* ==========================================================================
+   BUTTONS
+========================================================================== */
 
 .button {
 
@@ -2286,13 +1582,7 @@ body.countdown-1-minute
         700;
 
     box-shadow:
-        0 16px 40px
-        rgba(
-            0,
-            0,
-            0,
-            0.3
-        );
+        var(--shadow);
 
     transition:
         transform 0.3s ease,
@@ -2340,8 +1630,7 @@ body.countdown-1-minute
         skewX(-20deg);
 
     transition:
-        left
-        0.6s ease;
+        left 0.6s ease;
 
 }
 
@@ -2359,15 +1648,6 @@ body.countdown-1-minute
         translateY(-8px)
         scale(1.02);
 
-    box-shadow:
-        0 20px 50px
-        rgba(
-            79,
-            255,
-            232,
-            0.2
-        );
-
     cursor:
         pointer;
 
@@ -2382,9 +1662,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    INTRO
-========================================================= */
+========================================================================== */
 
 .intro {
 
@@ -2413,18 +1693,6 @@ body.countdown-1-minute
         70vh;
 
     background:
-
-        radial-gradient(
-            circle at 90% 20%,
-            rgba(
-                47,
-                143,
-                255,
-                0.10
-            ),
-            transparent 25%
-        ),
-
         #071014;
 
 }
@@ -2487,9 +1755,6 @@ body.countdown-1-minute
     padding-top:
         100px;
 
-    color:
-        #f1ffff;
-
 }
 
 
@@ -2507,9 +1772,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    QUOTE
-========================================================= */
+========================================================================== */
 
 .trust-text {
 
@@ -2534,12 +1799,6 @@ body.countdown-1-minute
 
     font-style:
         italic;
-
-    position:
-        relative;
-
-    overflow:
-        hidden;
 
     background:
 
@@ -2578,7 +1837,7 @@ body.countdown-1-minute
 .quote {
 
     color:
-        #061416;
+        var(--black);
 
     font-size:
         clamp(
@@ -2599,9 +1858,6 @@ body.countdown-1-minute
     line-height:
         1;
 
-    letter-spacing:
-        1px;
-
     word-spacing:
         10px;
 
@@ -2609,9 +1865,6 @@ body.countdown-1-minute
 
 
 .quote-mark {
-
-    font-family:
-        sans-serif;
 
     color:
         var(--emerald);
@@ -2634,9 +1887,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    STATS
-========================================================= */
+========================================================================== */
 
 .stats {
 
@@ -2654,54 +1907,7 @@ body.countdown-1-minute
         var(--border-gray);
 
     background:
-
-        radial-gradient(
-            circle at 10% 20%,
-            rgba(
-                39,
-                217,
-                139,
-                0.08
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
-            circle at 90% 80%,
-            rgba(
-                66,
-                217,
-                255,
-                0.08
-            ),
-            transparent 20%
-        ),
-
         #081014;
-
-}
-
-
-.section-header {
-
-    font-size:
-        clamp(
-            2.7rem,
-            6vw,
-            6rem
-        );
-
-    letter-spacing:
-        -0.06em;
-
-    line-height:
-        0.95;
-
-    margin-top:
-        0;
-
-    color:
-        #ffffff;
 
 }
 
@@ -2782,21 +1988,12 @@ body.countdown-1-minute
             var(--lime)
         );
 
-    box-shadow:
-        0 0 18px
-        rgba(
-            79,
-            255,
-            232,
-            0.22
-        );
-
 }
 
 
-/* =========================================================
+/* ==========================================================================
    HOBBIES
-========================================================= */
+========================================================================== */
 
 .hobbies {
 
@@ -2808,33 +2005,10 @@ body.countdown-1-minute
         var(--border-gray);
 
     background:
-
-        radial-gradient(
-            circle at 10% 15%,
-            rgba(
-                39,
-                217,
-                139,
-                0.12
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 90% 80%,
-            rgba(
-                47,
-                143,
-                255,
-                0.12
-            ),
-            transparent 24%
-        ),
-
         linear-gradient(
             135deg,
             #07131c,
-            #081621
+            #020b11
         );
 
 }
@@ -2898,15 +2072,6 @@ body.countdown-1-minute
     cursor:
         pointer;
 
-    box-shadow:
-        0 20px 50px
-        rgba(
-            0,
-            0,
-            0,
-            0.25
-        );
-
 }
 
 
@@ -2928,9 +2093,9 @@ body.countdown-1-minute
                 255,
                 255,
                 255,
-                0.12
+                0.14
             ),
-            transparent 40%
+            transparent 42%
         );
 
     opacity:
@@ -2940,50 +2105,8 @@ body.countdown-1-minute
         opacity
         0.4s ease;
 
-}
-
-
-.cards::after {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    width:
-        220px;
-
-    height:
-        220px;
-
-    border-radius:
-        50%;
-
-    top:
-        -90px;
-
-    right:
-        -70px;
-
-    filter:
-        blur(30px);
-
-    opacity:
-        0.45;
-
-    transition:
-        transform
-        0.5s ease;
-
-}
-
-
-.cards:hover {
-
-    transform:
-        translateY(-16px)
-        rotate(-1.5deg);
+    pointer-events:
+        none;
 
 }
 
@@ -2996,35 +2119,25 @@ body.countdown-1-minute
 }
 
 
-.cards:hover::after {
+.cards:hover {
 
     transform:
-        scale(1.25);
+        translateY(-16px)
+        rotate(-1.5deg);
 
-}
-
-
-.cards h3 {
-
-    font-size:
-        clamp(
-            1.8rem,
-            5vw,
-            50px
+    box-shadow:
+        0 20px 50px
+        rgba(
+            0,
+            0,
+            0,
+            0.25
         );
 
-    margin:
-        0;
-
-    position:
-        relative;
-
-    z-index:
-        2;
-
 }
 
 
+.cards h3,
 .cards p {
 
     position:
@@ -3032,14 +2145,6 @@ body.countdown-1-minute
 
     z-index:
         2;
-
-    color:
-        rgba(
-            239,
-            255,
-            252,
-            0.78
-        );
 
 }
 
@@ -3056,14 +2161,6 @@ body.countdown-1-minute
 }
 
 
-.dance::after {
-
-    background:
-        var(--green);
-
-}
-
-
 .movies {
 
     background:
@@ -3076,14 +2173,6 @@ body.countdown-1-minute
 }
 
 
-.movies::after {
-
-    background:
-        var(--electric-blue);
-
-}
-
-
 .books {
 
     background:
@@ -3092,14 +2181,6 @@ body.countdown-1-minute
             #064d3c,
             #071d24
         );
-
-}
-
-
-.books::after {
-
-    background:
-        var(--cyan);
 
 }
 
@@ -3149,20 +2230,12 @@ body.countdown-1-minute
     color:
         var(--lime);
 
-    margin-top:
-        10px;
-
-    animation:
-        fadeIn
-        0.6s ease
-        forwards;
-
 }
 
 
-/* =========================================================
-   MOVIE
-========================================================= */
+/* ==========================================================================
+   MOVIES
+========================================================================== */
 
 .movie-overlay {
 
@@ -3213,85 +2286,21 @@ body.countdown-1-minute
     color:
         var(--cyan);
 
-    text-shadow:
-        0 0 35px
-        rgba(
-            79,
-            255,
-            232,
-            0.5
-        );
-
 }
 
 
-.no-cinema-button {
+/* ==========================================================================
+   BOOKS
+========================================================================== */
 
-    position:
-        fixed;
+.book-mode {
 
-    right:
-        25px;
-
-    bottom:
-        25px;
-
-    z-index:
-        600;
-
-    padding:
-        16px 28px;
-
-    border:
-        1px solid
-        var(--border-light);
-
-    border-radius:
-        14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #087f78,
-            #075b72
-        );
-
-    color:
-        white;
-
-    font-family:
-        var(--font-main);
-
-    width:
-        200px;
-
-    cursor:
-        pointer;
-
-    box-shadow:
-        0 15px 35px
-        rgba(
-            0,
-            0,
-            0,
-            0.30
-        );
+    animation:
+        pageFlip
+        0.8s ease;
 
 }
 
-
-.no-cinema-button:hover {
-
-    transform:
-        scale(1.08)
-        translateY(-4px);
-
-}
-
-
-/* =========================================================
-   BOOK / POEM
-========================================================= */
 
 @keyframes pageFlip {
 
@@ -3322,15 +2331,6 @@ body.countdown-1-minute
 }
 
 
-.book-mode {
-
-    animation:
-        pageFlip
-        0.8s ease;
-
-}
-
-
 .page-fade-out {
 
     opacity:
@@ -3355,29 +2355,6 @@ body.countdown-1-minute
         0;
 
     background:
-
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(
-                79,
-                255,
-                232,
-                0.09
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(
-                39,
-                217,
-                139,
-                0.09
-            ),
-            transparent 22%
-        ),
-
         var(--bg);
 
     display:
@@ -3425,20 +2402,6 @@ body.countdown-1-minute
 }
 
 
-.poem-eyebrow {
-
-    font-family:
-        var(--font-mono);
-
-    color:
-        var(--cyan);
-
-    margin-bottom:
-        40px;
-
-}
-
-
 .poem-text {
 
     max-width:
@@ -3463,20 +2426,17 @@ body.countdown-1-minute
         );
 
     line-height:
-        1;
+        1.3;
 
     margin:
         0 0 16px;
 
-    color:
-        #f1ffff;
-
 }
 
 
-/* =========================================================
+/* ==========================================================================
    CHAT
-========================================================= */
+========================================================================== */
 
 .chat-section {
 
@@ -3488,46 +2448,11 @@ body.countdown-1-minute
         var(--border-gray);
 
     background:
-
-        radial-gradient(
-            circle at 10% 20%,
-            rgba(
-                79,
-                255,
-                232,
-                0.20
-            ),
-            transparent 25%
-        ),
-
-        radial-gradient(
-            circle at 90% 80%,
-            rgba(
-                39,
-                217,
-                139,
-                0.18
-            ),
-            transparent 24%
-        ),
-
         linear-gradient(
             135deg,
             #087f78,
             #075b72
         );
-
-    color:
-        #091318;
-
-}
-
-
-.chat-section
-.section-header {
-
-    color:
-        #081316;
 
 }
 
@@ -3602,7 +2527,8 @@ body.countdown-1-minute
 
     animation:
         messagePop
-        0.3s ease-in-out
+        0.3s
+        ease-in-out
         forwards;
 
 }
@@ -3616,8 +2542,7 @@ body.countdown-1-minute
             0;
 
         transform:
-            translateY(10px)
-            scale(0.98);
+            translateY(10px);
 
     }
 
@@ -3627,17 +2552,16 @@ body.countdown-1-minute
             1;
 
         transform:
-            translateY(0)
-            scale(1);
+            translateY(0);
 
     }
 
 }
 
 
-/* =========================================================
+/* ==========================================================================
    FOOD
-========================================================= */
+========================================================================== */
 
 .eat-section {
 
@@ -3649,29 +2573,6 @@ body.countdown-1-minute
         var(--border-gray);
 
     background:
-
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(
-                39,
-                217,
-                139,
-                0.09
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 85% 75%,
-            rgba(
-                47,
-                143,
-                255,
-                0.10
-            ),
-            transparent 20%
-        ),
-
         #061116;
 
 }
@@ -3722,29 +2623,16 @@ body.countdown-1-minute
         20px;
 
     background:
-        linear-gradient(
-            145deg,
-            rgba(
-                255,
-                255,
-                255,
-                0.06
-            ),
-            rgba(
-                79,
-                255,
-                232,
-                0.025
-            )
+        rgba(
+            255,
+            255,
+            255,
+            0.04
         );
 
-    backdrop-filter:
-        blur(12px);
-
     transition:
-        transform 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+        transform
+        0.3s ease;
 
 }
 
@@ -3753,23 +2641,6 @@ body.countdown-1-minute
 
     transform:
         translateY(-10px);
-
-    border-color:
-        rgba(
-            79,
-            255,
-            232,
-            0.35
-        );
-
-    box-shadow:
-        0 20px 40px
-        rgba(
-            0,
-            0,
-            0,
-            0.25
-        );
 
 }
 
@@ -3800,28 +2671,6 @@ body.countdown-1-minute
 
     cursor:
         pointer;
-
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-
-}
-
-
-.food-button:hover {
-
-    transform:
-        translateY(-3px)
-        scale(1.03);
-
-    box-shadow:
-        0 12px 25px
-        rgba(
-            79,
-            255,
-            232,
-            0.22
-        );
 
 }
 
@@ -3905,9 +2754,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    ENDING
-========================================================= */
+========================================================================== */
 
 .ending {
 
@@ -3919,18 +2768,6 @@ body.countdown-1-minute
         var(--border-gray);
 
     background:
-
-        radial-gradient(
-            circle at 80% 20%,
-            rgba(
-                47,
-                143,
-                255,
-                0.10
-            ),
-            transparent 22%
-        ),
-
         #071015;
 
 }
@@ -3959,24 +2796,12 @@ body.countdown-1-minute
         24px;
 
     background:
-        linear-gradient(
-            145deg,
-            rgba(
-                255,
-                255,
-                255,
-                0.055
-            ),
-            rgba(
-                79,
-                255,
-                232,
-                0.025
-            )
+        rgba(
+            255,
+            255,
+            255,
+            0.035
         );
-
-    backdrop-filter:
-        blur(14px);
 
 }
 
@@ -3989,8 +2814,61 @@ body.countdown-1-minute
     line-height:
         1.65;
 
-    color:
-        #edfdfa;
+}
+
+
+.message-animation {
+
+    animation:
+        messageReveal
+        1s ease
+        forwards;
+
+}
+
+
+@keyframes messageReveal {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(20px);
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+.section-header {
+
+    font-size:
+        clamp(
+            2.7rem,
+            6vw,
+            6rem
+        );
+
+    letter-spacing:
+        -0.06em;
+
+    line-height:
+        0.95;
+
+    margin-top:
+        0;
 
 }
 
@@ -4006,9 +2884,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    SHOP
-========================================================= */
+========================================================================== */
 
 .shop-section {
 
@@ -4025,44 +2903,12 @@ body.countdown-1-minute
         );
 
     background:
-
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(
-                66,
-                217,
-                255,
-                0.22
-            ),
-            transparent 23%
-        ),
-
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(
-                39,
-                217,
-                139,
-                0.20
-            ),
-            transparent 23%
-        ),
-
         linear-gradient(
             135deg,
             #d9fbff,
             #cdf7e7,
             #d9efff
         );
-
-    color:
-        #061517;
-
-}
-
-
-.shop-section
-.section-header {
 
     color:
         #061517;
@@ -4094,24 +2940,9 @@ body.countdown-1-minute
 }
 
 
-.shop-button:hover {
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--green),
-            var(--cyan)
-        );
-
-    color:
-        #061517;
-
-}
-
-
-/* =========================================================
+/* ==========================================================================
    GIFT
-========================================================= */
+========================================================================== */
 
 .gift-section {
 
@@ -4124,33 +2955,10 @@ body.countdown-1-minute
             0,
             0,
             0,
-            0.10
+            0.1
         );
 
     background:
-
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(
-                79,
-                255,
-                232,
-                0.25
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 85% 85%,
-            rgba(
-                39,
-                217,
-                139,
-                0.20
-            ),
-            transparent 22%
-        ),
-
         linear-gradient(
             135deg,
             #eaffff,
@@ -4194,18 +3002,6 @@ body.countdown-1-minute
         26px;
 
     background:
-
-        radial-gradient(
-            circle at 50% 20%,
-            rgba(
-                255,
-                255,
-                255,
-                0.9
-            ),
-            transparent 40%
-        ),
-
         linear-gradient(
             135deg,
             #f4ffff,
@@ -4222,16 +3018,75 @@ body.countdown-1-minute
             0.25
         );
 
+}
+
+
+/* ==========================================================================
+   FINAL GIFT LAYOUT
+========================================================================== */
+
+.gift-layout {
+
+    min-height:
+        100vh;
+
+    width:
+        100%;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    padding:
+        80px 30px;
+
     position:
         relative;
 
     overflow:
         hidden;
 
+    background:
+
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(
+                79,
+                255,
+                232,
+                0.18
+            ),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(
+                39,
+                217,
+                139,
+                0.12
+            ),
+            transparent 25%
+        ),
+
+        #050b0d;
+
 }
 
 
-.gift-card::before {
+.gift-layout::before {
 
     content:
         "";
@@ -4240,10 +3095,10 @@ body.countdown-1-minute
         absolute;
 
     width:
-        260px;
+        500px;
 
     height:
-        260px;
+        500px;
 
     border-radius:
         50%;
@@ -4253,59 +3108,25 @@ body.countdown-1-minute
             79,
             255,
             232,
-            0.14
+            0.05
         );
 
-    top:
-        -140px;
-
-    left:
-        -80px;
-
     filter:
-        blur(25px);
+        blur(60px);
+
+    pointer-events:
+        none;
 
 }
 
 
-.gift-card::after {
+.gift-layout .section-header {
 
-    content:
-        "";
+    margin:
+        0 0 25px;
 
-    position:
-        absolute;
-
-    width:
-        260px;
-
-    height:
-        260px;
-
-    border-radius:
-        50%;
-
-    background:
-        rgba(
-            39,
-            217,
-            139,
-            0.14
-        );
-
-    bottom:
-        -150px;
-
-    right:
-        -90px;
-
-    filter:
-        blur(25px);
-
-}
-
-
-.gift-card > * {
+    text-align:
+        center;
 
     position:
         relative;
@@ -4316,74 +3137,61 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
-   GIFT BUTTON
-========================================================= */
+.gift-layout img {
 
-.gift-button {
+    display:
+        block;
+
+    width:
+        min(
+            500px,
+            80vw
+        );
+
+    max-height:
+        55vh;
+
+    object-fit:
+        contain;
+
+    margin:
+        20px auto 30px;
 
     position:
         relative;
 
-    padding:
-        18px 32px;
+    z-index:
+        2;
+
+}
+
+
+.gift-layout p {
+
+    max-width:
+        650px;
 
     margin:
-        30px;
+        0 auto;
 
-    border:
-        none;
+    text-align:
+        center;
 
-    border-radius:
-        14px;
+    line-height:
+        1.6;
 
-    background:
-        linear-gradient(
-            135deg,
-            #23cfa0,
-            #39bfff,
-            #91ff78
-        );
+    position:
+        relative;
 
-    color:
-        white;
-
-    font-family:
-        var(--font-main);
-
-    font-size:
-        1rem;
-
-    font-weight:
-        700;
-
-    cursor:
-        pointer;
-
-    box-shadow:
-        0 15px 35px
-        rgba(
-            39,
-            217,
-            139,
-            0.25
-        );
+    z-index:
+        2;
 
 }
 
 
-.gift-button:hover {
-
-    transform:
-        translateY(-5px)
-        scale(1.04);
-
-}
-
-
-/* =========================================================
+/* ==========================================================================
    BLACK OUT
-========================================================= */
+========================================================================== */
 
 .black-out {
 
@@ -4443,9 +3251,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    RESTART
-========================================================= */
+========================================================================== */
 
 .restart-button {
 
@@ -4551,9 +3359,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
-   FOODIE ENDING
-========================================================= */
+/* ==========================================================================
+   FOODIE EMERGENCY
+========================================================================== */
 
 .foodie-ending-text {
 
@@ -4585,7 +3393,7 @@ body.countdown-1-minute
         auto;
 
     padding:
-        25px 25px 100px;
+        25px;
 
     text-align:
         center;
@@ -4595,11 +3403,6 @@ body.countdown-1-minute
 
     color:
         white;
-
-    animation:
-        foodieReveal
-        1s ease-out
-        forwards;
 
 }
 
@@ -4619,65 +3422,12 @@ body.countdown-1-minute
     color:
         var(--cyan);
 
-    text-shadow:
-        0 0 30px
-        rgba(
-            79,
-            255,
-            232,
-            0.3
-        );
-
 }
 
 
-.foodie-ending-text p {
-
-    color:
-        #e4f8f4;
-
-    line-height:
-        1.6;
-
-}
-
-
-@keyframes foodieReveal {
-
-    from {
-
-        opacity:
-            0;
-
-        transform:
-            translate(
-                -50%,
-                -46%
-            )
-            scale(0.96);
-
-    }
-
-    to {
-
-        opacity:
-            1;
-
-        transform:
-            translate(
-                -50%,
-                -50%
-            )
-            scale(1);
-
-    }
-
-}
-
-
-/* =========================================================
+/* ==========================================================================
    TOAST
-========================================================= */
+========================================================================== */
 
 .avigna-toast {
 
@@ -4694,20 +3444,11 @@ body.countdown-1-minute
         translateX(-50%);
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(
-                5,
-                18,
-                22,
-                0.94
-            ),
-            rgba(
-                5,
-                29,
-                27,
-                0.94
-            )
+        rgba(
+            5,
+            18,
+            22,
+            0.94
         );
 
     color:
@@ -4748,8 +3489,10 @@ body.countdown-1-minute
         none;
 
     transition:
-        opacity 0.6s ease,
-        transform 0.6s ease;
+        opacity
+        0.6s ease,
+        transform
+        0.6s ease;
 
 }
 
@@ -4766,9 +3509,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    FLOATING CAKES
-========================================================= */
+========================================================================== */
 
 .floating-cake {
 
@@ -4837,9 +3580,9 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
+/* ==========================================================================
    COUNTDOWN PARTY OBJECTS
-========================================================= */
+========================================================================== */
 
 .countdown-party-object {
 
@@ -4938,100 +3681,29 @@ body.countdown-1-minute
 }
 
 
-/* =========================================================
-   UTILITY
-========================================================= */
-
-.white {
-
-    color:
-        white;
-
-}
-
-
-.black {
-
-    color:
-        #061517;
-
-}
-
-
-.no-margin {
-
-    margin-bottom:
-        25px;
-
-}
-
-
-/* =========================================================
-   GRAIN
-========================================================= */
-
-.grain {
-
-    position:
-        fixed;
-
-    top:
-        0;
-
-    left:
-        0;
-
-    width:
-        100vw;
-
-    height:
-        100vh;
-
-    pointer-events:
-        none;
-
-    z-index:
-        9999;
-
-    opacity:
-        0.10;
-
-    mix-blend-mode:
-        screen;
-
-}
-
-
-.grain rect {
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    fill:
-        white;
-
-}
-
-
-/* =========================================================
-   PINK / PURPLE THEME
-   Activated with:
-   body.theme-pink
-========================================================= */
+/* ==========================================================================
+   PINK THEME
+========================================================================== */
 
 body.theme-pink {
 
-    --bg: #0b0810;
-    --bg-soft: #140d1b;
+    --bg:
+        #0b0810;
 
-    --text: #fff7fb;
-    --black: #08050a;
+    --bg-soft:
+        #140d1b;
 
-    --gray: #aaa0b2;
-    --light-gray: #eee4f2;
+    --text:
+        #fff7fb;
+
+    --black:
+        #08050a;
+
+    --gray:
+        #aaa0b2;
+
+    --light-gray:
+        #eee4f2;
 
     --border-gray:
         rgba(
@@ -5049,46 +3721,29 @@ body.theme-pink {
             0.15
         );
 
-    --blue: #8d7aff;
-    --electric-blue: #b58cff;
-    --cyan: #e18cff;
+    --blue:
+        #8d7aff;
 
-    --green: #ff73b5;
-    --emerald: #d34d91;
-    --forest: #67305e;
+    --electric-blue:
+        #b58cff;
 
-    --lime: #ffd86b;
+    --cyan:
+        #e18cff;
 
-    --dark-bar:
-        rgba(
-            255,
-            210,
-            235,
-            0.08
-        );
+    --green:
+        #ff73b5;
 
-    --glass:
-        rgba(
-            255,
-            170,
-            215,
-            0.045
-        );
+    --emerald:
+        #d34d91;
 
-    --glass-strong:
-        rgba(
-            255,
-            170,
-            215,
-            0.09
-        );
+    --forest:
+        #67305e;
+
+    --lime:
+        #ffd86b;
 
 }
 
-
-/* =========================================================
-   PINK BODY
-========================================================= */
 
 body.theme-pink {
 
@@ -5116,33 +3771,21 @@ body.theme-pink {
             transparent 25%
         ),
 
-        radial-gradient(
-            circle at 50% 90%,
-            rgba(
-                255,
-                142,
-                201,
-                0.08
-            ),
-            transparent 30%
-        ),
-
         #0b0810;
 
 }
 
 
-/* =========================================================
+/* ==========================================================================
    PINK COUNTDOWN
-========================================================= */
+========================================================================== */
 
 body.theme-pink
 #birthday-lock-screen {
 
     background:
-
         radial-gradient(
-            circle at center,
+            circle,
             rgba(
                 255,
                 111,
@@ -5154,91 +3797,6 @@ body.theme-pink
 
 }
 
-
-body.theme-pink
-.countdown-eyebrow {
-
-    color:
-        #a992af;
-
-}
-
-
-body.theme-pink
-.countdown-title {
-
-    color:
-        #fff7fb;
-
-}
-
-
-body.theme-pink
-.countdown-subtitle {
-
-    color:
-        #a999b2;
-
-}
-
-
-body.theme-pink
-.countdown-subtitle strong {
-
-    color:
-        #ff83bb;
-
-    text-shadow:
-        0 0 18px
-        rgba(
-            255,
-            111,
-            174,
-            0.4
-        );
-
-}
-
-
-body.theme-pink
-.countdown-number {
-
-    color:
-        #fff4fa;
-
-}
-
-
-body.theme-pink
-.countdown-colon {
-
-    color:
-        #ff78b7;
-
-    text-shadow:
-        0 0 18px
-        rgba(
-            255,
-            111,
-            174,
-            0.45
-        );
-
-}
-
-
-body.theme-pink
-.countdown-status {
-
-    color:
-        #ff82bd;
-
-}
-
-
-/* =========================================================
-   PINK COUNTDOWN STAGES
-========================================================= */
 
 body.theme-pink.countdown-3-hours
 #birthday-lock-screen {
@@ -5348,28 +3906,6 @@ body.theme-pink.countdown-1-minute
     background:
 
         radial-gradient(
-            circle at 20% 30%,
-            rgba(
-                181,
-                108,
-                255,
-                0.18
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
-            circle at 80% 70%,
-            rgba(
-                255,
-                111,
-                174,
-                0.22
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
             circle,
             rgba(
                 255,
@@ -5383,29 +3919,9 @@ body.theme-pink.countdown-1-minute
 }
 
 
-body.theme-pink.countdown-1-minute
-.countdown-number {
-
-    color:
-        #ffd96e;
-
-    text-shadow:
-
-        0 0 25px
-        #ff7ab5,
-
-        0 0 55px
-        #b77cff,
-
-        0 0 110px
-        #ffd96e;
-
-}
-
-
-/* =========================================================
-   PINK HERO
-========================================================= */
+/* ==========================================================================
+   PINK PAGE
+========================================================================== */
 
 body.theme-pink
 .hero {
@@ -5434,27 +3950,7 @@ body.theme-pink
             transparent 25%
         ),
 
-        radial-gradient(
-            circle at 65% 90%,
-            rgba(
-                255,
-                190,
-                100,
-                0.08
-            ),
-            transparent 20%
-        ),
-
         #100b17;
-
-}
-
-
-body.theme-pink
-.hero-title span:nth-child(1) {
-
-    color:
-        #fffaff;
 
 }
 
@@ -5465,15 +3961,6 @@ body.theme-pink
     color:
         #ff79b5;
 
-    text-shadow:
-        0 0 45px
-        rgba(
-            255,
-            111,
-            174,
-            0.24
-        );
-
 }
 
 
@@ -5483,92 +3970,13 @@ body.theme-pink
     color:
         #d7ff72;
 
-    text-shadow:
-        0 0 45px
-        rgba(
-            215,
-            255,
-            114,
-            0.18
-        );
-
 }
 
-
-body.theme-pink
-.eyebrow {
-
-    color:
-        #d39cff;
-
-}
-
-
-body.theme-pink
-.hero-subtitle {
-
-    color:
-        #d4c5d9;
-
-}
-
-
-/* =========================================================
-   PINK BUTTON
-========================================================= */
-
-body.theme-pink
-.button {
-
-    background:
-        linear-gradient(
-            135deg,
-            #fffaff,
-            #f4e7ff
-        );
-
-    color:
-        #160d1d;
-
-}
-
-
-body.theme-pink
-.button:hover {
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff7db8,
-            #c795ff
-        );
-
-    color:
-        white;
-
-}
-
-
-/* =========================================================
-   PINK INTRO
-========================================================= */
 
 body.theme-pink
 .intro {
 
     background:
-
-        radial-gradient(
-            circle at 90% 20%,
-            rgba(
-                157,
-                124,
-                255,
-                0.11
-            ),
-            transparent 25%
-        ),
-
         #100b17;
 
 }
@@ -5597,37 +4005,10 @@ body.theme-pink
 }
 
 
-/* =========================================================
-   PINK QUOTE
-========================================================= */
-
 body.theme-pink
 .trust-text {
 
     background:
-
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(
-                255,
-                111,
-                174,
-                0.20
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 80% 75%,
-            rgba(
-                157,
-                124,
-                255,
-                0.20
-            ),
-            transparent 24%
-        ),
-
         linear-gradient(
             135deg,
             #fff2f8,
@@ -5639,114 +4020,18 @@ body.theme-pink
 
 
 body.theme-pink
-.quote {
-
-    color:
-        #16101b;
-
-}
-
-
-body.theme-pink
-.quote-mark {
-
-    color:
-        #ff579e;
-
-}
-
-
-body.theme-pink
-.quote-maker {
-
-    color:
-        #625468;
-
-}
-
-
-/* =========================================================
-   PINK STATS
-========================================================= */
-
-body.theme-pink
 .stats {
 
     background:
-
-        radial-gradient(
-            circle at 10% 20%,
-            rgba(
-                255,
-                111,
-                174,
-                0.08
-            ),
-            transparent 20%
-        ),
-
-        radial-gradient(
-            circle at 90% 80%,
-            rgba(
-                157,
-                124,
-                255,
-                0.09
-            ),
-            transparent 20%
-        ),
-
         #100b17;
 
 }
 
 
 body.theme-pink
-.bar span {
-
-    background:
-        linear-gradient(
-            90deg,
-            #ff5da7,
-            #a97cff,
-            #ff88c2,
-            #d7ff72
-        );
-
-}
-
-
-/* =========================================================
-   PINK HOBBIES
-========================================================= */
-
-body.theme-pink
 .hobbies {
 
     background:
-
-        radial-gradient(
-            circle at 10% 15%,
-            rgba(
-                255,
-                111,
-                174,
-                0.13
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 90% 80%,
-            rgba(
-                157,
-                124,
-                255,
-                0.13
-            ),
-            transparent 24%
-        ),
-
         linear-gradient(
             135deg,
             #160c1d,
@@ -5796,217 +4081,9 @@ body.theme-pink
 
 
 body.theme-pink
-.dance::after {
-
-    background:
-        #ff6fae;
-
-}
-
-
-body.theme-pink
-.movies::after {
-
-    background:
-        #ffad70;
-
-}
-
-
-body.theme-pink
-.books::after {
-
-    background:
-        #9d7cff;
-
-}
-
-
-/* =========================================================
-   PINK CHAT
-========================================================= */
-
-body.theme-pink
-.chat-section {
-
-    background:
-
-        radial-gradient(
-            circle at 10% 20%,
-            rgba(
-                255,
-                111,
-                174,
-                0.23
-            ),
-            transparent 25%
-        ),
-
-        radial-gradient(
-            circle at 90% 80%,
-            rgba(
-                255,
-                215,
-                109,
-                0.17
-            ),
-            transparent 24%
-        ),
-
-        linear-gradient(
-            135deg,
-            #ff6e82,
-            #ff9b70
-        );
-
-}
-
-
-/* =========================================================
-   PINK FOOD
-========================================================= */
-
-body.theme-pink
-.eat-section {
-
-    background:
-
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(
-                255,
-                111,
-                174,
-                0.08
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 85% 75%,
-            rgba(
-                157,
-                124,
-                255,
-                0.08
-            ),
-            transparent 20%
-        ),
-
-        #100b14;
-
-}
-
-
-body.theme-pink
-.food-card:hover {
-
-    border-color:
-        rgba(
-            255,
-            111,
-            174,
-            0.40
-        );
-
-}
-
-
-body.theme-pink
-.food-button {
-
-    background:
-        linear-gradient(
-            135deg,
-            #fff5d7,
-            #ffd5e7
-        );
-
-    color:
-        #25131d;
-
-}
-
-
-/* =========================================================
-   PINK MESSAGE
-========================================================= */
-
-body.theme-pink
-.ending {
-
-    background:
-
-        radial-gradient(
-            circle at 80% 20%,
-            rgba(
-                157,
-                124,
-                255,
-                0.12
-            ),
-            transparent 22%
-        ),
-
-        #100b17;
-
-}
-
-
-body.theme-pink
-.message-area {
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(
-                255,
-                255,
-                255,
-                0.055
-            ),
-            rgba(
-                255,
-                111,
-                174,
-                0.025
-            )
-        );
-
-}
-
-
-/* =========================================================
-   PINK SHOP
-========================================================= */
-
-body.theme-pink
 .shop-section {
 
     background:
-
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(
-                255,
-                111,
-                174,
-                0.22
-            ),
-            transparent 23%
-        ),
-
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(
-                157,
-                124,
-                255,
-                0.20
-            ),
-            transparent 23%
-        ),
-
         linear-gradient(
             135deg,
             #ffe1eb,
@@ -6018,81 +4095,14 @@ body.theme-pink
 
 
 body.theme-pink
-.shop-button {
-
-    background:
-        linear-gradient(
-            135deg,
-            #ff416c,
-            #d936ff,
-            #7c4dff
-        );
-
-}
-
-
-/* =========================================================
-   PINK GIFT
-========================================================= */
-
-body.theme-pink
 .gift-section {
 
     background:
-
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(
-                255,
-                111,
-                174,
-                0.25
-            ),
-            transparent 22%
-        ),
-
-        radial-gradient(
-            circle at 85% 85%,
-            rgba(
-                157,
-                124,
-                255,
-                0.20
-            ),
-            transparent 22%
-        ),
-
         linear-gradient(
             135deg,
             #fff0f6,
             #ffddeb,
             #e9deff
-        );
-
-}
-
-
-body.theme-pink
-.gift-card {
-
-    background:
-
-        radial-gradient(
-            circle at 50% 20%,
-            rgba(
-                255,
-                255,
-                255,
-                0.92
-            ),
-            transparent 40%
-        ),
-
-        linear-gradient(
-            135deg,
-            #fff8fc,
-            #ffe9f3,
-            #f0e8ff
         );
 
 }
@@ -6112,10 +4122,6 @@ body.theme-pink
 }
 
 
-/* =========================================================
-   PINK RESTART
-========================================================= */
-
 body.theme-pink
 .restart-button {
 
@@ -6130,68 +4136,9 @@ body.theme-pink
 }
 
 
-/* =========================================================
-   PINK TOAST
-========================================================= */
-
-body.theme-pink
-.avigna-toast {
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(
-                25,
-                8,
-                24,
-                0.95
-            ),
-            rgba(
-                36,
-                15,
-                40,
-                0.95
-            )
-        );
-
-    color:
-        #ff83bc;
-
-}
-
-
-/* =========================================================
-   PINK THEME SWITCH
-========================================================= */
-
-body.theme-pink
-.theme-switch {
-
-    background:
-        rgba(
-            25,
-            8,
-            24,
-            0.82
-        );
-
-    color:
-        #ff83bc;
-
-    border-color:
-        rgba(
-            255,
-            130,
-            188,
-            0.20
-        );
-
-}
-
-
-/* =========================================================
-   RESPONSIVE — TABLET
-========================================================= */
+/* ==========================================================================
+   RESPONSIVE
+========================================================================== */
 
 @media (max-width: 1024px) {
 
@@ -6224,12 +4171,6 @@ body.theme-pink
 
         gap:
             40px;
-
-        padding-top:
-            70px;
-
-        padding-bottom:
-            100px;
 
     }
 
@@ -6280,10 +4221,6 @@ body.theme-pink
 
 }
 
-
-/* =========================================================
-   RESPONSIVE — MOBILE
-========================================================= */
 
 @media (max-width: 900px) {
 
@@ -6512,26 +4449,6 @@ body.theme-pink
     }
 
 
-    .no-cinema-button {
-
-        right:
-            16px;
-
-        bottom:
-            16px;
-
-        width:
-            auto;
-
-        padding:
-            14px 22px;
-
-        font-size:
-            0.9rem;
-
-    }
-
-
     .poem-overlay {
 
         padding:
@@ -6554,8 +4471,6 @@ body.theme-pink
     }
 
 
-    /* COUNTDOWN */
-
     .countdown-container {
 
         width:
@@ -6563,17 +4478,6 @@ body.theme-pink
 
         padding:
             20px 5px;
-
-    }
-
-
-    .countdown-eyebrow {
-
-        font-size:
-            0.65rem;
-
-        margin-bottom:
-            20px;
 
     }
 
@@ -6642,36 +4546,32 @@ body.theme-pink
         font-size:
             1.5rem;
 
-        transform:
-            translateY(-8px);
+    }
+
+
+    .gift-layout {
+
+        padding:
+            50px 20px;
 
     }
 
 
-    .countdown-status {
+    .gift-layout img {
 
-        margin-top:
-            40px;
+        width:
+            min(
+                420px,
+                90vw
+            );
 
-        font-size:
-            0.65rem;
-
-    }
-
-
-    .countdown-party-object {
-
-        z-index:
-            19999;
+        max-height:
+            50vh;
 
     }
 
 }
 
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
 
 @media (max-width: 380px) {
 
@@ -6713,9 +4613,6 @@ body.theme-pink
         font-size:
             1.9rem;
 
-        word-spacing:
-            2px;
-
     }
 
 
@@ -6731,50 +4628,6 @@ body.theme-pink
 
         font-size:
             0.8rem;
-
-        padding-bottom:
-            20px;
-
-    }
-
-
-    .stat-top {
-
-        font-size:
-            0.8rem;
-
-    }
-
-
-    .description-big {
-
-        font-size:
-            16px;
-
-    }
-
-
-    .food-card {
-
-        height:
-            auto;
-
-        min-height:
-            220px;
-
-        padding:
-            12px;
-
-    }
-
-
-    .mute-btn {
-
-        font-size:
-            0.85rem;
-
-        padding:
-            5px 10px;
 
     }
 
