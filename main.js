@@ -1,70 +1,75 @@
 /* ==========================================================================
-
-   BIRTHDAY WEBSITE — JAVASCRIPT CODE MAP
-
-   Use CTRL + F to quickly find any feature.
-
-   --------------------------------------------------------------------------
+   JAVASCRIPT CODE MAP
 
    [COUNTDOWN + LOCK]
-   Controls the birthday countdown and website lock.
+   Birthday countdown and website lock.
+
+   [IST TIME]
+   Forces the birthday target to use India Standard Time.
 
    [THEME SWITCH]
-   Switches between BLUE/GREEN and PINK/PURPLE themes.
+   Blue/green ↔ pink/purple.
 
    [COUNTDOWN EFFECTS]
-   3 HOURS → 2 HOURS → 1 HOUR → 30 MIN → 10 MIN → 1 MIN
+   3 hours → 2 hours → 1 hour → 30 minutes → 10 minutes → 1 minute.
 
    [COUNTDOWN PARTIES]
    10-minute confetti.
    1-minute confetti + balloons/cakes.
 
+   [ELEMENT REFERENCES]
+   Gets all important HTML elements.
+
+   [GAME VARIABLES]
+   Money, hunger, shop unlocks and Easter egg states.
+
    [AUDIO]
-   Background music, birthday music, dance music and click sounds.
+   Background, birthday, dance and click sounds.
 
    [MONEY]
-   Automatically generates money.
+   Automatic money generation.
 
    [HUNGER]
-   Hunger increases over time and causes blur.
+   Hunger + blur.
+
+   [SCROLL]
+   Scroll progress bar.
 
    [CHAT]
-   Hidden conversation unlocked from the shop.
+   Hidden conversation.
 
    [FOOD]
-   Restaurant system and hunger reduction.
+   Restaurant system.
 
    [FOODIE EMERGENCY]
-   Secret ending after enough food is purchased.
+   Secret food ending.
 
    [SHOP]
-   Conversation, message and blur upgrades.
+   Hidden feature shop.
 
    [GIFT]
    Final birthday gift.
 
    [HOBBY EASTER EGGS]
-   Dancing, movies and books.
+   Dance / Movies / Books.
 
    [TYPING SECRETS]
-   "avigna"
-   "secret"
-   "cake"
+   avigna / secret / cake.
 
-   [KONAMI CODE]
+   [KONAMI]
    ↑ ↑ ↓ ↓ ← → ← → B A
 
-   [IDLE NUDGE]
-   Messages after inactivity.
+   [IDLE]
+   Inactivity messages.
 
    [SECRET LOGO]
-   Click A. five times.
+   Five clicks on A.
 
    ========================================================================== */
 
 
 /* ==========================================================================
-   GLOBAL SETTINGS
+   GLOBAL
 ========================================================================== */
 
 window.history.scrollRestoration =
@@ -72,13 +77,8 @@ window.history.scrollRestoration =
 
 
 /* ==========================================================================
-   BIRTHDAY COUNTDOWN + LOCK SYSTEM
-========================================================================== */
-
-
-/* =========================================
    COUNTDOWN ELEMENTS
-========================================= */
+========================================================================== */
 
 const lockScreen =
     document.getElementById(
@@ -120,37 +120,15 @@ let birthdayCountdownInterval =
     null;
 
 
-/* =========================================
-   COUNTDOWN EFFECT VARIABLES
-========================================= */
-
-let countdownEffectStage =
-    "normal";
-
-
-let tenMinutePartyStarted =
-    false;
-
-
-let oneMinutePartyStarted =
-    false;
-
-
-/* =========================================
-   INDIA TIME HELPERS
-========================================= */
+/* ==========================================================================
+   IST TIME
+========================================================================== */
 
 /*
-    IMPORTANT:
+    The countdown is based on Asia/Kolkata.
 
-    The countdown uses IST.
-
-    IST =
-    Asia/Kolkata =
-    UTC + 5:30
-
-    This prevents a friend's device timezone
-    from changing the countdown.
+    This means the visitor's device timezone
+    cannot shift the birthday countdown.
 */
 
 function getIndiaDateParts() {
@@ -249,9 +227,9 @@ function getIndiaDateParts() {
 }
 
 
-/* =========================================
-   GET NEXT BIRTHDAY
-========================================= */
+/* ==========================================================================
+   BIRTHDAY TARGET
+========================================================================== */
 
 function getBirthdayTarget() {
 
@@ -260,7 +238,7 @@ function getBirthdayTarget() {
 
 
     /*
-        Birthday:
+        Birthday unlock:
 
         29 August
         12:00 AM IST
@@ -269,9 +247,9 @@ function getBirthdayTarget() {
 
         Therefore:
 
-        29 Aug 00:00 IST
+        29 August 00:00 IST
         =
-        28 Aug 18:30 UTC
+        28 August 18:30 UTC
     */
 
     let target =
@@ -289,9 +267,8 @@ function getBirthdayTarget() {
 
 
     /*
-        Once August 29 has started
-        in India, the next birthday is
-        next year's August 29.
+        Once August 29 has begun
+        in India, target next year.
     */
 
     if (
@@ -320,9 +297,9 @@ function getBirthdayTarget() {
 }
 
 
-/* =========================================
+/* ==========================================================================
    CHECK BIRTHDAY
-========================================= */
+========================================================================== */
 
 function isBirthdayToday() {
 
@@ -338,9 +315,9 @@ function isBirthdayToday() {
 }
 
 
-/* =========================================
+/* ==========================================================================
    FORMAT NUMBER
-========================================= */
+========================================================================== */
 
 function formatNumber(
     number
@@ -356,9 +333,25 @@ function formatNumber(
 }
 
 
-/* =========================================
-   RESET COUNTDOWN EFFECTS
-========================================= */
+/* ==========================================================================
+   COUNTDOWN EFFECT STATE
+========================================================================== */
+
+let countdownEffectStage =
+    "normal";
+
+
+let tenMinutePartyStarted =
+    false;
+
+
+let oneMinutePartyStarted =
+    false;
+
+
+/* ==========================================================================
+   RESET COUNTDOWN CSS CLASSES
+========================================================================== */
 
 function resetCountdownEffectClasses() {
 
@@ -383,9 +376,9 @@ function resetCountdownEffectClasses() {
 }
 
 
-/* =========================================
+/* ==========================================================================
    COUNTDOWN EFFECT SYSTEM
-========================================= */
+========================================================================== */
 
 function updateCountdownEffects(
     totalSeconds
@@ -394,10 +387,6 @@ function updateCountdownEffects(
     let newStage =
         "normal";
 
-
-    /*
-        1 MINUTE
-    */
 
     if (
         totalSeconds <= 60
@@ -408,11 +397,6 @@ function updateCountdownEffects(
 
     }
 
-
-    /*
-        10 MINUTES
-    */
-
     else if (
         totalSeconds <= 600
     ) {
@@ -421,11 +405,6 @@ function updateCountdownEffects(
             "10-minutes";
 
     }
-
-
-    /*
-        30 MINUTES
-    */
 
     else if (
         totalSeconds <= 1800
@@ -436,11 +415,6 @@ function updateCountdownEffects(
 
     }
 
-
-    /*
-        1 HOUR
-    */
-
     else if (
         totalSeconds <= 3600
     ) {
@@ -449,11 +423,6 @@ function updateCountdownEffects(
             "1-hour";
 
     }
-
-
-    /*
-        2 HOURS
-    */
 
     else if (
         totalSeconds <= 7200
@@ -464,11 +433,6 @@ function updateCountdownEffects(
 
     }
 
-
-    /*
-        3 HOURS
-    */
-
     else if (
         totalSeconds <= 10800
     ) {
@@ -478,11 +442,6 @@ function updateCountdownEffects(
 
     }
 
-
-    /*
-        Apply CSS stage class
-        only when the stage changes.
-    */
 
     if (
         newStage !==
@@ -504,9 +463,9 @@ function updateCountdownEffects(
     }
 
 
-    /*
-        10-MINUTE CELEBRATION
-    */
+    /* =====================================
+       10 MINUTE PARTY
+    ====================================== */
 
     if (
         totalSeconds <= 600 &&
@@ -522,9 +481,9 @@ function updateCountdownEffects(
     }
 
 
-    /*
-        1-MINUTE CELEBRATION
-    */
+    /* =====================================
+       1 MINUTE PARTY
+    ====================================== */
 
     if (
         totalSeconds <= 60 &&
@@ -542,9 +501,9 @@ function updateCountdownEffects(
 }
 
 
-/* =========================================
+/* ==========================================================================
    UPDATE COUNTDOWN
-========================================= */
+========================================================================== */
 
 function updateBirthdayCountdown() {
 
@@ -554,11 +513,6 @@ function updateBirthdayCountdown() {
 
     }
 
-
-    /*
-        If August 29 has begun
-        in India, unlock immediately.
-    */
 
     if (
         isBirthdayToday()
@@ -603,46 +557,34 @@ function updateBirthdayCountdown() {
 
     const days =
         Math.floor(
-            totalSeconds /
-            86400
+            totalSeconds / 86400
         );
 
 
     const hours =
         Math.floor(
             (
-                totalSeconds %
-                86400
-            ) /
-            3600
+                totalSeconds % 86400
+            ) / 3600
         );
 
 
     const minutes =
         Math.floor(
             (
-                totalSeconds %
-                3600
-            ) /
-            60
+                totalSeconds % 3600
+            ) / 60
         );
 
 
     const seconds =
-        totalSeconds %
-        60;
+        totalSeconds % 60;
 
-
-    /* =====================================
-       UPDATE DISPLAY
-    ====================================== */
 
     if (countdownDays) {
 
         countdownDays.textContent =
-            formatNumber(
-                days
-            );
+            formatNumber(days);
 
     }
 
@@ -650,9 +592,7 @@ function updateBirthdayCountdown() {
     if (countdownHours) {
 
         countdownHours.textContent =
-            formatNumber(
-                hours
-            );
+            formatNumber(hours);
 
     }
 
@@ -660,9 +600,7 @@ function updateBirthdayCountdown() {
     if (countdownMinutes) {
 
         countdownMinutes.textContent =
-            formatNumber(
-                minutes
-            );
+            formatNumber(minutes);
 
     }
 
@@ -670,9 +608,7 @@ function updateBirthdayCountdown() {
     if (countdownSeconds) {
 
         countdownSeconds.textContent =
-            formatNumber(
-                seconds
-            );
+            formatNumber(seconds);
 
     }
 
@@ -685,10 +621,6 @@ function updateBirthdayCountdown() {
     }
 
 
-    /* =====================================
-       UPDATE VISUAL EFFECT
-    ====================================== */
-
     updateCountdownEffects(
         totalSeconds
     );
@@ -696,9 +628,9 @@ function updateBirthdayCountdown() {
 }
 
 
-/* =========================================
+/* ==========================================================================
    UNLOCK WEBSITE
-========================================= */
+========================================================================== */
 
 function unlockBirthdayWebsite() {
 
@@ -754,22 +686,11 @@ function unlockBirthdayWebsite() {
 }
 
 
-/* =========================================
+/* ==========================================================================
    INITIALIZE BIRTHDAY LOCK
-========================================= */
+========================================================================== */
 
 function initializeBirthdayLock() {
-
-    /*
-        BEFORE AUGUST 29 IST:
-        Countdown screen.
-
-        ON AUGUST 29 IST:
-        Website opens.
-
-        AFTER AUGUST 29:
-        Next year's birthday is used.
-    */
 
     if (
         isBirthdayToday()
@@ -831,11 +752,6 @@ initializeBirthdayLock();
    THEME SWITCH
 ========================================================================== */
 
-
-/* =========================================
-   THEME ELEMENTS
-========================================= */
-
 const themeSwitch =
     document.getElementById(
         "theme-switch"
@@ -853,10 +769,6 @@ const themeIcon =
         "theme-icon"
     );
 
-
-/* =========================================
-   UPDATE THEME BUTTON
-========================================= */
 
 function updateThemeButton() {
 
@@ -900,10 +812,6 @@ function updateThemeButton() {
 }
 
 
-/* =========================================
-   TOGGLE THEME
-========================================= */
-
 function toggleTheme() {
 
     document.body.classList.toggle(
@@ -930,10 +838,6 @@ function toggleTheme() {
 }
 
 
-/* =========================================
-   THEME BUTTON CLICK
-========================================= */
-
 if (themeSwitch) {
 
     themeSwitch.addEventListener(
@@ -948,10 +852,6 @@ if (themeSwitch) {
 }
 
 
-/* =========================================
-   LOAD SAVED THEME
-========================================= */
-
 function initializeTheme() {
 
     const savedTheme =
@@ -961,19 +861,10 @@ function initializeTheme() {
 
 
     if (
-        savedTheme ===
-        "pink"
+        savedTheme === "pink"
     ) {
 
         document.body.classList.add(
-            "theme-pink"
-        );
-
-    }
-
-    else {
-
-        document.body.classList.remove(
             "theme-pink"
         );
 
@@ -1004,10 +895,6 @@ function triggerTenMinuteParty() {
     }
 
 
-    /* =====================================
-       MAIN BURST
-    ====================================== */
-
     confetti({
 
         particleCount:
@@ -1037,10 +924,6 @@ function triggerTenMinuteParty() {
 
     });
 
-
-    /* =====================================
-       SIDE BURSTS
-    ====================================== */
 
     let bursts =
         0;
@@ -1111,8 +994,7 @@ function triggerTenMinuteParty() {
 
 
                 if (
-                    bursts >=
-                    15
+                    bursts >= 15
                 ) {
 
                     clearInterval(
@@ -1138,10 +1020,6 @@ function triggerOneMinuteParty() {
         typeof confetti ===
         "function"
     ) {
-
-        /* =================================
-           HUGE CENTER BURST
-        ================================== */
 
         confetti({
 
@@ -1173,10 +1051,6 @@ function triggerOneMinuteParty() {
         });
 
 
-        /* =================================
-           LEFT CANNON
-        ================================== */
-
         confetti({
 
             particleCount:
@@ -1206,10 +1080,6 @@ function triggerOneMinuteParty() {
 
         });
 
-
-        /* =================================
-           RIGHT CANNON
-        ================================== */
 
         confetti({
 
@@ -1286,10 +1156,6 @@ function startCountdownPartyObjects() {
 }
 
 
-/* =========================================
-   CREATE PARTY OBJECT
-========================================= */
-
 function createCountdownPartyObject() {
 
     const object =
@@ -1301,11 +1167,6 @@ function createCountdownPartyObject() {
     object.className =
         "countdown-party-object";
 
-
-    /*
-        55% balloon.
-        45% cake.
-    */
 
     const isBalloon =
         Math.random() <
@@ -1381,7 +1242,7 @@ function createCountdownPartyObject() {
 
 
 /* ==========================================================================
-   ALWAYS START AT HERO
+   HERO POSITION
 ========================================================================== */
 
 window.addEventListener(
@@ -1506,7 +1367,7 @@ const secretLogo =
 
 
 /* ==========================================================================
-   GAME STATE VARIABLES
+   GAME VARIABLES
 ========================================================================== */
 
 let msgIndex =
@@ -1593,13 +1454,8 @@ let idleNudgeCount =
 
 
 /* ==========================================================================
-   AUDIO SYSTEM
+   AUDIO
 ========================================================================== */
-
-
-/* =========================================
-   CLICK SOUND
-========================================= */
 
 function playClick() {
 
@@ -1631,10 +1487,6 @@ function playClick() {
 
 }
 
-
-/* =========================================
-   BACKGROUND MUSIC
-========================================= */
 
 function startBackgroundAudio() {
 
@@ -1686,9 +1538,9 @@ document.addEventListener(
 );
 
 
-/* =========================================
-   DANCE AUDIO FINISHED
-========================================= */
+/* ==========================================================================
+   SPECIAL AUDIO FINISHED
+========================================================================== */
 
 if (danceAudio) {
 
@@ -1716,10 +1568,6 @@ if (danceAudio) {
 
 }
 
-
-/* =========================================
-   BIRTHDAY AUDIO FINISHED
-========================================= */
 
 if (bdayAudio) {
 
@@ -1765,11 +1613,8 @@ if (muteBtn) {
             const audioElements = [
 
                 backgroundAudio,
-
                 bdayAudio,
-
                 danceAudio,
-
                 clickAudio
 
             ];
@@ -1846,7 +1691,7 @@ function updatePageFilter() {
 
 
 /* ==========================================================================
-   MONEY DISPLAY
+   MONEY
 ========================================================================== */
 
 function refreshMoneyDisplay() {
@@ -1884,8 +1729,53 @@ function refreshMoneyDisplay() {
 }
 
 
+function updatemoney() {
+
+    if (
+        !document.body.classList.contains(
+            "birthday-unlocked"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    money +=
+        25;
+
+
+    refreshMoneyDisplay();
+
+}
+
+
+function reducemoney(
+    price
+) {
+
+    money -=
+        price;
+
+
+    if (
+        money < 0
+    ) {
+
+        money =
+            0;
+
+    }
+
+
+    refreshMoneyDisplay();
+
+}
+
+
 /* ==========================================================================
-   HUNGER DISPLAY
+   HUNGER
 ========================================================================== */
 
 function refreshHungerDisplay() {
@@ -1921,63 +1811,6 @@ function refreshHungerDisplay() {
 }
 
 
-/* ==========================================================================
-   MONEY SYSTEM
-========================================================================== */
-
-function updatemoney() {
-
-    if (
-        !document.body.classList.contains(
-            "birthday-unlocked"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    money +=
-        25;
-
-
-    refreshMoneyDisplay();
-
-}
-
-
-/* =========================================
-   REDUCE MONEY
-========================================= */
-
-function reducemoney(
-    price
-) {
-
-    money -=
-        price;
-
-
-    if (
-        money < 0
-    ) {
-
-        money =
-            0;
-
-    }
-
-
-    refreshMoneyDisplay();
-
-}
-
-
-/* ==========================================================================
-   HUNGER SYSTEM
-========================================================================== */
-
 function hungerUpdate() {
 
     if (
@@ -1992,7 +1825,8 @@ function hungerUpdate() {
 
 
     if (
-        hungerPercent < 100
+        hungerPercent <
+        100
     ) {
 
         hungerPercent +=
@@ -2007,10 +1841,6 @@ function hungerUpdate() {
 
 }
 
-
-/* ==========================================================================
-   AUTOMATIC TIMERS
-========================================================================== */
 
 const hungerInterval =
     setInterval(
@@ -2050,10 +1880,12 @@ function updateScrollProgress() {
 
     const percent =
         documentHeight > 0
+
             ? (
                 scrollTop /
                 documentHeight
             ) * 100
+
             : 0;
 
 
@@ -2091,9 +1923,7 @@ document.addEventListener(
     "visibilitychange",
     function () {
 
-        if (
-            document.hidden
-        ) {
+        if (document.hidden) {
 
             document.title =
                 "come back pleamseee 🥺";
@@ -2112,7 +1942,7 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   CHAT SYSTEM
+   CHAT
 ========================================================================== */
 
 const messages = [
@@ -2217,7 +2047,9 @@ if (nextMsg) {
             playClick();
 
 
-            if (!boughtConvo) {
+            if (
+                !boughtConvo
+            ) {
 
                 return;
 
@@ -2275,7 +2107,7 @@ if (nextMsg) {
 
 
 /* ==========================================================================
-   FOOD / RESTAURANT
+   FOOD
 ========================================================================== */
 
 foodButtons.forEach(
@@ -2319,7 +2151,8 @@ foodButtons.forEach(
 
 
                 if (
-                    foodBought > 45 &&
+                    foodBought >
+                    45 &&
                     !warningGiven
                 ) {
 
@@ -2339,7 +2172,8 @@ foodButtons.forEach(
 
 
                 if (
-                    hungerPercent < 0
+                    hungerPercent <
+                    0
                 ) {
 
                     hungerPercent =
@@ -2350,11 +2184,13 @@ foodButtons.forEach(
 
                 refreshHungerDisplay();
 
+
                 updatePageFilter();
 
 
                 if (
-                    foodBought >= 25
+                    foodBought >=
+                    25
                 ) {
 
                     activateFoodieEnding();
@@ -2369,7 +2205,7 @@ foodButtons.forEach(
 
 
 /* ==========================================================================
-   FOODIE EMERGENCY ENDING
+   FOODIE EMERGENCY
 ========================================================================== */
 
 function activateFoodieEnding() {
@@ -2488,11 +2324,13 @@ function activateFoodieEnding() {
 
 
         <p>
+
             <strong>
                 <em>
                     SECRET ENDING UNLOCKED 💀
                 </em>
             </strong>
+
         </p>
 
 
@@ -2572,7 +2410,7 @@ function createRestartButton() {
 
 
 /* ==========================================================================
-   SHOP SYSTEM
+   SHOP
 ========================================================================== */
 
 shopButtons.forEach(
@@ -2642,10 +2480,6 @@ shopButtons.forEach(
                 );
 
 
-                /* =================================
-                   CONVERSATION
-                ================================== */
-
                 if (
                     unlock ===
                     "conversation"
@@ -2670,10 +2504,6 @@ shopButtons.forEach(
 
                 }
 
-
-                /* =================================
-                   MESSAGE
-                ================================== */
 
                 if (
                     unlock ===
@@ -2702,11 +2532,6 @@ shopButtons.forEach(
                             "message-animation"
                         );
 
-                        /*
-                            Your CSS can use
-                            .message-animation
-                            to reveal the message.
-                        */
 
                         message.style.opacity =
                             "1";
@@ -2723,10 +2548,6 @@ shopButtons.forEach(
 
                 }
 
-
-                /* =================================
-                   REMOVE BLUR
-                ================================== */
 
                 if (
                     unlock ===
@@ -2838,21 +2659,36 @@ if (bdayBtn) {
             }
 
 
+            /*
+                Apply the dedicated final-gift layout.
+            */
+
             pageContent.classList.add(
                 "gift-layout"
             );
 
 
+            /*
+                Remove any existing hunger/movie
+                filters so the final gift is clear.
+            */
+
+            pageContent.style.filter =
+                "none";
+
+
             pageContent.innerHTML = `
 
                 <h2 class="section-header white appear">
-                    Gift Unlocked
+
+                    Gift Unlocked 🎁
+
                 </h2>
 
 
                 <img
                     src="image/Screenshot 2026-08-19 181429.png"
-                    alt="bday cake"
+                    alt="Birthday cake"
                     class="appear"
                 >
 
@@ -2867,6 +2703,9 @@ if (bdayBtn) {
             `;
 
 
+            playClick();
+
+
             if (blackOut) {
 
                 blackOut.classList.add(
@@ -2874,9 +2713,6 @@ if (bdayBtn) {
                 );
 
             }
-
-
-            playClick();
 
 
             if (backgroundAudio) {
@@ -3553,57 +3389,71 @@ function showBirthdayPoem() {
         <div class="poem-text">
 
             <p>
-                Today, <br> <br>
+
+                Today, <br><br>
 
                 In the dead of night, fireworks blossom like tiny stars.
                 <br>
                 Seated on the garden soil, the seasons turn without notice.
+
             </p>
 
 
             <p>
+
                 In this garden of life, another flower blooms
                 <br>
                 With stories both radiant and dreary.
+
             </p>
 
 
             <p>
+
                 The flowers, with their beauty and grime,
                 <br>
                 are reflections of our actions over time.
+
             </p>
 
 
             <p>
+
                 The sound of laughter and muffled cries
                 <br>
                 breathe a soul into one's life.
+
             </p>
 
 
             <p>
+
                 Under the winds of change and time
                 <br>
                 Mountains erode, rivers run dry, and yet—the flowers remain,
                 <br>
                 quietly unchanged.
+
             </p>
 
 
             <p>
+
                 And so, between the silence and noise, we remain
                 <br>
                 not forever, but nurturing a flower while we still can,
                 <br>
                 forever immortalizing ourselves, in the panels of time.
+
             </p>
 
         </div>
 
 
         <button class="button poem-return-button">
+
             ← Back to the page
+
         </button>
 
     `;
@@ -3622,7 +3472,7 @@ function showBirthdayPoem() {
             );
 
         },
-        1000
+        100
     );
 
 
@@ -3667,15 +3517,6 @@ function showBirthdayPoem() {
 /* ==========================================================================
    TYPING SECRETS
 ========================================================================== */
-
-
-/*
-    Type these words anywhere on the page:
-
-    avigna
-    secret
-    cake
-*/
 
 const typingSecrets = {
 
@@ -3753,7 +3594,8 @@ document.addEventListener(
 
 
         if (
-            event.key.length !== 1
+            event.key.length !==
+            1
         ) {
 
             return;
@@ -3801,7 +3643,9 @@ document.addEventListener(
             ) {
 
                 const secret =
-                    typingSecrets[word];
+                    typingSecrets[
+                        word
+                    ];
 
 
                 if (
@@ -4021,7 +3865,8 @@ document.addEventListener(
 
 
         const key =
-            event.key.length === 1
+            event.key.length ===
+            1
 
                 ? event.key.toLowerCase()
 
@@ -4286,7 +4131,6 @@ resetIdleTimer();
 
 /* ==========================================================================
    SECRET LOGO
-   CLICK A. FIVE TIMES
 ========================================================================== */
 
 if (secretLogo) {
@@ -4368,31 +4212,23 @@ if (secretLogo) {
                     [
 
                         {
-
                             transform:
                                 "rotate(0deg) scale(1)"
-
                         },
 
                         {
-
                             transform:
                                 "rotate(-15deg) scale(1.3)"
-
                         },
 
                         {
-
                             transform:
                                 "rotate(15deg) scale(1.3)"
-
                         },
 
                         {
-
                             transform:
                                 "rotate(0deg) scale(1)"
-
                         }
 
                     ],
