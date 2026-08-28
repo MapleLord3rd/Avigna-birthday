@@ -1,463 +1,596 @@
 /* ==========================================================================
-   BIRTHDAY WEBSITE
-   FULL JAVASCRIPT
-   Every secret now produces a noticeable webpage effect.
+   BIRTHDAY WEBSITE — CLEAN SECRET EDITION
+
+   Normal browsing stays normal.
+   Major discoveries create meaningful changes.
 
    REMOVED:
-   - Fast-mouse sparkle secret
-   - Mouse-leaving / "stop leaving me" ghost secret
+   - Automatic fast-mouse sparkle
+   - Mouse-leaving ghost
+   - Excessive random reactions
 ========================================================================== */
 
 
 /* ==========================================================================
-   SECRET EFFECT STYLES
+   GLOBAL
 ========================================================================== */
 
-(function installSecretEffectStyles() {
-    const style = document.createElement("style");
+window.history.scrollRestoration = "manual";
 
-    style.textContent = `
-        .secret-page-flash {
-            position: fixed;
-            inset: 0;
-            z-index: 29990;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity .25s ease;
-        }
-
-        .secret-page-flash.visible {
-            opacity: 1;
-        }
-
-        .secret-badge {
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%) scale(.7);
-            z-index: 30000;
-            padding: 18px 26px;
-            border: 1px solid rgba(255,255,255,.35);
-            border-radius: 16px;
-            background: rgba(4,10,14,.94);
-            color: #fff;
-            font-family: "DM Mono", monospace;
-            font-size: .8rem;
-            letter-spacing: .12em;
-            text-align: center;
-            box-shadow: 0 20px 70px rgba(0,0,0,.45);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity .35s ease, transform .35s ease;
-        }
-
-        .secret-badge.visible {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .secret-ripple {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 2px solid currentColor;
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            z-index: 29995;
-            pointer-events: none;
-            animation: secretRipple 1s ease-out forwards;
-        }
-
-        @keyframes secretRipple {
-            to {
-                width: 500px;
-                height: 500px;
-                opacity: 0;
-            }
-        }
-
-        .secret-scanline {
-            position: fixed;
-            left: 0;
-            top: -10px;
-            width: 100%;
-            height: 4px;
-            z-index: 29998;
-            pointer-events: none;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                currentColor,
-                transparent
-            );
-            box-shadow: 0 0 25px currentColor;
-            animation: secretScanline 1.3s linear forwards;
-        }
-
-        @keyframes secretScanline {
-            to {
-                transform: translateY(110vh);
-                opacity: 0;
-            }
-        }
-
-        .secret-glitch {
-            animation: secretGlitch .65s steps(2, end);
-        }
-
-        @keyframes secretGlitch {
-            0% {
-                transform: translateX(0);
-                filter: none;
-            }
-
-            20% {
-                transform: translateX(-5px);
-                filter: hue-rotate(70deg);
-            }
-
-            40% {
-                transform: translateX(5px);
-                filter: invert(.12);
-            }
-
-            60% {
-                transform: translateX(-4px);
-                filter: hue-rotate(-70deg);
-            }
-
-            80% {
-                transform: translateX(3px);
-                filter: saturate(2);
-            }
-
-            100% {
-                transform: translateX(0);
-                filter: none;
-            }
-        }
-
-        .secret-chromatic {
-            animation: secretChromatic .8s ease;
-        }
-
-        @keyframes secretChromatic {
-            0%,100% {
-                filter: none;
-            }
-
-            25% {
-                filter: saturate(2) hue-rotate(35deg);
-            }
-
-            50% {
-                filter: saturate(1.7) hue-rotate(-35deg);
-            }
-
-            75% {
-                filter: saturate(2) hue-rotate(70deg);
-            }
-        }
-
-        .secret-shockwave {
-            position: fixed;
-            inset: 0;
-            z-index: 29980;
-            pointer-events: none;
-            background:
-                radial-gradient(
-                    circle,
-                    rgba(255,255,255,.22),
-                    transparent 12%,
-                    rgba(255,255,255,.04) 13%,
-                    transparent 38%
-                );
-            animation: shockwave 1s ease-out forwards;
-        }
-
-        @keyframes shockwave {
-            from {
-                opacity: 1;
-                transform: scale(.1);
-            }
-
-            to {
-                opacity: 0;
-                transform: scale(2.6);
-            }
-        }
-
-        .secret-star {
-            position: fixed;
-            z-index: 29999;
-            pointer-events: none;
-            animation: secretStar 1.2s ease-out forwards;
-        }
-
-        @keyframes secretStar {
-            0% {
-                opacity: 1;
-                transform: scale(.5) rotate(0deg);
-            }
-
-            100% {
-                opacity: 0;
-                transform:
-                    translate(
-                        calc(var(--sx) * 100px),
-                        calc(var(--sy) * 100px)
-                    )
-                    scale(.1)
-                    rotate(360deg);
-            }
-        }
-
-        .cinema-bars-secret {
-            position: fixed;
-            left: 0;
-            width: 100%;
-            height: 10vh;
-            background: #000;
-            z-index: 29950;
-            pointer-events: none;
-            transform: scaleY(0);
-            transition: transform .6s ease;
-        }
-
-        .cinema-bars-secret.top {
-            top: 0;
-            transform-origin: top;
-        }
-
-        .cinema-bars-secret.bottom {
-            bottom: 0;
-            transform-origin: bottom;
-        }
-
-        .cinema-bars-secret.visible {
-            transform: scaleY(1);
-        }
-
-        .secret-letterbox {
-            transform: scale(.985);
-            filter: brightness(.83) contrast(1.08) saturate(.82);
-            transition: .8s ease;
-        }
-
-        .arcade-secret-active {
-            animation: arcadeSecretActive .8s ease;
-        }
-
-        @keyframes arcadeSecretActive {
-            0%,100% {
-                filter: none;
-            }
-
-            25% {
-                filter: saturate(1.6) contrast(1.15);
-            }
-
-            50% {
-                filter: brightness(1.2) saturate(1.8);
-            }
-
-            75% {
-                filter: contrast(1.3);
-            }
-        }
-
-        .birthday-debug-grid {
-            position: fixed;
-            inset: 0;
-            z-index: 29940;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity .4s ease;
-            background:
-                linear-gradient(
-                    rgba(79,255,232,.05) 1px,
-                    transparent 1px
-                ),
-                linear-gradient(
-                    90deg,
-                    rgba(79,255,232,.05) 1px,
-                    transparent 1px
-                );
-            background-size: 35px 35px;
-        }
-
-        .birthday-debug-grid.visible {
-            opacity: 1;
-        }
-
-        .secret-spotlight {
-            position: fixed;
-            inset: 0;
-            z-index: 29900;
-            pointer-events: none;
-            background:
-                radial-gradient(
-                    circle at var(--spot-x,50%) var(--spot-y,50%),
-                    transparent 0,
-                    transparent 12%,
-                    rgba(0,0,0,.56) 45%,
-                    rgba(0,0,0,.82) 100%
-                );
-            opacity: 0;
-            transition: opacity .5s ease;
-        }
-
-        .secret-spotlight.visible {
-            opacity: 1;
-        }
-
-        .secret-target-highlight {
-            position: relative;
-            z-index: 29910 !important;
-            transform: scale(1.02);
-            transition: transform .5s ease;
-        }
-
-        .secret-installation {
-            position: absolute;
-            right: 16px;
-            top: 14px;
-            padding: 5px 9px;
-            border-radius: 999px;
-            background: rgba(0,0,0,.08);
-            border: 1px solid rgba(0,0,0,.2);
-            font: .58rem "DM Mono", monospace;
-            letter-spacing: .08em;
-            color: #061517;
-            opacity: 0;
-            transform: translateY(-5px);
-            transition: .4s ease;
-        }
-
-        .secret-installation.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .corner-coordinate-secret {
-            position: fixed;
-            left: 12px;
-            top: 12px;
-            z-index: 29999;
-            padding: 10px 12px;
-            background: rgba(5,15,19,.92);
-            border: 1px solid rgba(79,255,232,.25);
-            border-radius: 10px;
-            color: #4fffe8;
-            font: .65rem/1.6 "DM Mono", monospace;
-            opacity: 0;
-            transform: translateY(-8px);
-            transition: .4s ease;
-            pointer-events: none;
-        }
-
-        .corner-coordinate-secret.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .memory-fragment-secret {
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            z-index: 29990;
-            transform: translate(-50%,-50%) scale(.85);
-            width: min(500px,calc(100% - 40px));
-            padding: 28px;
-            border-radius: 18px;
-            background: rgba(5,15,19,.96);
-            border: 1px solid rgba(79,255,232,.3);
-            color: #4fffe8;
-            font: .8rem/1.8 "DM Mono", monospace;
-            text-align: center;
-            opacity: 0;
-            transition: .5s ease;
-            pointer-events: none;
-        }
-
-        .memory-fragment-secret.visible {
-            opacity: 1;
-            transform: translate(-50%,-50%) scale(1);
-        }
-    `;
-
-    document.head.appendChild(style);
-})();
+window.addEventListener("load", function () {
+    if (
+        document.body.classList.contains(
+            "birthday-unlocked"
+        )
+    ) {
+        window.scrollTo(0, 0);
+    }
+});
 
 
 /* ==========================================================================
-   COUNTDOWN
+   ELEMENT REFERENCES
 ========================================================================== */
 
 const lockScreen =
-    document.getElementById("birthday-lock-screen");
+    document.getElementById(
+        "birthday-lock-screen"
+    );
 
 const countdownDays =
-    document.getElementById("countdown-days");
+    document.getElementById(
+        "countdown-days"
+    );
 
 const countdownHours =
-    document.getElementById("countdown-hours");
+    document.getElementById(
+        "countdown-hours"
+    );
 
 const countdownMinutes =
-    document.getElementById("countdown-minutes");
+    document.getElementById(
+        "countdown-minutes"
+    );
 
 const countdownSeconds =
-    document.getElementById("countdown-seconds");
+    document.getElementById(
+        "countdown-seconds"
+    );
 
 const countdownStatus =
-    document.getElementById("countdown-status");
+    document.getElementById(
+        "countdown-status"
+    );
 
-let birthdayCountdownInterval = null;
+const themeSwitch =
+    document.getElementById(
+        "theme-switch"
+    );
+
+const themeSwitchText =
+    document.getElementById(
+        "theme-switch-text"
+    );
+
+const themeIcon =
+    document.getElementById(
+        "theme-icon"
+    );
+
+const blackOut =
+    document.querySelector(
+        ".black-screen"
+    );
+
+const foodButtons =
+    document.querySelectorAll(
+        ".food-button"
+    );
+
+const shopButtons =
+    document.querySelectorAll(
+        ".shop-button"
+    );
+
+const affordText =
+    document.getElementById(
+        "afford-text"
+    );
+
+const shopAffordText =
+    document.getElementById(
+        "shop-afford-text"
+    );
+
+const chat =
+    document.getElementById(
+        "msg-card"
+    );
+
+const nextMsg =
+    document.getElementById(
+        "nextMessage"
+    );
+
+const clickAudio =
+    document.getElementById(
+        "click-audio"
+    );
+
+const backgroundAudio =
+    document.getElementById(
+        "background-audio"
+    );
+
+const bdayAudio =
+    document.getElementById(
+        "bday-audio"
+    );
+
+const danceAudio =
+    document.getElementById(
+        "dance-audio"
+    );
+
+const pageContent =
+    document.getElementById(
+        "page-content"
+    );
+
+const muteBtn =
+    document.getElementById(
+        "mute-toggle"
+    );
+
+const scrollProgress =
+    document.getElementById(
+        "scroll-progress"
+    );
+
+const avignaToast =
+    document.getElementById(
+        "avigna-toast"
+    );
+
+const secretLogo =
+    document.getElementById(
+        "secret-logo"
+    );
 
 
 /* ==========================================================================
-   IST TIME
+   GAME STATE
 ========================================================================== */
 
-function getIndiaDateParts() {
-    const formatter =
-        new Intl.DateTimeFormat("en-CA", {
-            timeZone: "Asia/Kolkata",
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            hourCycle: "h23"
-        });
+let money = 0;
+let hungerPercent = 0;
 
-    const parts =
-        formatter.formatToParts(new Date());
+let msgIndex = 0;
 
-    const values = {};
+let boughtConvo = false;
+let boughtMsg = false;
+let boughtBlur = false;
 
-    parts.forEach(function (part) {
-        if (part.type !== "literal") {
-            values[part.type] =
-                part.value;
+let doBlur = true;
+
+let movieModeOn = false;
+let cinemaModeOn = false;
+
+let discoModeOn = false;
+let rainbowModeOn = false;
+
+let foodBought = 0;
+let warningGiven = false;
+let foodieEndingTriggered = false;
+
+let confettiStarted = false;
+
+let audioStarted = false;
+let isMuted = false;
+
+let typedBuffer = "";
+
+let konamiIndex = 0;
+let antiKonamiIndex = 0;
+
+let idleTimer = null;
+let idleIndex = 0;
+
+let cinemaExitButton = null;
+let rainbowInterval = null;
+let debugHudInterval = null;
+
+
+/* ==========================================================================
+   BASIC HELPERS
+========================================================================== */
+
+function isUnlocked() {
+    return document.body.classList.contains(
+        "birthday-unlocked"
+    );
+}
+
+function playClick() {
+    if (
+        !isUnlocked() ||
+        !clickAudio
+    ) {
+        return;
+    }
+
+    clickAudio.currentTime = 0;
+
+    clickAudio.play().catch(function () {});
+}
+
+function showToast(message) {
+    if (!avignaToast) {
+        return;
+    }
+
+    clearTimeout(showToast.timeout);
+
+    avignaToast.textContent =
+        message;
+
+    avignaToast.classList.add(
+        "show"
+    );
+
+    showToast.timeout =
+        setTimeout(function () {
+            avignaToast.classList.remove(
+                "show"
+            );
+        }, 2600);
+}
+
+function showSecretToast(message) {
+    showToast(
+        "🔐 " + message
+    );
+}
+
+function flashPage(
+    color = "rgba(79,255,232,.12)",
+    duration = 500
+) {
+    const overlay =
+        document.createElement(
+            "div"
+        );
+
+    overlay.className =
+        "secret-page-flash";
+
+    overlay.style.background =
+        color;
+
+    document.body.appendChild(
+        overlay
+    );
+
+    requestAnimationFrame(
+        function () {
+            overlay.classList.add(
+                "visible"
+            );
         }
-    });
+    );
 
-    return {
-        year: Number(values.year),
-        month: Number(values.month),
-        day: Number(values.day),
-        hour: Number(values.hour),
-        minute: Number(values.minute),
-        second: Number(values.second)
-    };
+    setTimeout(function () {
+        overlay.classList.remove(
+            "visible"
+        );
+    }, duration / 2);
+
+    setTimeout(function () {
+        overlay.remove();
+    }, duration);
+}
+
+function createScanline(
+    color = "#4fffe8"
+) {
+    const scan =
+        document.createElement(
+            "div"
+        );
+
+    scan.className =
+        "secret-scanline";
+
+    scan.style.color =
+        color;
+
+    document.body.appendChild(
+        scan
+    );
+
+    setTimeout(function () {
+        scan.remove();
+    }, 1400);
+}
+
+function createShockwave() {
+    const wave =
+        document.createElement(
+            "div"
+        );
+
+    wave.className =
+        "secret-shockwave";
+
+    document.body.appendChild(
+        wave
+    );
+
+    setTimeout(function () {
+        wave.remove();
+    }, 1100);
+}
+
+function glitchElement(element) {
+    if (!element) {
+        return;
+    }
+
+    element.classList.remove(
+        "secret-glitch"
+    );
+
+    void element.offsetWidth;
+
+    element.classList.add(
+        "secret-glitch"
+    );
+
+    setTimeout(function () {
+        element.classList.remove(
+            "secret-glitch"
+        );
+    }, 700);
+}
+
+function pageGlow(
+    element,
+    duration = 1200
+) {
+    if (!element) {
+        return;
+    }
+
+    element.classList.remove(
+        "secret-glow-pulse"
+    );
+
+    void element.offsetWidth;
+
+    element.classList.add(
+        "secret-glow-pulse"
+    );
+
+    setTimeout(function () {
+        element.classList.remove(
+            "secret-glow-pulse"
+        );
+    }, duration);
+}
+
+function spotlightElement(
+    element,
+    duration = 2200
+) {
+    if (!element) {
+        return;
+    }
+
+    const rect =
+        element.getBoundingClientRect();
+
+    const spotlight =
+        document.createElement(
+            "div"
+        );
+
+    spotlight.className =
+        "secret-spotlight";
+
+    spotlight.style.position =
+        "fixed";
+
+    spotlight.style.inset =
+        "0";
+
+    spotlight.style.zIndex =
+        "29900";
+
+    spotlight.style.pointerEvents =
+        "none";
+
+    spotlight.style.background =
+        `radial-gradient(
+            circle at
+            ${rect.left + rect.width / 2}px
+            ${rect.top + rect.height / 2}px,
+            transparent 0,
+            transparent 12%,
+            rgba(0,0,0,.55) 45%,
+            rgba(0,0,0,.82) 100%
+        )`;
+
+    spotlight.style.opacity =
+        "0";
+
+    spotlight.style.transition =
+        "opacity .5s ease";
+
+    document.body.appendChild(
+        spotlight
+    );
+
+    element.classList.add(
+        "secret-target-highlight"
+    );
+
+    requestAnimationFrame(
+        function () {
+            spotlight.style.opacity =
+                "1";
+        }
+    );
+
+    setTimeout(function () {
+        spotlight.style.opacity =
+            "0";
+
+        element.classList.remove(
+            "secret-target-highlight"
+        );
+    }, duration);
+
+    setTimeout(function () {
+        spotlight.remove();
+    }, duration + 600);
+}
+
+function starBurst(
+    x,
+    y,
+    symbols = [
+        "✦",
+        "✧",
+        "✨",
+        "★"
+    ]
+) {
+    for (
+        let i = 0;
+        i < 12;
+        i++
+    ) {
+        const star =
+            document.createElement(
+                "div"
+            );
+
+        star.className =
+            "secret-star";
+
+        star.textContent =
+            symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+            ];
+
+        star.style.left =
+            x + "px";
+
+        star.style.top =
+            y + "px";
+
+        star.style.setProperty(
+            "--sx",
+            Math.random() * 2 - 1
+        );
+
+        star.style.setProperty(
+            "--sy",
+            Math.random() * 2 - 1
+        );
+
+        document.body.appendChild(
+            star
+        );
+
+        setTimeout(function () {
+            star.remove();
+        }, 1300);
+    }
 }
 
 
 /* ==========================================================================
-   BIRTHDAY TARGET
+   BIRTHDAY COUNTDOWN
 ========================================================================== */
+
+let birthdayCountdownInterval = null;
+
+function getIndiaDateParts() {
+    const formatter =
+        new Intl.DateTimeFormat(
+            "en-CA",
+            {
+                timeZone:
+                    "Asia/Kolkata",
+
+                year:
+                    "numeric",
+
+                month:
+                    "2-digit",
+
+                day:
+                    "2-digit",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                second:
+                    "2-digit",
+
+                hourCycle:
+                    "h23"
+            }
+        );
+
+    const parts =
+        formatter.formatToParts(
+            new Date()
+        );
+
+    const values = {};
+
+    parts.forEach(
+        function (part) {
+            if (
+                part.type !==
+                "literal"
+            ) {
+                values[
+                    part.type
+                ] =
+                    part.value;
+            }
+        }
+    );
+
+    return {
+        year:
+            Number(values.year),
+
+        month:
+            Number(values.month),
+
+        day:
+            Number(values.day),
+
+        hour:
+            Number(values.hour),
+
+        minute:
+            Number(values.minute),
+
+        second:
+            Number(values.second)
+    };
+}
 
 function getBirthdayTarget() {
     const india =
@@ -508,12 +641,13 @@ function isBirthdayToday() {
 }
 
 function formatNumber(number) {
-    return String(number).padStart(2, "0");
+    return String(number)
+        .padStart(2, "0");
 }
 
 
 /* ==========================================================================
-   COUNTDOWN EFFECTS
+   COUNTDOWN STAGES
 ========================================================================== */
 
 let countdownEffectStage =
@@ -537,34 +671,56 @@ function resetCountdownEffectClasses() {
     );
 }
 
-function updateCountdownEffects(totalSeconds) {
-    let newStage = "normal";
+function updateCountdownEffects(
+    totalSeconds
+) {
+    let stage =
+        "normal";
 
-    if (totalSeconds <= 60) {
-        newStage = "1-minute";
-    } else if (totalSeconds <= 600) {
-        newStage = "10-minutes";
-    } else if (totalSeconds <= 1800) {
-        newStage = "30-minutes";
-    } else if (totalSeconds <= 3600) {
-        newStage = "1-hour";
-    } else if (totalSeconds <= 7200) {
-        newStage = "2-hours";
-    } else if (totalSeconds <= 10800) {
-        newStage = "3-hours";
+    if (
+        totalSeconds <= 60
+    ) {
+        stage =
+            "1-minute";
+    } else if (
+        totalSeconds <= 600
+    ) {
+        stage =
+            "10-minutes";
+    } else if (
+        totalSeconds <= 1800
+    ) {
+        stage =
+            "30-minutes";
+    } else if (
+        totalSeconds <= 3600
+    ) {
+        stage =
+            "1-hour";
+    } else if (
+        totalSeconds <= 7200
+    ) {
+        stage =
+            "2-hours";
+    } else if (
+        totalSeconds <= 10800
+    ) {
+        stage =
+            "3-hours";
     }
 
     if (
-        newStage !==
+        stage !==
         countdownEffectStage
     ) {
         countdownEffectStage =
-            newStage;
+            stage;
 
         resetCountdownEffectClasses();
 
         document.body.classList.add(
-            "countdown-" + newStage
+            "countdown-" +
+            stage
         );
     }
 
@@ -572,7 +728,9 @@ function updateCountdownEffects(totalSeconds) {
         totalSeconds <= 600 &&
         !tenMinutePartyStarted
     ) {
-        tenMinutePartyStarted = true;
+        tenMinutePartyStarted =
+            true;
+
         triggerTenMinuteParty();
     }
 
@@ -580,15 +738,12 @@ function updateCountdownEffects(totalSeconds) {
         totalSeconds <= 60 &&
         !oneMinutePartyStarted
     ) {
-        oneMinutePartyStarted = true;
+        oneMinutePartyStarted =
+            true;
+
         triggerOneMinuteParty();
     }
 }
-
-
-/* ==========================================================================
-   UPDATE COUNTDOWN
-========================================================================== */
 
 function updateBirthdayCountdown() {
     if (!lockScreen) {
@@ -601,10 +756,13 @@ function updateBirthdayCountdown() {
     }
 
     const difference =
-        getBirthdayTarget().getTime() -
+        getBirthdayTarget()
+            .getTime() -
         Date.now();
 
-    if (difference <= 0) {
+    if (
+        difference <= 0
+    ) {
         unlockBirthdayWebsite();
         return;
     }
@@ -621,12 +779,14 @@ function updateBirthdayCountdown() {
 
     const hours =
         Math.floor(
-            (totalSeconds % 86400) / 3600
+            (totalSeconds % 86400) /
+            3600
         );
 
     const minutes =
         Math.floor(
-            (totalSeconds % 3600) / 60
+            (totalSeconds % 3600) /
+            60
         );
 
     const seconds =
@@ -662,13 +822,10 @@ function updateBirthdayCountdown() {
     );
 }
 
-
-/* ==========================================================================
-   UNLOCK
-========================================================================== */
-
 function unlockBirthdayWebsite() {
-    if (birthdayCountdownInterval) {
+    if (
+        birthdayCountdownInterval
+    ) {
         clearInterval(
             birthdayCountdownInterval
         );
@@ -692,11 +849,19 @@ function unlockBirthdayWebsite() {
             "ACCESS GRANTED";
     }
 
-    setTimeout(function () {
-        if (lockScreen) {
-            lockScreen.remove();
-        }
-    }, 2200);
+    flashPage(
+        "rgba(79,255,232,.16)",
+        900
+    );
+
+    setTimeout(
+        function () {
+            if (lockScreen) {
+                lockScreen.remove();
+            }
+        },
+        2200
+    );
 }
 
 function initializeBirthdayLock() {
@@ -710,11 +875,14 @@ function initializeBirthdayLock() {
                 "ACCESS GRANTED";
         }
 
-        setTimeout(function () {
-            if (lockScreen) {
-                lockScreen.remove();
-            }
-        }, 2200);
+        setTimeout(
+            function () {
+                if (lockScreen) {
+                    lockScreen.remove();
+                }
+            },
+            2200
+        );
 
         return;
     }
@@ -736,364 +904,209 @@ initializeBirthdayLock();
 
 
 /* ==========================================================================
-   HELPERS
+   COUNTDOWN PARTIES
 ========================================================================== */
 
-function isUnlocked() {
-    return document.body.classList.contains(
-        "birthday-unlocked"
-    );
-}
-
-function flashPage(
-    color = "rgba(79,255,232,.18)",
-    duration = 500
-) {
-    const flash =
-        document.createElement("div");
-
-    flash.className =
-        "secret-page-flash";
-
-    flash.style.background =
-        color;
-
-    document.body.appendChild(
-        flash
+function triggerTenMinuteParty() {
+    flashPage(
+        "rgba(186,255,106,.12)",
+        800
     );
 
-    requestAnimationFrame(function () {
-        flash.classList.add("visible");
-    });
-
-    setTimeout(function () {
-        flash.classList.remove(
-            "visible"
-        );
-    }, duration / 2);
-
-    setTimeout(function () {
-        flash.remove();
-    }, duration);
-}
-
-function showSecretBadge(
-    text,
-    duration = 1800
-) {
-    const badge =
-        document.createElement("div");
-
-    badge.className =
-        "secret-badge";
-
-    badge.textContent =
-        text;
-
-    document.body.appendChild(
-        badge
-    );
-
-    requestAnimationFrame(function () {
-        badge.classList.add(
-            "visible"
-        );
-    });
-
-    setTimeout(function () {
-        badge.classList.remove(
-            "visible"
-        );
-    }, duration);
-
-    setTimeout(function () {
-        badge.remove();
-    }, duration + 400);
-}
-
-function createRipple(
-    x,
-    y,
-    color = "#4fffe8"
-) {
-    const ripple =
-        document.createElement(
-            "div"
-        );
-
-    ripple.className =
-        "secret-ripple";
-
-    ripple.style.left =
-        x + "px";
-
-    ripple.style.top =
-        y + "px";
-
-    ripple.style.color =
-        color;
-
-    document.body.appendChild(
-        ripple
-    );
-
-    setTimeout(function () {
-        ripple.remove();
-    }, 1100);
-}
-
-function createScanline(
-    color = "#4fffe8"
-) {
-    const scan =
-        document.createElement(
-            "div"
-        );
-
-    scan.className =
-        "secret-scanline";
-
-    scan.style.color =
-        color;
-
-    document.body.appendChild(
-        scan
-    );
-
-    setTimeout(function () {
-        scan.remove();
-    }, 1400);
-}
-
-function glitchElement(element) {
-    if (!element) {
-        return;
-    }
-
-    element.classList.remove(
-        "secret-glitch"
-    );
-
-    void element.offsetWidth;
-
-    element.classList.add(
-        "secret-glitch"
-    );
-
-    setTimeout(function () {
-        element.classList.remove(
-            "secret-glitch"
-        );
-    }, 700);
-}
-
-function chromaticPage() {
-    document.body.classList.remove(
-        "secret-chromatic"
-    );
-
-    void document.body.offsetWidth;
-
-    document.body.classList.add(
-        "secret-chromatic"
-    );
-
-    setTimeout(function () {
-        document.body.classList.remove(
-            "secret-chromatic"
-        );
-    }, 850);
-}
-
-function shockwave() {
-    const wave =
-        document.createElement(
-            "div"
-        );
-
-    wave.className =
-        "secret-shockwave";
-
-    document.body.appendChild(
-        wave
-    );
-
-    setTimeout(function () {
-        wave.remove();
-    }, 1100);
-}
-
-function starBurst(
-    x,
-    y,
-    symbols = [
-        "✦",
-        "✧",
-        "✨",
-        "★"
-    ]
-) {
-    for (
-        let i = 0;
-        i < 12;
-        i++
+    if (
+        typeof confetti !==
+        "function"
     ) {
-        const star =
-            document.createElement(
-                "div"
-            );
-
-        star.className =
-            "secret-star";
-
-        star.textContent =
-            symbols[
-                Math.floor(
-                    Math.random() *
-                        symbols.length
-                )
-            ];
-
-        star.style.left =
-            x + "px";
-
-        star.style.top =
-            y + "px";
-
-        star.style.fontSize =
-            10 +
-            Math.random() *
-                18 +
-            "px";
-
-        star.style.setProperty(
-            "--sx",
-            Math.random() * 2 - 1
-        );
-
-        star.style.setProperty(
-            "--sy",
-            Math.random() * 2 - 1
-        );
-
-        document.body.appendChild(
-            star
-        );
-
-        setTimeout(function () {
-            star.remove();
-        }, 1300);
-    }
-}
-
-function spotlightElement(
-    element,
-    duration = 2600
-) {
-    if (!element) {
         return;
     }
 
-    const rect =
-        element.getBoundingClientRect();
+    confetti({
+        particleCount: 180,
+        spread: 160,
+        startVelocity: 55,
+        gravity: .8,
+        ticks: 300,
+        origin: {
+            x: .5,
+            y: .65
+        }
+    });
 
-    const spotlight =
+    let bursts = 0;
+
+    const timer =
+        setInterval(
+            function () {
+                confetti({
+                    particleCount: 18,
+                    spread: 100,
+                    startVelocity: 35,
+                    gravity: .8,
+                    origin: {
+                        x:
+                            Math.random() *
+                            .35,
+                        y: .9
+                    }
+                });
+
+                confetti({
+                    particleCount: 18,
+                    spread: 100,
+                    startVelocity: 35,
+                    gravity: .8,
+                    origin: {
+                        x:
+                            .65 +
+                            Math.random() *
+                            .35,
+                        y: .9
+                    }
+                });
+
+                bursts++;
+
+                if (
+                    bursts >= 15
+                ) {
+                    clearInterval(
+                        timer
+                    );
+                }
+            },
+            450
+        );
+}
+
+function triggerOneMinuteParty() {
+    flashPage(
+        "rgba(79,255,232,.18)",
+        900
+    );
+
+    createShockwave();
+
+    if (
+        typeof confetti ===
+        "function"
+    ) {
+        confetti({
+            particleCount: 350,
+            spread: 180,
+            startVelocity: 70,
+            gravity: .75,
+            ticks: 400,
+            origin: {
+                x: .5,
+                y: .6
+            }
+        });
+
+        confetti({
+            particleCount: 150,
+            angle: 60,
+            spread: 55,
+            startVelocity: 60,
+            gravity: .8,
+            origin: {
+                x: 0,
+                y: 1
+            }
+        });
+
+        confetti({
+            particleCount: 150,
+            angle: 120,
+            spread: 55,
+            startVelocity: 60,
+            gravity: .8,
+            origin: {
+                x: 1,
+                y: 1
+            }
+        });
+    }
+
+    startCountdownPartyObjects();
+}
+
+function startCountdownPartyObjects() {
+    let count = 0;
+
+    const timer =
+        setInterval(
+            function () {
+                createCountdownPartyObject();
+
+                count++;
+
+                if (
+                    count >= 45
+                ) {
+                    clearInterval(
+                        timer
+                    );
+                }
+            },
+            250
+        );
+}
+
+function createCountdownPartyObject() {
+    const object =
         document.createElement(
             "div"
         );
 
-    spotlight.className =
-        "secret-spotlight";
+    object.className =
+        "countdown-party-object";
 
-    spotlight.style.setProperty(
-        "--spot-x",
-        rect.left +
-            rect.width / 2 +
-            "px"
-    );
-
-    spotlight.style.setProperty(
-        "--spot-y",
-        rect.top +
-            rect.height / 2 +
-            "px"
-    );
-
-    document.body.appendChild(
-        spotlight
-    );
-
-    element.classList.add(
-        "secret-target-highlight"
-    );
-
-    requestAnimationFrame(
-        function () {
-            spotlight.classList.add(
-                "visible"
-            );
-        }
-    );
-
-    setTimeout(function () {
-        spotlight.classList.remove(
-            "visible"
+    if (
+        Math.random() < .55
+    ) {
+        object.classList.add(
+            "countdown-balloon"
         );
 
-        element.classList.remove(
-            "secret-target-highlight"
+        object.textContent =
+            "🎈";
+    } else {
+        object.classList.add(
+            "countdown-cake"
         );
-    }, duration);
 
-    setTimeout(function () {
-        spotlight.remove();
-    }, duration + 600);
-}
-
-function pageGlow(
-    element,
-    duration = 1500
-) {
-    if (!element) {
-        return;
+        object.textContent =
+            Math.random() < .5
+                ? "🎂"
+                : "🧁";
     }
 
-    element.classList.remove(
-        "secret-glow-pulse"
+    object.style.left =
+        Math.random() *
+        100 +
+        "vw";
+
+    object.style.animationDuration =
+        3 +
+        Math.random() * 3 +
+        "s";
+
+    document.body.appendChild(
+        object
     );
 
-    void element.offsetWidth;
-
-    element.classList.add(
-        "secret-glow-pulse"
+    setTimeout(
+        function () {
+            object.remove();
+        },
+        7000
     );
-
-    setTimeout(function () {
-        element.classList.remove(
-            "secret-glow-pulse"
-        );
-    }, duration);
 }
 
 
 /* ==========================================================================
    THEME
 ========================================================================== */
-
-const themeSwitch =
-    document.getElementById(
-        "theme-switch"
-    );
-
-const themeSwitchText =
-    document.getElementById(
-        "theme-switch-text"
-    );
-
-const themeIcon =
-    document.getElementById(
-        "theme-icon"
-    );
 
 function updateThemeButton() {
     const pinkMode =
@@ -1143,20 +1156,6 @@ function toggleTheme() {
     );
 
     updateThemeButton();
-
-    flashPage(
-        pinkMode
-            ? "rgba(255,111,174,.18)"
-            : "rgba(79,255,232,.16)",
-        600
-    );
-}
-
-if (themeSwitch) {
-    themeSwitch.addEventListener(
-        "click",
-        toggleTheme
-    );
 }
 
 if (
@@ -1169,255 +1168,22 @@ if (
     );
 }
 
-updateThemeButton();
-
-
-/* ==========================================================================
-   COUNTDOWN PARTIES
-========================================================================== */
-
-function triggerTenMinuteParty() {
-    if (
-        typeof confetti !==
-        "function"
-    ) {
-        return;
-    }
-
-    flashPage(
-        "rgba(186,255,106,.18)",
-        900
-    );
-
-    confetti({
-        particleCount: 180,
-        spread: 160,
-        startVelocity: 55,
-        gravity: 0.8,
-        ticks: 300,
-        origin: {
-            x: 0.5,
-            y: 0.65
+if (themeSwitch) {
+    themeSwitch.addEventListener(
+        "click",
+        function () {
+            playClick();
+            toggleTheme();
         }
-    });
-
-    let bursts = 0;
-
-    const interval =
-        setInterval(
-            function () {
-                confetti({
-                    particleCount: 18,
-                    spread: 100,
-                    startVelocity: 35,
-                    gravity: 0.8,
-                    origin: {
-                        x:
-                            Math.random() *
-                            0.35,
-                        y: 0.9
-                    }
-                });
-
-                confetti({
-                    particleCount: 18,
-                    spread: 100,
-                    startVelocity: 35,
-                    gravity: 0.8,
-                    origin: {
-                        x:
-                            0.65 +
-                            Math.random() *
-                                0.35,
-                        y: 0.9
-                    }
-                });
-
-                bursts++;
-
-                if (bursts >= 15) {
-                    clearInterval(
-                        interval
-                    );
-                }
-            },
-            450
-        );
-}
-
-function triggerOneMinuteParty() {
-    flashPage(
-        "rgba(79,255,232,.2)",
-        1000
     );
-
-    shockwave();
-
-    if (
-        typeof confetti ===
-        "function"
-    ) {
-        confetti({
-            particleCount: 350,
-            spread: 180,
-            startVelocity: 70,
-            gravity: 0.75,
-            ticks: 400,
-            origin: {
-                x: 0.5,
-                y: 0.6
-            }
-        });
-
-        confetti({
-            particleCount: 150,
-            angle: 60,
-            spread: 55,
-            startVelocity: 60,
-            gravity: 0.8,
-            origin: {
-                x: 0,
-                y: 1
-            }
-        });
-
-        confetti({
-            particleCount: 150,
-            angle: 120,
-            spread: 55,
-            startVelocity: 60,
-            gravity: 0.8,
-            origin: {
-                x: 1,
-                y: 1
-            }
-        });
-    }
-
-    startCountdownPartyObjects();
 }
 
-function startCountdownPartyObjects() {
-    let count = 0;
-
-    const interval =
-        setInterval(
-            function () {
-                createCountdownPartyObject();
-
-                count++;
-
-                if (count >= 45) {
-                    clearInterval(
-                        interval
-                    );
-                }
-            },
-            250
-        );
-}
-
-function createCountdownPartyObject() {
-    const object =
-        document.createElement(
-            "div"
-        );
-
-    object.className =
-        "countdown-party-object";
-
-    if (
-        Math.random() <
-        0.55
-    ) {
-        object.classList.add(
-            "countdown-balloon"
-        );
-
-        object.textContent =
-            "🎈";
-    } else {
-        object.classList.add(
-            "countdown-cake"
-        );
-
-        object.textContent =
-            Math.random() <
-            0.5
-                ? "🎂"
-                : "🧁";
-    }
-
-    object.style.left =
-        Math.random() *
-            100 +
-        "vw";
-
-    object.style.animationDuration =
-        3 +
-        Math.random() *
-            3 +
-        "s";
-
-    document.body.appendChild(
-        object
-    );
-
-    setTimeout(function () {
-        object.remove();
-    }, 7000);
-}
+updateThemeButton();
 
 
 /* ==========================================================================
    AUDIO
 ========================================================================== */
-
-const clickAudio =
-    document.getElementById(
-        "click-audio"
-    );
-
-const backgroundAudio =
-    document.getElementById(
-        "background-audio"
-    );
-
-const bdayAudio =
-    document.getElementById(
-        "bday-audio"
-    );
-
-const danceAudio =
-    document.getElementById(
-        "dance-audio"
-    );
-
-const muteBtn =
-    document.getElementById(
-        "mute-toggle"
-    );
-
-let audioStarted = false;
-let isMuted = false;
-
-function playClick() {
-    if (
-        !isUnlocked() ||
-        !clickAudio
-    ) {
-        return;
-    }
-
-    clickAudio.currentTime =
-        0;
-
-    clickAudio
-        .play()
-        .catch(
-            function () {}
-        );
-}
 
 function startBackgroundAudio() {
     if (
@@ -1428,7 +1194,8 @@ function startBackgroundAudio() {
         return;
     }
 
-    audioStarted = true;
+    audioStarted =
+        true;
 
     backgroundAudio.loop =
         true;
@@ -1516,139 +1283,8 @@ if (muteBtn) {
 
 
 /* ==========================================================================
-   PAGE REFERENCES
-========================================================================== */
-
-const blackOut =
-    document.querySelector(
-        ".black-screen"
-    );
-
-const foodButtons =
-    document.querySelectorAll(
-        ".food-button"
-    );
-
-const affordtext =
-    document.getElementById(
-        "afford-text"
-    );
-
-const chat =
-    document.getElementById(
-        "msg-card"
-    );
-
-const nextMsg =
-    document.getElementById(
-        "nextMessage"
-    );
-
-const shopButtons =
-    document.querySelectorAll(
-        ".shop-button"
-    );
-
-const shopaffordtext =
-    document.getElementById(
-        "shop-afford-text"
-    );
-
-const pageContent =
-    document.getElementById(
-        "page-content"
-    );
-
-const scrollProgress =
-    document.getElementById(
-        "scroll-progress"
-    );
-
-const avignaToast =
-    document.getElementById(
-        "avigna-toast"
-    );
-
-const secretLogo =
-    document.getElementById(
-        "secret-logo"
-    );
-
-
-/* ==========================================================================
-   GAME VARIABLES
-========================================================================== */
-
-let money = 0;
-let hungerPercent = 0;
-
-let msgIndex = 0;
-
-let boughtConvo = false;
-let boughtMsg = false;
-let boughtBlur = false;
-
-let doblur = true;
-let movieModeOn = false;
-
-let foodBought = 0;
-let warningGiven = false;
-let foodieEndingTriggered =
-    false;
-
-let confettiStarted =
-    false;
-
-
-/* ==========================================================================
-   TOAST
-========================================================================== */
-
-function showAvignaToast(message) {
-    if (!avignaToast) {
-        return;
-    }
-
-    clearTimeout(
-        avignaToastTimeout
-    );
-
-    avignaToast.textContent =
-        message;
-
-    avignaToast.classList.add(
-        "show"
-    );
-
-    avignaToastTimeout =
-        setTimeout(
-            function () {
-                avignaToast.classList.remove(
-                    "show"
-                );
-            },
-            2600
-        );
-}
-
-let avignaToastTimeout =
-    null;
-
-function showSecretToast(message) {
-    showAvignaToast(
-        "🔐 " + message
-    );
-}
-
-
-/* ==========================================================================
    PAGE FILTER
 ========================================================================== */
-
-let discoModeOn = false;
-let rainbowModeOn = false;
-let rainbowInterval =
-    null;
 
 function updatePageFilter() {
     if (!pageContent) {
@@ -1657,7 +1293,7 @@ function updatePageFilter() {
 
     const filters = [];
 
-    if (doblur) {
+    if (doBlur) {
         filters.push(
             `blur(${hungerPercent / 65}px)`
         );
@@ -1665,14 +1301,14 @@ function updatePageFilter() {
 
     if (movieModeOn) {
         filters.push(
-            "grayscale(0.6)",
-            "sepia(0.3)"
+            "grayscale(.6)",
+            "sepia(.3)"
         );
     }
 
     if (rainbowModeOn) {
         filters.push(
-            "hue-rotate(var(--rainbow-hue, 0deg))",
+            "hue-rotate(var(--rainbow-hue,0deg))",
             "saturate(1.6)"
         );
     }
@@ -1698,18 +1334,18 @@ function refreshMoneyDisplay() {
             money;
     }
 
-    if (affordtext) {
-        affordtext.innerHTML =
+    if (affordText) {
+        affordText.innerHTML =
             `<p>Money: $${money}</p>`;
     }
 
-    if (shopaffordtext) {
-        shopaffordtext.innerHTML =
+    if (shopAffordText) {
+        shopAffordText.innerHTML =
             `<p>Money: $${money}</p>`;
     }
 }
 
-function updatemoney() {
+function updateMoney() {
     if (!isUnlocked()) {
         return;
     }
@@ -1719,7 +1355,7 @@ function updatemoney() {
     refreshMoneyDisplay();
 }
 
-function reducemoney(price) {
+function reduceMoney(price) {
     money =
         Math.max(
             0,
@@ -1728,6 +1364,11 @@ function reducemoney(price) {
 
     refreshMoneyDisplay();
 }
+
+setInterval(
+    updateMoney,
+    1000
+);
 
 
 /* ==========================================================================
@@ -1758,7 +1399,10 @@ function refreshHungerDisplay() {
 }
 
 function hungerUpdate() {
-    if (!isUnlocked()) {
+    if (
+        !isUnlocked() ||
+        foodieEndingTriggered
+    ) {
         return;
     }
 
@@ -1771,6 +1415,18 @@ function hungerUpdate() {
 
     refreshHungerDisplay();
     updatePageFilter();
+
+    const bar =
+        document.querySelector(
+            ".hunger-bar"
+        );
+
+    if (bar) {
+        bar.classList.toggle(
+            "critical-hunger",
+            hungerPercent >= 90
+        );
+    }
 }
 
 const hungerInterval =
@@ -1778,11 +1434,6 @@ const hungerInterval =
         hungerUpdate,
         1000
     );
-
-setInterval(
-    updatemoney,
-    1000
-);
 
 
 /* ==========================================================================
@@ -1818,7 +1469,10 @@ function updateScrollProgress() {
 
 window.addEventListener(
     "scroll",
-    updateScrollProgress
+    updateScrollProgress,
+    {
+        passive: true
+    }
 );
 
 window.addEventListener(
@@ -1867,7 +1521,8 @@ const messages = [
     },
     {
         name: "Neerav",
-        text: "Well there wasn't really any secret, it was a scam...500$ gone..."
+        text:
+            "Well there wasn't really any secret, it was a scam...500$ gone..."
     },
     {
         name: "Avigna",
@@ -1875,7 +1530,8 @@ const messages = [
     },
     {
         name: "Neerav",
-        text: "areeeee using such language on ur bday, so uncivilised"
+        text:
+            "areeeee using such language on ur bday, so uncivilised"
     },
     {
         name: "Avigna",
@@ -1883,7 +1539,8 @@ const messages = [
     },
     {
         name: "Neerav",
-        text: "acha acha, happy birthday, eat some aloo, be better"
+        text:
+            "acha acha, happy birthday, eat some aloo, be better"
     },
     {
         name: "Avigna",
@@ -1891,15 +1548,18 @@ const messages = [
     },
     {
         name: "Neerav",
-        text: "btw there is a secret...but u will not get it, it is something u need to guess"
+        text:
+            "btw there is a secret...but u will not get it, it is something u need to guess"
     },
     {
         name: "Avigna",
-        text: "ki baje....bol naaaa"
+        text:
+            "ki baje....bol naaaa"
     },
     {
         name: "Neerav",
-        text: "😜😜😜😜 nahii"
+        text:
+            "😜😜😜😜 nahii"
     }
 ];
 
@@ -1940,14 +1600,11 @@ if (nextMsg) {
             p.innerHTML =
                 `<strong>${message.name}:</strong> ${message.text}`;
 
-            chat.appendChild(p);
+            chat.appendChild(
+                p
+            );
 
             msgIndex++;
-
-            pageGlow(
-                p,
-                900
-            );
         }
     );
 }
@@ -1962,6 +1619,8 @@ foodButtons.forEach(
         button.addEventListener(
             "click",
             function () {
+                playClick();
+
                 const price =
                     Number(
                         button.dataset.price
@@ -1972,8 +1631,6 @@ foodButtons.forEach(
                         button.dataset.saturation
                     );
 
-                playClick();
-
                 if (
                     money <
                         price ||
@@ -1982,7 +1639,7 @@ foodButtons.forEach(
                     return;
                 }
 
-                reducemoney(price);
+                reduceMoney(price);
 
                 foodBought++;
 
@@ -1993,19 +1650,11 @@ foodButtons.forEach(
                     hungerPercent <
                     0
                 ) {
-                    hungerPercent =
-                        0;
+                    hungerPercent = 0;
                 }
 
                 refreshHungerDisplay();
                 updatePageFilter();
-
-                pageGlow(
-                    button.closest(
-                        ".food-card"
-                    ),
-                    700
-                );
 
                 if (
                     foodBought > 45 &&
@@ -2036,9 +1685,7 @@ foodButtons.forEach(
 ========================================================================== */
 
 function activateFoodieEnding() {
-    if (
-        foodieEndingTriggered
-    ) {
+    if (foodieEndingTriggered) {
         return;
     }
 
@@ -2056,8 +1703,8 @@ function activateFoodieEnding() {
     }
 
     flashPage(
-        "rgba(255,60,60,.22)",
-        800
+        "rgba(255,60,60,.2)",
+        700
     );
 
     const ending =
@@ -2131,18 +1778,6 @@ function activateFoodieEnding() {
                 SECRET ENDING UNLOCKED 💀
             </em></strong>
         </p>
-
-        <p>
-            Now restart and next time...
-        </p>
-
-        <p>
-            please eat a little less.
-        </p>
-
-        <p>
-            It's a bit concerning.
-        </p>
     `;
 
     document.body.appendChild(
@@ -2151,11 +1786,6 @@ function activateFoodieEnding() {
 
     createRestartButton();
 }
-
-
-/* ==========================================================================
-   RESTART
-========================================================================== */
 
 function createRestartButton() {
     if (
@@ -2212,17 +1842,17 @@ shopButtons.forEach(
                 if (
                     (
                         unlock ===
-                            "conversation" &&
+                        "conversation" &&
                         boughtConvo
                     ) ||
                     (
                         unlock ===
-                            "message" &&
+                        "message" &&
                         boughtMsg
                     ) ||
                     (
                         unlock ===
-                            "blur" &&
+                        "blur" &&
                         boughtBlur
                     )
                 ) {
@@ -2233,19 +1863,14 @@ shopButtons.forEach(
                     money <
                     price
                 ) {
-                    pageGlow(
-                        button,
-                        800
-                    );
-
-                    showAvignaToast(
+                    showToast(
                         "💸 not enough money."
                     );
 
                     return;
                 }
 
-                reducemoney(price);
+                reduceMoney(price);
 
                 if (
                     unlock ===
@@ -2254,13 +1879,13 @@ shopButtons.forEach(
                     boughtConvo =
                         true;
 
-                    const icon =
+                    const locked =
                         document.getElementById(
                             "locked-chat"
                         );
 
-                    if (icon) {
-                        icon.textContent =
+                    if (locked) {
+                        locked.textContent =
                             "🔓";
                     }
                 }
@@ -2301,7 +1926,7 @@ shopButtons.forEach(
                     unlock ===
                     "blur"
                 ) {
-                    doblur =
+                    doBlur =
                         false;
 
                     boughtBlur =
@@ -2320,28 +1945,19 @@ shopButtons.forEach(
                 button.style.background =
                     "black";
 
-                activateShopInstalled(
+                installShopUpgrade(
                     button
                 );
 
                 refreshMoneyDisplay();
 
                 checkGiftUnlock();
-
-                flashPage(
-                    "rgba(79,255,232,.08)",
-                    450
-                );
             }
         );
     }
 );
 
-function activateShopInstalled(button) {
-    if (!button) {
-        return;
-    }
-
+function installShopUpgrade(button) {
     const option =
         button.closest(
             ".shop-option"
@@ -2392,98 +2008,31 @@ function checkGiftUnlock() {
         boughtMsg &&
         boughtBlur
     ) {
-        const lockedNotice =
+        const locked =
             document.getElementById(
                 "gift-locked-notice"
             );
 
-        const giftSection =
+        const section =
             document.getElementById(
                 "gift-section"
             );
 
-        if (lockedNotice) {
-            lockedNotice.style.display =
+        if (locked) {
+            locked.style.display =
                 "none";
         }
 
-        if (giftSection) {
-            giftSection.style.display =
+        if (section) {
+            section.style.display =
                 "block";
 
-            activateGiftSystem();
+            pageGlow(
+                section,
+                1200
+            );
         }
     }
-}
-
-
-/* ==========================================================================
-   GIFT SYSTEM
-========================================================================== */
-
-function activateGiftSystem() {
-    const giftSection =
-        document.querySelector(
-            ".gift-section"
-        );
-
-    const giftCard =
-        document.querySelector(
-            ".gift-card"
-        );
-
-    if (
-        !giftSection ||
-        !giftCard
-    ) {
-        return;
-    }
-
-    pageGlow(
-        giftSection,
-        1400
-    );
-
-    const line =
-        document.createElement(
-            "div"
-        );
-
-    line.style.width =
-        "min(500px,90%)";
-
-    line.style.height =
-        "2px";
-
-    line.style.marginTop =
-        "20px";
-
-    line.style.background =
-        "linear-gradient(90deg,transparent,#000,transparent)";
-
-    line.style.transform =
-        "scaleX(0)";
-
-    line.style.transition =
-        "transform 1s ease";
-
-    giftCard.appendChild(
-        line
-    );
-
-    requestAnimationFrame(
-        function () {
-            line.style.transform =
-                "scaleX(1)";
-        }
-    );
-
-    setTimeout(
-        function () {
-            line.remove();
-        },
-        2500
-    );
 }
 
 
@@ -2526,16 +2075,21 @@ if (bdayBtn) {
                     The audacity for u to ask more
                     after all this btw... sighhh
                 </p>
+
+                <button
+                    id="final-confetti-button"
+                    class="gift-button appear"
+                >
+                    Celebrate 🎉
+                </button>
             `;
 
             playClick();
 
             flashPage(
-                "rgba(255,255,255,.18)",
-                700
+                "rgba(255,255,255,.16)",
+                800
             );
-
-            shockwave();
 
             if (backgroundAudio) {
                 backgroundAudio.pause();
@@ -2561,6 +2115,8 @@ if (bdayBtn) {
                 behavior: "instant"
             });
 
+            setupFinalConfettiButton();
+
             createRestartButton();
         }
     );
@@ -2569,21 +2125,27 @@ if (bdayBtn) {
 
 /* ==========================================================================
    FINAL GIFT CONFETTI
+   IMPORTANT:
+   Append canvas to BODY rather than #page-content.
 ========================================================================== */
 
-const confettiBtn =
-    document.getElementById(
-        "confettiBtn"
-    );
+function setupFinalConfettiButton() {
+    const button =
+        document.getElementById(
+            "final-confetti-button"
+        );
 
-if (confettiBtn) {
-    confettiBtn.addEventListener(
+    if (!button) {
+        return;
+    }
+
+    button.addEventListener(
         "click",
         function () {
             if (
                 confettiStarted ||
                 typeof confetti !==
-                    "function"
+                "function"
             ) {
                 return;
             }
@@ -2599,25 +2161,8 @@ if (confettiBtn) {
             canvas.className =
                 "gift-confetti-canvas";
 
-            if (pageContent) {
-                pageContent.appendChild(
-                    canvas
-                );
-            }
-
-            function sizeCanvas() {
-                canvas.width =
-                    window.innerWidth;
-
-                canvas.height =
-                    window.innerHeight;
-            }
-
-            sizeCanvas();
-
-            window.addEventListener(
-                "resize",
-                sizeCanvas
+            document.body.appendChild(
+                canvas
             );
 
             const giftConfetti =
@@ -2631,11 +2176,11 @@ if (confettiBtn) {
 
             function shoot() {
                 giftConfetti({
-                    particleCount: 10,
+                    particleCount: 16,
                     angle: 60,
                     spread: 50,
                     startVelocity: 80,
-                    gravity: 0.8,
+                    gravity: .8,
                     ticks: 250,
                     origin: {
                         x: 0,
@@ -2644,11 +2189,11 @@ if (confettiBtn) {
                 });
 
                 giftConfetti({
-                    particleCount: 10,
+                    particleCount: 16,
                     angle: 120,
                     spread: 50,
                     startVelocity: 80,
-                    gravity: 0.8,
+                    gravity: .8,
                     ticks: 250,
                     origin: {
                         x: 1,
@@ -2661,7 +2206,7 @@ if (confettiBtn) {
 
             setInterval(
                 shoot,
-                100
+                120
             );
         }
     );
@@ -2669,11 +2214,68 @@ if (confettiBtn) {
 
 
 /* ==========================================================================
-   HOBBY EASTER EGGS
+   GIFT LOCK TAUNTS
 ========================================================================== */
 
-const HOBBY_CLICKS_TO_UNLOCK =
-    10;
+(function setupGiftLockTaunts() {
+    const locked =
+        document.getElementById(
+            "gift-locked-notice"
+        );
+
+    if (!locked) {
+        return;
+    }
+
+    const taunts = [
+        "🔒 nope.",
+        "🔒 still nope.",
+        "🔒 the shop is right above you.",
+        "🔒 buying the three upgrades is the trick.",
+        "🔒 clicking harder won't help."
+    ];
+
+    let index = 0;
+
+    locked.addEventListener(
+        "click",
+        function () {
+            if (
+                boughtConvo &&
+                boughtMsg &&
+                boughtBlur
+            ) {
+                return;
+            }
+
+            playClick();
+
+            locked.classList.remove(
+                "gift-taunt-shake"
+            );
+
+            void locked.offsetWidth;
+
+            locked.classList.add(
+                "gift-taunt-shake"
+            );
+
+            showToast(
+                taunts[
+                    index %
+                    taunts.length
+                ]
+            );
+
+            index++;
+        }
+    );
+})();
+
+
+/* ==========================================================================
+   HOBBY SYSTEM
+========================================================================== */
 
 function setupHobbyEasterEgg(
     selector,
@@ -2689,28 +2291,23 @@ function setupHobbyEasterEgg(
         return;
     }
 
-    let count = 0;
+    let clicks = 0;
 
     card.addEventListener(
         "click",
         function () {
-            count++;
+            clicks++;
 
             playClick();
 
-            pageGlow(
-                card,
-                300
-            );
-
             if (
-                count <
+                clicks <
                 threshold
             ) {
                 return;
             }
 
-            count = 0;
+            clicks = 0;
 
             callback(card);
         }
@@ -2730,9 +2327,13 @@ setupHobbyEasterEgg(
             "dance-mode"
         );
 
-        flashPage(
-            "rgba(255,111,174,.14)",
-            500
+        showSecretToast(
+            "SHE'S GOT THE MOVES 💃"
+        );
+
+        pageGlow(
+            card,
+            1500
         );
 
         if (
@@ -2771,52 +2372,19 @@ setupHobbyEasterEgg(
                 );
         }
 
-        starBurst(
-            innerWidth / 2,
-            innerHeight / 2,
-            [
-                "💃",
-                "✨",
-                "⭐",
-                "💚"
-            ]
-        );
-
         if (
             typeof confetti ===
             "function"
         ) {
-            let bursts = 0;
-
-            const burst =
-                setInterval(
-                    function () {
-                        confetti({
-                            particleCount: 6,
-                            spread: 100,
-                            startVelocity: 35,
-                            origin: {
-                                x:
-                                    Math.random() *
-                                        0.4 +
-                                    0.3,
-                                y: 0.7
-                            }
-                        });
-
-                        bursts++;
-
-                        if (
-                            bursts >
-                            15
-                        ) {
-                            clearInterval(
-                                burst
-                            );
-                        }
-                    },
-                    150
-                );
+            confetti({
+                particleCount: 100,
+                spread: 120,
+                startVelocity: 45,
+                origin: {
+                    x: .5,
+                    y: .65
+                }
+            });
         }
 
         setTimeout(
@@ -2832,122 +2400,103 @@ setupHobbyEasterEgg(
 
 
 /* ==========================================================================
-   MOVIES
+   MOVIES / CINEMA MODE
 ========================================================================== */
 
 setupHobbyEasterEgg(
     ".movies",
     10,
     function (card) {
-        if (
-            document.querySelector(
-                ".movie-overlay"
-            )
-        ) {
-            return;
-        }
-
-        const overlay =
-            document.createElement(
-                "div"
-            );
-
-        overlay.className =
-            "movie-overlay";
-
-        overlay.innerHTML =
-            '<span class="movie-countdown">3</span>';
-
-        document.body.appendChild(
-            overlay
-        );
-
-        const countdownEl =
-            overlay.querySelector(
-                ".movie-countdown"
-            );
-
-        let count = 3;
-
-        const timer =
-            setInterval(
-                function () {
-                    count--;
-
-                    if (
-                        count >
-                        0
-                    ) {
-                        countdownEl.textContent =
-                            count;
-                    } else if (
-                        count ===
-                        0
-                    ) {
-                        countdownEl.textContent =
-                            "CINEMA 🎬";
-                    } else {
-                        clearInterval(
-                            timer
-                        );
-
-                        overlay.remove();
-
-                        movieModeOn =
-                            true;
-
-                        updatePageFilter();
-
-                        activateCinemaPresentation();
-                    }
-                },
-                1000
-            );
-
-        if (
-            !card.querySelector(
-                ".movies-label"
-            )
-        ) {
-            const label =
-                document.createElement(
-                    "p"
-                );
-
-            label.className =
-                "hobby-unlock-text movies-label";
-
-            label.textContent =
-                '"one movie" — the biggest lie she tells 🎬';
-
-            card.appendChild(
-                label
-            );
-        }
+        startCinemaMode(card);
     }
 );
 
-function activateCinemaPresentation() {
-    if (
-        document.querySelector(
-            ".cinema-bars-secret"
-        )
-    ) {
+function startCinemaMode(card) {
+    if (cinemaModeOn) {
         return;
     }
 
+    cinemaModeOn =
+        true;
+
+    movieModeOn =
+        true;
+
+    showSecretToast(
+        "🎬 CINEMA MODE"
+    );
+
+    pageGlow(
+        card,
+        1000
+    );
+
+    const overlay =
+        document.createElement(
+            "div"
+        );
+
+    overlay.className =
+        "movie-overlay";
+
+    overlay.innerHTML =
+        `<span class="movie-countdown">3</span>`;
+
+    document.body.appendChild(
+        overlay
+    );
+
+    const number =
+        overlay.querySelector(
+            ".movie-countdown"
+        );
+
+    let count = 3;
+
+    const timer =
+        setInterval(
+            function () {
+                count--;
+
+                if (
+                    count > 0
+                ) {
+                    number.textContent =
+                        count;
+                } else if (
+                    count === 0
+                ) {
+                    number.textContent =
+                        "CINEMA 🎬";
+                } else {
+                    clearInterval(
+                        timer
+                    );
+
+                    overlay.remove();
+
+                    updatePageFilter();
+
+                    activateCinemaBars();
+                }
+            },
+            1000
+        );
+}
+
+function activateCinemaBars() {
     const top =
+        document.createElement(
+            "div"
+        );
+
+    const bottom =
         document.createElement(
             "div"
         );
 
     top.className =
         "cinema-bars-secret top";
-
-    const bottom =
-        document.createElement(
-            "div"
-        );
 
     bottom.className =
         "cinema-bars-secret bottom";
@@ -2978,37 +2527,100 @@ function activateCinemaPresentation() {
         }
     );
 
-    setTimeout(
-        function () {
-            top.classList.remove(
-                "visible"
-            );
+    createCinemaExitButton();
+}
 
-            bottom.classList.remove(
-                "visible"
-            );
+function createCinemaExitButton() {
+    cinemaExitButton =
+        document.createElement(
+            "button"
+        );
 
-            if (pageContent) {
-                pageContent.classList.remove(
-                    "secret-letterbox"
-                );
-            }
-        },
-        9000
+    cinemaExitButton.className =
+        "cinema-exit-button";
+
+    cinemaExitButton.textContent =
+        "EXIT CINEMA MODE";
+
+    cinemaExitButton.setAttribute(
+        "aria-label",
+        "Exit Cinema Mode"
     );
 
-    setTimeout(
+    cinemaExitButton.addEventListener(
+        "click",
         function () {
-            top.remove();
-            bottom.remove();
-        },
-        9800
+            playClick();
+            exitCinemaMode();
+        }
     );
 
-    showAvignaToast(
-        "🎬 CINEMA MODE"
+    document.body.appendChild(
+        cinemaExitButton
     );
 }
+
+function exitCinemaMode() {
+    if (!cinemaModeOn) {
+        return;
+    }
+
+    cinemaModeOn =
+        false;
+
+    movieModeOn =
+        false;
+
+    document
+        .querySelectorAll(
+            ".cinema-bars-secret"
+        )
+        .forEach(
+            function (bar) {
+                bar.classList.remove(
+                    "visible"
+                );
+
+                setTimeout(
+                    function () {
+                        bar.remove();
+                    },
+                    600
+                );
+            }
+        );
+
+    if (pageContent) {
+        pageContent.classList.remove(
+            "secret-letterbox"
+        );
+    }
+
+    if (cinemaExitButton) {
+        cinemaExitButton.remove();
+
+        cinemaExitButton =
+            null;
+    }
+
+    updatePageFilter();
+
+    showToast(
+        "🎬 Cinema Mode Off"
+    );
+}
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+        if (
+            event.key === "Escape" &&
+            cinemaModeOn
+        ) {
+            exitCinemaMode();
+        }
+    }
+);
 
 
 /* ==========================================================================
@@ -3053,11 +2665,6 @@ setupHobbyEasterEgg(
     }
 );
 
-
-/* ==========================================================================
-   BIRTHDAY POEM
-========================================================================== */
-
 function showBirthdayPoem() {
     if (
         document.querySelector(
@@ -3067,18 +2674,11 @@ function showBirthdayPoem() {
         return;
     }
 
-    const page =
-        document.querySelector(
-            "#page-content"
+    if (pageContent) {
+        pageContent.classList.add(
+            "page-fade-out"
         );
-
-    if (!page) {
-        return;
     }
-
-    page.classList.add(
-        "page-fade-out"
-    );
 
     const overlay =
         document.createElement(
@@ -3159,7 +2759,7 @@ function showBirthdayPoem() {
                 "visible"
             );
         },
-        100
+        50
     );
 
     overlay
@@ -3179,11 +2779,13 @@ function showBirthdayPoem() {
                     function () {
                         overlay.remove();
 
-                        page.classList.remove(
-                            "page-fade-out"
-                        );
+                        if (pageContent) {
+                            pageContent.classList.remove(
+                                "page-fade-out"
+                            );
+                        }
                     },
-                    1000
+                    900
                 );
             }
         );
@@ -3191,69 +2793,311 @@ function showBirthdayPoem() {
 
 
 /* ==========================================================================
-   FLOATING CAKES
+   TYPING SECRET EFFECTS
 ========================================================================== */
 
-function spawnFloatingCakes() {
+function spawnEmojiRain(
+    emojiList,
+    count,
+    duration
+) {
     for (
         let i = 0;
-        i < 18;
+        i < count;
         i++
     ) {
-        const cake =
+        const drop =
             document.createElement(
                 "div"
             );
 
-        cake.className =
-            "floating-cake";
+        drop.className =
+            "rain-emoji";
 
-        cake.textContent =
-            "🎂";
+        drop.textContent =
+            emojiList[
+                Math.floor(
+                    Math.random() *
+                    emojiList.length
+                )
+            ];
 
-        cake.style.left =
+        drop.style.left =
             Math.random() *
-                100 +
+            100 +
             "vw";
 
-        cake.style.animationDuration =
-            3 +
+        drop.style.animationDuration =
+            duration +
             Math.random() *
-                3 +
+            2 +
             "s";
 
-        cake.style.fontSize =
-            1.5 +
+        drop.style.fontSize =
+            1.4 +
             Math.random() *
-                2 +
+            1.8 +
             "rem";
 
         document.body.appendChild(
-            cake
+            drop
         );
 
         setTimeout(
             function () {
-                cake.remove();
+                drop.remove();
             },
-            7000
+            (duration + 3) *
+            1000
         );
     }
+}
 
-    flashPage(
-        "rgba(186,255,106,.12)",
-        500
+function spawnFlyingPizza() {
+    const pizza =
+        document.createElement(
+            "div"
+        );
+
+    pizza.textContent =
+        "🍕";
+
+    Object.assign(
+        pizza.style,
+        {
+            position: "fixed",
+            top: "45%",
+            left: "-120px",
+            fontSize: "5rem",
+            zIndex: "30000",
+            pointerEvents: "none",
+            transition:
+                "transform 2.4s linear, opacity 2.4s linear"
+        }
+    );
+
+    document.body.appendChild(
+        pizza
     );
 
     showSecretToast(
-        "cake mode activated"
+        "🍕 pizza summoned"
+    );
+
+    requestAnimationFrame(
+        function () {
+            pizza.style.transform =
+                "translateX(calc(100vw + 200px)) rotate(1080deg)";
+        }
+    );
+
+    setTimeout(
+        function () {
+            pizza.style.opacity =
+                "0";
+        },
+        2000
+    );
+
+    setTimeout(
+        function () {
+            pizza.remove();
+        },
+        2600
     );
 }
 
+function triggerScreenCrack() {
+    const overlay =
+        document.createElement(
+            "div"
+        );
 
-/* ==========================================================================
-   MATRIX
-========================================================================== */
+    overlay.className =
+        "screen-crack-overlay";
+
+    overlay.innerHTML = `
+        <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 400 800"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <g
+                stroke="rgba(255,255,255,.55)"
+                stroke-width="1.4"
+                fill="none"
+            >
+                <path d="
+                    M200 400 L120 120
+                    M200 400 L280 90
+                    M200 400 L60 300
+                    M200 400 L340 260
+                    M200 400 L150 620
+                    M200 400 L260 680
+                    M200 400 L40 520
+                    M200 400 L370 480
+                "/>
+            </g>
+        </svg>
+    `;
+
+    document.body.appendChild(
+        overlay
+    );
+
+    requestAnimationFrame(
+        function () {
+            overlay.classList.add(
+                "visible"
+            );
+        }
+    );
+
+    document.body.classList.add(
+        "screen-shake"
+    );
+
+    createShockwave();
+
+    showSecretToast(
+        "💥 uh oh."
+    );
+
+    setTimeout(
+        function () {
+            document.body.classList.remove(
+                "screen-shake"
+            );
+        },
+        400
+    );
+
+    setTimeout(
+        function () {
+            overlay.classList.remove(
+                "visible"
+            );
+
+            setTimeout(
+                function () {
+                    overlay.remove();
+                },
+                300
+            );
+        },
+        2000
+    );
+}
+
+function activateTrailMode() {
+    if (
+        activateTrailMode.active
+    ) {
+        return;
+    }
+
+    activateTrailMode.active =
+        true;
+
+    showSecretToast(
+        "✨ trail mode"
+    );
+
+    const emojis = [
+        "✨",
+        "💫",
+        "⭐"
+    ];
+
+    function handler(event) {
+        if (
+            Math.random() >
+            .35
+        ) {
+            return;
+        }
+
+        const trail =
+            document.createElement(
+                "div"
+            );
+
+        trail.className =
+            "mouse-trail-emoji";
+
+        trail.textContent =
+            emojis[
+                Math.floor(
+                    Math.random() *
+                    emojis.length
+                )
+            ];
+
+        trail.style.left =
+            event.clientX +
+            "px";
+
+        trail.style.top =
+            event.clientY +
+            "px";
+
+        document.body.appendChild(
+            trail
+        );
+
+        setTimeout(
+            function () {
+                trail.remove();
+            },
+            900
+        );
+    }
+
+    document.addEventListener(
+        "mousemove",
+        handler
+    );
+
+    setTimeout(
+        function () {
+            document.removeEventListener(
+                "mousemove",
+                handler
+            );
+
+            activateTrailMode.active =
+                false;
+        },
+        8000
+    );
+}
+
+function triggerInvertFlash() {
+    showSecretToast(
+        "🙃 inverted"
+    );
+
+    document.body.classList.remove(
+        "invert-flash"
+    );
+
+    void document.body.offsetWidth;
+
+    document.body.classList.add(
+        "invert-flash"
+    );
+
+    setTimeout(
+        function () {
+            document.body.classList.remove(
+                "invert-flash"
+            );
+        },
+        3000
+    );
+}
 
 function spawnMatrixRain() {
     if (
@@ -3264,7 +3108,7 @@ function spawnMatrixRain() {
         return;
     }
 
-    showAvignaToast(
+    showSecretToast(
         "💊 Wake up..."
     );
 
@@ -3300,7 +3144,7 @@ function spawnMatrixRain() {
             "2d"
         );
 
-    function size() {
+    function resize() {
         canvas.width =
             innerWidth;
 
@@ -3308,18 +3152,18 @@ function spawnMatrixRain() {
             innerHeight;
     }
 
-    size();
+    resize();
 
-    const glyphs =
-        "アイウエオカキクケコ01アヴィグナ";
+    const chars =
+        "アイウエオカキクケコ01AVIGNA";
 
-    const fontSize = 18;
+    const size = 18;
 
     const drops =
         new Array(
             Math.ceil(
                 canvas.width /
-                    fontSize
+                size
             )
         ).fill(1);
 
@@ -3349,7 +3193,7 @@ function spawnMatrixRain() {
                     "#4fffb0";
 
                 ctx.font =
-                    fontSize +
+                    size +
                     "px monospace";
 
                 for (
@@ -3357,28 +3201,24 @@ function spawnMatrixRain() {
                     i < drops.length;
                     i++
                 ) {
-                    const glyph =
-                        glyphs[
+                    const char =
+                        chars[
                             Math.floor(
                                 Math.random() *
-                                    glyphs.length
+                                chars.length
                             )
                         ];
 
                     ctx.fillText(
-                        glyph,
-                        i *
-                            fontSize,
-                        drops[i] *
-                            fontSize
+                        char,
+                        i * size,
+                        drops[i] * size
                     );
 
                     if (
-                        drops[i] *
-                            fontSize >
-                            canvas.height &&
-                        Math.random() >
-                            0.975
+                        drops[i] * size >
+                        canvas.height &&
+                        Math.random() > .975
                     ) {
                         drops[i] = 0;
                     }
@@ -3411,21 +3251,13 @@ function spawnMatrixRain() {
         );
 }
 
-
-/* ==========================================================================
-   DISCO
-========================================================================== */
-
 function activateDiscoMode() {
     if (discoModeOn) {
         return;
     }
 
-    discoModeOn = true;
-
-    showAvignaToast(
-        "🪩 DISCO MODE ENGAGED"
-    );
+    discoModeOn =
+        true;
 
     const overlay =
         document.createElement(
@@ -3443,9 +3275,7 @@ function activateDiscoMode() {
             zIndex: "29955",
             pointerEvents: "none",
             mixBlendMode: "overlay",
-            opacity: "0.55",
-            transition:
-                "background .15s linear"
+            opacity: ".55"
         }
     );
 
@@ -3464,18 +3294,20 @@ function activateDiscoMode() {
 
     let index = 0;
 
+    showSecretToast(
+        "🪩 DISCO MODE"
+    );
+
     const timer =
         setInterval(
             function () {
                 overlay.style.background =
                     colors[
                         index %
-                            colors.length
+                        colors.length
                     ];
 
                 index++;
-
-                chromaticPage();
             },
             160
         );
@@ -3495,11 +3327,6 @@ function activateDiscoMode() {
     );
 }
 
-
-/* ==========================================================================
-   RAINBOW
-========================================================================== */
-
 function activateRainbowMode() {
     if (rainbowModeOn) {
         return;
@@ -3508,8 +3335,8 @@ function activateRainbowMode() {
     rainbowModeOn =
         true;
 
-    showAvignaToast(
-        "🌈 RAINBOW MODE ON"
+    showSecretToast(
+        "🌈 RAINBOW MODE"
     );
 
     let hue = 0;
@@ -3524,8 +3351,7 @@ function activateRainbowMode() {
                 if (pageContent) {
                     pageContent.style.setProperty(
                         "--rainbow-hue",
-                        hue +
-                            "deg"
+                        hue + "deg"
                     );
                 }
 
@@ -3555,25 +3381,20 @@ function activateRainbowMode() {
     );
 }
 
-
-/* ==========================================================================
-   FLIP
-========================================================================== */
-
 function activatePageFlip() {
     if (!pageContent) {
         return;
     }
+
+    showSecretToast(
+        "🙃 who allowed you to touch the keyboard"
+    );
 
     pageContent.style.transition =
         "transform 1s ease-in-out";
 
     pageContent.style.transform =
         "rotate(180deg)";
-
-    showAvignaToast(
-        "🙃 who allowed you to touch the keyboard"
-    );
 
     setTimeout(
         function () {
@@ -3589,18 +3410,10 @@ function activatePageFlip() {
    DEBUG HUD
 ========================================================================== */
 
-let debugHudInterval =
-    null;
-
 function toggleDebugHud() {
     const existing =
         document.querySelector(
             ".debug-hud"
-        );
-
-    const grid =
-        document.querySelector(
-            ".birthday-debug-grid"
         );
 
     if (existing) {
@@ -3610,44 +3423,11 @@ function toggleDebugHud() {
 
         existing.remove();
 
-        if (grid) {
-            grid.classList.remove(
-                "visible"
-            );
-
-            setTimeout(
-                function () {
-                    grid.remove();
-                },
-                400
-            );
-        }
-
         return;
     }
 
-    showAvignaToast(
-        "🧪 debug hud online"
-    );
-
-    const newGrid =
-        document.createElement(
-            "div"
-        );
-
-    newGrid.className =
-        "birthday-debug-grid";
-
-    document.body.appendChild(
-        newGrid
-    );
-
-    requestAnimationFrame(
-        function () {
-            newGrid.classList.add(
-                "visible"
-            );
-        }
+    showSecretToast(
+        "debug hud online"
     );
 
     const hud =
@@ -3665,20 +3445,18 @@ function toggleDebugHud() {
             bottom: "18px",
             left: "18px",
             zIndex: "30000",
+            padding: "12px 16px",
             background:
                 "rgba(5,15,19,.94)",
             border:
                 "1px solid rgba(79,255,232,.35)",
             borderRadius: "12px",
-            padding: "12px 16px",
             fontFamily:
                 "'DM Mono',monospace",
             fontSize: ".72rem",
             color: "#4fffe8",
             lineHeight: "1.6",
-            cursor: "pointer",
-            backdropFilter:
-                "blur(10px)"
+            cursor: "pointer"
         }
     );
 
@@ -3712,11 +3490,11 @@ function toggleDebugHud() {
             ) +
             "<br>" +
 
-            "BLUR REMOVED: " +
+            "BLUR: " +
             (
                 boughtBlur
-                    ? "YES"
-                    : "NO"
+                    ? "REMOVED"
+                    : "ACTIVE"
             );
     }
 
@@ -3736,17 +3514,6 @@ function toggleDebugHud() {
             );
 
             hud.remove();
-
-            newGrid.classList.remove(
-                "visible"
-            );
-
-            setTimeout(
-                function () {
-                    newGrid.remove();
-                },
-                400
-            );
         }
     );
 
@@ -3757,347 +3524,155 @@ function toggleDebugHud() {
 
 
 /* ==========================================================================
-   TYPING SECRETS
+   TYPING SECRET TABLE
 ========================================================================== */
 
 const typingSecrets = {
-    avigna: {
-        messages: [
-            "Yoooo. you found the secret. congrats.",
-            "Aloo",
-            "U know u are pretty narcissistic man",
-            "Alrrr we get it okay, this website is for u",
-            "Stop typing, and explore my work dummy"
-        ],
 
-        action: function (
-            message
-        ) {
-            showAvignaToast(
-                message
-            );
+    avigna: function () {
+        showSecretToast(
+            "YOU FOUND THE NAME SECRET"
+        );
 
-            chromaticPage();
+        chromaticPage();
 
-            createScanline(
-                "#ff8cd9"
-            );
+        starBurst(
+            innerWidth / 2,
+            innerHeight / 3,
+            [
+                "💗",
+                "💚",
+                "✨"
+            ]
+        );
+    },
 
-            starBurst(
-                innerWidth / 2,
-                innerHeight / 2,
-                [
-                    "💗",
-                    "✨",
-                    "💚"
-                ]
-            );
+    secret: function () {
+        showSecretToast(
+            "SECRET SECRET FOUND"
+        );
+
+        flashPage(
+            "rgba(123,91,255,.18)",
+            650
+        );
+
+        createScanline(
+            "#b58cff"
+        );
+    },
+
+    cake: function () {
+        spawnEmojiRain(
+            [
+                "🎂",
+                "🧁"
+            ],
+            18,
+            4
+        );
+    },
+
+    matrix: function () {
+        spawnMatrixRain();
+    },
+
+    disco: function () {
+        activateDiscoMode();
+    },
+
+    rainbow: function () {
+        activateRainbowMode();
+    },
+
+    flip: function () {
+        activatePageFlip();
+    },
+
+    debug: function () {
+        toggleDebugHud();
+    },
+
+    banana: function () {
+        showSecretToast(
+            "🍌 banana rain"
+        );
+
+        spawnEmojiRain(
+            ["🍌"],
+            22,
+            4
+        );
+    },
+
+    cat: function () {
+        showSecretToast(
+            "🐱 meow"
+        );
+
+        spawnEmojiRain(
+            [
+                "🐱",
+                "🐈",
+                "🐈‍⬛"
+            ],
+            18,
+            4.5
+        );
+    },
+
+    pizza: function () {
+        spawnFlyingPizza();
+    },
+
+    boom: function () {
+        triggerScreenCrack();
+    },
+
+    yolo: function () {
+        if (!pageContent) {
+            return;
         }
-    },
 
-    secret: {
-        messages: [
-            "🚨 YOU FOUND A SECRET SECRET",
-            "This secret was hidden from Avigna.",
-            "Neerav definitely spent too much time making this.",
-            "There is absolutely nothing useful here.",
-            "Congratulations. You wasted your time professionally."
-        ],
+        pageContent.classList.remove(
+            "zoom-pulse"
+        );
 
-        action: function (
-            message
-        ) {
-            showSecretToast(
-                message
-            );
+        void pageContent.offsetWidth;
 
-            flashPage(
-                "rgba(123,91,255,.2)",
-                700
-            );
+        pageContent.classList.add(
+            "zoom-pulse"
+        );
 
-            chromaticPage();
+        showSecretToast(
+            "🎉 YOLO"
+        );
 
-            createScanline(
-                "#b58cff"
-            );
-        }
-    },
-
-    cake: {
-        action:
-            spawnFloatingCakes
-    },
-
-    matrix: {
-        action:
-            spawnMatrixRain
-    },
-
-    disco: {
-        action:
-            activateDiscoMode
-    },
-
-    rainbow: {
-        action:
-            activateRainbowMode
-    },
-
-    flip: {
-        action:
-            activatePageFlip
-    },
-
-    debug: {
-        action:
-            toggleDebugHud
-    },
-
-    banana: {
-        action:
+        setTimeout(
             function () {
-                showAvignaToast(
-                    "🍌 banana rain"
+                pageContent.classList.remove(
+                    "zoom-pulse"
                 );
-
-                spawnEmojiRain(
-                    ["🍌"],
-                    22,
-                    4
-                );
-
-                flashPage(
-                    "rgba(255,216,107,.14)",
-                    500
-                );
-            }
+            },
+            1500
+        );
     },
 
-    cat: {
-        action:
-            function () {
-                showAvignaToast(
-                    "🐱 meow. that's all. meow."
-                );
-
-                spawnEmojiRain(
-                    [
-                        "🐱",
-                        "🐈",
-                        "🐈‍⬛"
-                    ],
-                    18,
-                    4.5
-                );
-
-                chromaticPage();
-            }
+    trail: function () {
+        activateTrailMode();
     },
 
-    pizza: {
-        action:
-            function () {
-                showAvignaToast(
-                    "🍕 the pizza has been summoned."
-                );
-
-                const pizza =
-                    document.createElement(
-                        "div"
-                    );
-
-                pizza.textContent =
-                    "🍕";
-
-                Object.assign(
-                    pizza.style,
-                    {
-                        position: "fixed",
-                        top: "45%",
-                        left: "-120px",
-                        fontSize: "5rem",
-                        zIndex: "30000",
-                        pointerEvents: "none",
-                        transition:
-                            "transform 2.4s linear, opacity 2.4s linear"
-                    }
-                );
-
-                document.body.appendChild(
-                    pizza
-                );
-
-                requestAnimationFrame(
-                    function () {
-                        pizza.style.transform =
-                            "translateX(calc(100vw + 200px)) rotate(1080deg)";
-                    }
-                );
-
-                setTimeout(
-                    function () {
-                        pizza.style.opacity =
-                            "0";
-                    },
-                    2000
-                );
-
-                setTimeout(
-                    function () {
-                        pizza.remove();
-                    },
-                    2600
-                );
-
-                pageGlow(
-                    document.querySelector(
-                        ".eat-section"
-                    ),
-                    1600
-                );
-            }
-    },
-
-    boom: {
-        action:
-            function () {
-                showAvignaToast(
-                    "💥 uh oh."
-                );
-
-                const overlay =
-                    document.createElement(
-                        "div"
-                    );
-
-                overlay.className =
-                    "screen-crack-overlay";
-
-                overlay.innerHTML = `
-                    <svg
-                        width="100%"
-                        height="100%"
-                        viewBox="0 0 400 800"
-                        preserveAspectRatio="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <g
-                            stroke="rgba(255,255,255,.55)"
-                            stroke-width="1.4"
-                            fill="none"
-                        >
-                            <path d="
-                                M200 400 L120 120
-                                M200 400 L280 90
-                                M200 400 L60 300
-                                M200 400 L340 260
-                                M200 400 L150 620
-                                M200 400 L260 680
-                                M200 400 L40 520
-                                M200 400 L370 480
-                            "/>
-
-                            <path d="
-                                M120 120 L95 60
-                                M280 90 L320 40
-                                M60 300 L10 260
-                                M150 620 L100 700
-                                M260 680 L300 760
-                            "/>
-                        </g>
-                    </svg>
-                `;
-
-                document.body.appendChild(
-                    overlay
-                );
-
-                requestAnimationFrame(
-                    function () {
-                        overlay.classList.add(
-                            "visible"
-                        );
-                    }
-                );
-
-                document.body.classList.add(
-                    "screen-shake"
-                );
-
-                flashPage(
-                    "rgba(255,255,255,.2)",
-                    300
-                );
-
-                shockwave();
-
-                setTimeout(
-                    function () {
-                        document.body.classList.remove(
-                            "screen-shake"
-                        );
-                    },
-                    400
-                );
-
-                setTimeout(
-                    function () {
-                        overlay.classList.remove(
-                            "visible"
-                        );
-
-                        setTimeout(
-                            function () {
-                                overlay.remove();
-                            },
-                            300
-                        );
-                    },
-                    2200
-                );
-            }
-    },
-
-    yolo: {
-        action:
-            function () {
-                if (pageContent) {
-                    pageGlow(
-                        pageContent,
-                        1200
-                    );
-                }
-
-                showAvignaToast(
-                    "🎉 YOLO."
-                );
-            }
-    },
-
-    trail: {
-        action:
-            activateTrailMode
-    },
-
-    invert: {
-        action:
-            triggerInvertFlash
+    invert: function () {
+        triggerInvertFlash();
     }
 };
-
-let typedBuffer = "";
-
-const MAX_TYPED_BUFFER =
-    30;
 
 document.addEventListener(
     "keydown",
     function (event) {
         if (
             !isUnlocked() ||
-            event.key.length !==
-                1
+            event.key.length !== 1
         ) {
             return;
         }
@@ -4107,11 +3682,11 @@ document.addEventListener(
 
         if (
             typedBuffer.length >
-            MAX_TYPED_BUFFER
+            30
         ) {
             typedBuffer =
                 typedBuffer.slice(
-                    -MAX_TYPED_BUFFER
+                    -30
                 );
         }
 
@@ -4133,28 +3708,7 @@ document.addEventListener(
                     word
                 )
             ) {
-                const secret =
-                    typingSecrets[
-                        word
-                    ];
-
-                if (
-                    secret.messages
-                ) {
-                    const message =
-                        secret.messages[
-                            Math.floor(
-                                Math.random() *
-                                    secret.messages.length
-                            )
-                        ];
-
-                    secret.action(
-                        message
-                    );
-                } else {
-                    secret.action();
-                }
+                typingSecrets[word]();
 
                 typedBuffer = "";
 
@@ -4166,484 +3720,74 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   TRAIL MODE
-========================================================================== */
-
-let trailModeActive =
-    false;
-
-let trailMouseHandler =
-    null;
-
-function activateTrailMode() {
-    if (trailModeActive) {
-        return;
-    }
-
-    trailModeActive =
-        true;
-
-    showAvignaToast(
-        "✨ trail mode on. wiggle your mouse."
-    );
-
-    const trailEmojis = [
-        "✨",
-        "💫",
-        "⭐",
-        "🌟"
-    ];
-
-    trailMouseHandler =
-        function (event) {
-            if (
-                Math.random() >
-                0.35
-            ) {
-                return;
-            }
-
-            const trail =
-                document.createElement(
-                    "div"
-                );
-
-            trail.className =
-                "mouse-trail-emoji";
-
-            trail.textContent =
-                trailEmojis[
-                    Math.floor(
-                        Math.random() *
-                            trailEmojis.length
-                    )
-                ];
-
-            trail.style.left =
-                event.clientX +
-                "px";
-
-            trail.style.top =
-                event.clientY +
-                "px";
-
-            document.body.appendChild(
-                trail
-            );
-
-            setTimeout(
-                function () {
-                    trail.remove();
-                },
-                900
-            );
-        };
-
-    document.addEventListener(
-        "mousemove",
-        trailMouseHandler
-    );
-
-    flashPage(
-        "rgba(186,255,106,.1)",
-        500
-    );
-
-    setTimeout(
-        function () {
-            document.removeEventListener(
-                "mousemove",
-                trailMouseHandler
-            );
-
-            trailModeActive =
-                false;
-        },
-        8000
-    );
-}
-
-
-/* ==========================================================================
-   INVERT
-========================================================================== */
-
-function triggerInvertFlash() {
-    showAvignaToast(
-        "🙃 everything you know is wrong. for 3 seconds."
-    );
-
-    document.body.classList.remove(
-        "invert-flash"
-    );
-
-    void document.body.offsetWidth;
-
-    document.body.classList.add(
-        "invert-flash"
-    );
-
-    shockwave();
-
-    setTimeout(
-        function () {
-            document.body.classList.remove(
-                "invert-flash"
-            );
-        },
-        3000
-    );
-}
-
-
-/* ==========================================================================
-   KONAMI
-========================================================================== */
-
-const konamiCode = [
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "b",
-    "a"
-];
-
-let konamiIndex = 0;
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        const key =
-            event.key.length === 1
-                ? event.key.toLowerCase()
-                : event.key;
-
-        if (
-            key ===
-            konamiCode[
-                konamiIndex
-            ]
-        ) {
-            konamiIndex++;
-
-            if (
-                konamiIndex ===
-                konamiCode.length
-            ) {
-                konamiIndex = 0;
-
-                activateKonamiCode();
-            }
-        } else {
-            konamiIndex =
-                key ===
-                konamiCode[0]
-                    ? 1
-                    : 0;
-        }
-    }
-);
-
-function activateKonamiCode() {
-    showAvignaToast(
-        "🎮 KONAMI CODE ACTIVATED. YOU CHEATED."
-    );
-
-    document.body.classList.add(
-        "arcade-secret-active"
-    );
-
-    const grid =
-        document.createElement(
-            "div"
-        );
-
-    grid.className =
-        "birthday-debug-grid";
-
-    document.body.appendChild(
-        grid
-    );
-
-    requestAnimationFrame(
-        function () {
-            grid.classList.add(
-                "visible"
-            );
-        }
-    );
-
-    showSecretBadge(
-        "AVIGNA ARCADE MODE",
-        3200
-    );
-
-    createScanline(
-        "#ff8cd9"
-    );
-
-    createScanline(
-        "#4fffe8"
-    );
-
-    flashPage(
-        "rgba(123,61,255,.13)",
-        700
-    );
-
-    if (
-        typeof confetti ===
-        "function"
-    ) {
-        confetti({
-            particleCount: 220,
-            spread: 180,
-            startVelocity: 65,
-            gravity: 0.75,
-            origin: {
-                x: 0.5,
-                y: 0.5
-            }
-        });
-    }
-
-    setTimeout(
-        function () {
-            document.body.classList.remove(
-                "arcade-secret-active"
-            );
-
-            grid.classList.remove(
-                "visible"
-            );
-
-            setTimeout(
-                function () {
-                    grid.remove();
-                },
-                400
-            );
-        },
-        8000
-    );
-}
-
-
-/* ==========================================================================
-   IDLE
-========================================================================== */
-
-const IDLE_TIME =
-    20000;
-
-const idleMessages = [
-    "👀 You still there?",
-    "Bro... you haven't touched anything in a while.",
-    "The website is getting lonely.",
-    "Psst... there are secrets hidden here.",
-    "Try clicking around. You might find something.",
-    "Avigna would probably have found a secret by now.",
-    "You're really just gonna stare at the website?"
-];
-
-const jackpotMessages = [
-    "🎰 JACKPOT. you win absolutely nothing, but congrats.",
-    "🎰 rare idle event triggered. tell no one.",
-    "🎰 you've been idle long enough to earn a fake trophy 🏆"
-];
-
-let idleTimer = null;
-let idleNudgeCount = 0;
-
-function resetIdleTimer() {
-    if (!isUnlocked()) {
-        return;
-    }
-
-    clearTimeout(
-        idleTimer
-    );
-
-    idleTimer =
-        setTimeout(
-            showIdleNudge,
-            IDLE_TIME
-        );
-}
-
-function showIdleNudge() {
-    if (!isUnlocked()) {
-        return;
-    }
-
-    if (
-        Math.random() <
-        0.08
-    ) {
-        showAvignaToast(
-            jackpotMessages[
-                Math.floor(
-                    Math.random() *
-                        jackpotMessages.length
-                )
-            ]
-        );
-
-        flashPage(
-            "rgba(255,215,80,.16)",
-            600
-        );
-
-        starBurst(
-            innerWidth / 2,
-            innerHeight / 3,
-            [
-                "🎰",
-                "✨",
-                "🏆"
-            ]
-        );
-
-        if (
-            typeof confetti ===
-            "function"
-        ) {
-            confetti({
-                particleCount: 60,
-                spread: 90,
-                startVelocity: 35,
-                origin: {
-                    x: 0.5,
-                    y: 0.3
-                }
-            });
-        }
-    } else {
-        showAvignaToast(
-            idleMessages[
-                idleNudgeCount %
-                    idleMessages.length
-            ]
-        );
-
-        pageGlow(
-            pageContent,
-            1000
-        );
-    }
-
-    idleNudgeCount++;
-
-    resetIdleTimer();
-}
-
-[
-    "mousemove",
-    "mousedown",
-    "keydown",
-    "scroll",
-    "touchstart"
-].forEach(
-    function (eventName) {
-        document.addEventListener(
-            eventName,
-            resetIdleTimer,
-            { passive: true }
-        );
-    }
-);
-
-resetIdleTimer();
-
-
-/* ==========================================================================
-   LOGO
+   LOGO — FIVE CLICKS
 ========================================================================== */
 
 if (secretLogo) {
-    let logoClicks = 0;
-    let logoClickTimer =
-        null;
+    let clicks = 0;
+    let timer = null;
 
     secretLogo.addEventListener(
         "click",
         function () {
-            logoClicks++;
+            clicks++;
 
-            playClick();
+            clearTimeout(timer);
 
-            clearTimeout(
-                logoClickTimer
-            );
-
-            logoClickTimer =
+            timer =
                 setTimeout(
                     function () {
-                        logoClicks = 0;
+                        clicks = 0;
                     },
                     1200
                 );
 
             if (
-                logoClicks >=
+                clicks <
                 5
             ) {
-                logoClicks = 0;
-
-                showAvignaToast(
-                    "🤫 You found the CEO button."
-                );
-
-                flashPage(
-                    "rgba(79,255,232,.15)",
-                    500
-                );
-
-                secretLogo.animate(
-                    [
-                        {
-                            transform:
-                                "rotate(0) scale(1)"
-                        },
-                        {
-                            transform:
-                                "rotate(-15deg) scale(1.3)"
-                        },
-                        {
-                            transform:
-                                "rotate(15deg) scale(1.3)"
-                        },
-                        {
-                            transform:
-                                "rotate(0) scale(1)"
-                        }
-                    ],
-                    {
-                        duration: 600,
-                        easing:
-                            "ease-in-out"
-                    }
-                );
-
-                starBurst(
-                    60,
-                    40,
-                    [
-                        "👑",
-                        "✨",
-                        "🔐"
-                    ]
-                );
+                return;
             }
+
+            clicks = 0;
+
+            showSecretToast(
+                "🤫 CEO BUTTON FOUND"
+            );
+
+            secretLogo.animate(
+                [
+                    {
+                        transform:
+                            "rotate(0) scale(1)"
+                    },
+                    {
+                        transform:
+                            "rotate(-15deg) scale(1.3)"
+                    },
+                    {
+                        transform:
+                            "rotate(15deg) scale(1.3)"
+                    },
+                    {
+                        transform:
+                            "rotate(0) scale(1)"
+                    }
+                ],
+                {
+                    duration: 600
+                }
+            );
+
+            starBurst(
+                60,
+                40,
+                [
+                    "👑",
+                    "✨",
+                    "🔐"
+                ]
+            );
         }
     );
 
@@ -4660,731 +3804,49 @@ if (secretLogo) {
         }
     );
 
-    function cancelPress() {
-        clearTimeout(
-            pressTimer
-        );
-    }
-
     secretLogo.addEventListener(
         "mouseup",
-        cancelPress
+        function () {
+            clearTimeout(
+                pressTimer
+            );
+        }
     );
 
     secretLogo.addEventListener(
         "mouseleave",
-        cancelPress
-    );
-
-    secretLogo.addEventListener(
-        "touchend",
-        cancelPress
+        function () {
+            clearTimeout(
+                pressTimer
+            );
+        }
     );
 }
 
 function triggerRootAccessSecret() {
-    showAvignaToast(
-        "🔓 root access granted. nothing happens though."
+    showSecretToast(
+        "🔓 ROOT ACCESS GRANTED"
     );
 
     flashPage(
-        "rgba(79,255,232,.2)",
-        900
+        "rgba(79,255,232,.18)",
+        800
     );
 
     createScanline(
         "#4fffe8"
     );
 
-    showSecretBadge(
-        "ROOT ACCESS GRANTED",
-        2200
-    );
-
-    document.body.classList.add(
-        "secret-glitch"
-    );
-
-    setTimeout(
-        function () {
-            document.body.classList.remove(
-                "secret-glitch"
-            );
-        },
-        700
-    );
-}
-
-
-/* ==========================================================================
-   RIGHT CLICK
-========================================================================== */
-
-document.addEventListener(
-    "contextmenu",
-    function (event) {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        event.preventDefault();
-
-        const messages = [
-            "🖱️ nice try. no context menu for you.",
-            "sneaky. there's nothing under here.",
-            "you right clicked. bold move.",
-            "inspect element won't save you either."
-        ];
-
-        showAvignaToast(
-            messages[
-                Math.floor(
-                    Math.random() *
-                        messages.length
-                )
-            ]
-        );
-
-        createRipple(
-            event.clientX,
-            event.clientY,
-            "#4fffe8"
-        );
-
-        showSecretBadge(
-            "ACCESS DENIED",
-            900
-        );
-    }
-);
-
-
-/* ==========================================================================
-   DOUBLE CLICK QUOTE
-========================================================================== */
-
-const quoteSection =
-    document.querySelector(
-        ".trust-text"
-    );
-
-if (quoteSection) {
-    quoteSection.addEventListener(
-        "dblclick",
-        function (event) {
-            playClick();
-
-            showAvignaToast(
-                "📖 diary entry detected."
-            );
-
-            spotlightElement(
-                quoteSection,
-                2200
-            );
-
-            createRipple(
-                event.clientX,
-                event.clientY,
-                "#16a86b"
-            );
-
-            if (
-                typeof confetti ===
-                "function"
-            ) {
-                confetti({
-                    particleCount: 90,
-                    spread: 100,
-                    startVelocity: 45,
-                    origin: {
-                        x:
-                            event.clientX /
-                            innerWidth,
-                        y:
-                            event.clientY /
-                            innerHeight
-                    }
-                });
-            }
-        }
-    );
-}
-
-
-/* ==========================================================================
-   STAT COMBO
-========================================================================== */
-
-const statBars =
-    document.querySelectorAll(
-        ".stats .stat"
-    );
-
-let statComboIndex = 0;
-
-statBars.forEach(
-    function (
-        statEl,
-        index
-    ) {
-        statEl.style.cursor =
-            "pointer";
-
-        statEl.addEventListener(
-            "click",
-            function () {
-                playClick();
-
-                pageGlow(
-                    statEl,
-                    300
-                );
-
-                if (
-                    index ===
-                    statComboIndex
-                ) {
-                    statComboIndex++;
-
-                    if (
-                        statComboIndex ===
-                        statBars.length
-                    ) {
-                        statComboIndex =
-                            0;
-
-                        showAvignaToast(
-                            "📊 you actually read the stats in order. impressive."
-                        );
-
-                        spotlightElement(
-                            document.querySelector(
-                                ".stats"
-                            ),
-                            1800
-                        );
-
-                        createScanline(
-                            "#4fffe8"
-                        );
-
-                        if (
-                            typeof confetti ===
-                            "function"
-                        ) {
-                            confetti({
-                                particleCount: 80,
-                                spread: 90,
-                                startVelocity: 40,
-                                origin: {
-                                    x: 0.5,
-                                    y: 0.4
-                                }
-                            });
-                        }
-                    }
-                } else {
-                    statComboIndex =
-                        index === 0
-                            ? 1
-                            : 0;
-                }
-            }
-        );
-    }
-);
-
-
-/* ==========================================================================
-   SHAKE TO PARTY
-========================================================================== */
-
-let lastShakeTime = 0;
-
-let lastAcceleration = {
-    x: 0,
-    y: 0,
-    z: 0
-};
-
-const SHAKE_THRESHOLD =
-    18;
-
-function handleDeviceMotion(
-    event
-) {
-    const acceleration =
-        event.accelerationIncludingGravity;
-
-    if (!acceleration) {
-        return;
-    }
-
-    const deltaX =
-        Math.abs(
-            acceleration.x -
-                lastAcceleration.x
-        );
-
-    const deltaY =
-        Math.abs(
-            acceleration.y -
-                lastAcceleration.y
-        );
-
-    const deltaZ =
-        Math.abs(
-            acceleration.z -
-                lastAcceleration.z
-        );
-
-    lastAcceleration = {
-        x: acceleration.x,
-        y: acceleration.y,
-        z: acceleration.z
-    };
-
-    const total =
-        deltaX +
-        deltaY +
-        deltaZ;
-
-    const now =
-        Date.now();
-
-    if (
-        total >
-            SHAKE_THRESHOLD &&
-        now -
-            lastShakeTime >
-            2000 &&
-        isUnlocked()
-    ) {
-        lastShakeTime =
-            now;
-
-        showAvignaToast(
-            "📱 shake detected."
-        );
-
-        shockwave();
-
-        flashPage(
-            "rgba(79,255,232,.16)",
-            500
-        );
-
-        if (
-            typeof confetti ===
-            "function"
-        ) {
-            confetti({
-                particleCount: 120,
-                spread: 140,
-                startVelocity: 50,
-                origin: {
-                    x: 0.5,
-                    y: 0.5
-                }
-            });
-        }
-    }
-}
-
-function enableShakeDetection() {
-    if (
-        typeof DeviceMotionEvent ===
-        "undefined"
-    ) {
-        return;
-    }
-
-    if (
-        typeof DeviceMotionEvent.requestPermission ===
-        "function"
-    ) {
-        document.addEventListener(
-            "click",
-            function requestMotionOnce() {
-                DeviceMotionEvent
-                    .requestPermission()
-                    .then(
-                        function (
-                            state
-                        ) {
-                            if (
-                                state ===
-                                "granted"
-                            ) {
-                                window.addEventListener(
-                                    "devicemotion",
-                                    handleDeviceMotion
-                                );
-                            }
-                        }
-                    )
-                    .catch(
-                        function () {}
-                    );
-
-                document.removeEventListener(
-                    "click",
-                    requestMotionOnce
-                );
-            },
-            {
-                once: true
-            }
-        );
-    } else {
-        window.addEventListener(
-            "devicemotion",
-            handleDeviceMotion
-        );
-    }
-}
-
-enableShakeDetection();
-
-
-/* ==========================================================================
-   MESSAGE POSTSCRIPT
-========================================================================== */
-
-(function setupMessagePostscript() {
-    const messageEl =
-        document.getElementById(
-            "message"
-        );
-
-    if (!messageEl) {
-        return;
-    }
-
-    let clicks = 0;
-    let added = false;
-
-    messageEl.addEventListener(
-        "click",
-        function () {
-            if (!boughtMsg) {
-                return;
-            }
-
-            playClick();
-
-            clicks++;
-
-            pageGlow(
-                messageEl,
-                350
-            );
-
-            if (
-                clicks <
-                    6 ||
-                added
-            ) {
-                return;
-            }
-
-            added = true;
-
-            messageEl.classList.add(
-                "message-corrupted"
-            );
-
-            setTimeout(
-                function () {
-                    messageEl.classList.remove(
-                        "message-corrupted"
-                    );
-
-                    const ps =
-                        document.createElement(
-                            "span"
-                        );
-
-                    ps.className =
-                        "message-ps";
-
-                    ps.textContent =
-                        "P.S. -- if you're reading this after clicking the message six times, you have too much free time, and I respect that. Go outside though. Maybe.";
-
-                    messageEl.appendChild(
-                        ps
-                    );
-
-                    requestAnimationFrame(
-                        function () {
-                            ps.classList.add(
-                                "visible"
-                            );
-                        }
-                    );
-
-                    showAvignaToast(
-                        "📝 you found the postscript."
-                    );
-                },
-                700
-            );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   HERO NAME
-========================================================================== */
-
-(function setupHeroNameSecret() {
-    const heroName =
+    glitchElement(
         document.querySelector(
-            ".hero-title span:nth-child(3)"
-        );
-
-    if (!heroName) {
-        return;
-    }
-
-    let clicks = 0;
-    let timer = null;
-
-    heroName.addEventListener(
-        "click",
-        function () {
-            playClick();
-
-            clicks++;
-
-            clearTimeout(
-                timer
-            );
-
-            timer =
-                setTimeout(
-                    function () {
-                        clicks = 0;
-                    },
-                    700
-                );
-
-            if (
-                clicks <
-                3
-            ) {
-                return;
-            }
-
-            clicks = 0;
-
-            showAvignaToast(
-                "💗 aww ok fine, you're kind of great too."
-            );
-
-            const hero =
-                document.querySelector(
-                    ".hero"
-                );
-
-            if (hero) {
-                pageGlow(
-                    hero,
-                    2000
-                );
-            }
-
-            starBurst(
-                innerWidth / 2,
-                innerHeight / 3,
-                [
-                    "💚",
-                    "💗",
-                    "✨",
-                    "💫"
-                ]
-            );
-
-            for (
-                let i = 0;
-                i < 14;
-                i++
-            ) {
-                const heart =
-                    document.createElement(
-                        "div"
-                    );
-
-                heart.className =
-                    "floating-heart";
-
-                heart.textContent =
-                    i % 2 === 0
-                        ? "💚"
-                        : "💗";
-
-                heart.style.left =
-                    Math.random() *
-                        100 +
-                    "vw";
-
-                document.body.appendChild(
-                    heart
-                );
-
-                setTimeout(
-                    function () {
-                        heart.remove();
-                    },
-                    6000
-                );
-            }
-        }
+            ".hero"
+        )
     );
-})();
+}
 
 
 /* ==========================================================================
-   MONEY ATM
-========================================================================== */
-
-(function setupMoneyATM() {
-    const display =
-        document.getElementById(
-            "display-money"
-        );
-
-    if (!display) {
-        return;
-    }
-
-    let clicks = 0;
-    let timer = null;
-    let cooldown = false;
-
-    display.addEventListener(
-        "click",
-        function (event) {
-            if (cooldown) {
-                showAvignaToast(
-                    "🏧 ATM is out of cash. try again later."
-                );
-
-                return;
-            }
-
-            playClick();
-
-            clicks++;
-
-            createRipple(
-                event.clientX,
-                event.clientY,
-                "#baff6a"
-            );
-
-            clearTimeout(
-                timer
-            );
-
-            timer =
-                setTimeout(
-                    function () {
-                        clicks = 0;
-                    },
-                    2500
-                );
-
-            if (
-                clicks <
-                8
-            ) {
-                return;
-            }
-
-            clicks = 0;
-            cooldown = true;
-
-            money += 200;
-
-            refreshMoneyDisplay();
-
-            showAvignaToast(
-                "🏧 hidden ATM found. +$200. don't tell the shop."
-            );
-
-            display.classList.add(
-                "money-glitch"
-            );
-
-            const rect =
-                display.getBoundingClientRect();
-
-            const float =
-                document.createElement(
-                    "div"
-                );
-
-            float.className =
-                "money-float-secret";
-
-            float.textContent =
-                "+$200";
-
-            float.style.left =
-                rect.left +
-                rect.width / 2 +
-                "px";
-
-            float.style.top =
-                rect.top +
-                "px";
-
-            document.body.appendChild(
-                float
-            );
-
-            setTimeout(
-                function () {
-                    float.remove();
-
-                    display.classList.remove(
-                        "money-glitch"
-                    );
-                },
-                1400
-            );
-
-            if (
-                typeof confetti ===
-                "function"
-            ) {
-                confetti({
-                    particleCount: 40,
-                    spread: 70,
-                    startVelocity: 30,
-                    origin: {
-                        x: 0.85,
-                        y: 0.08
-                    }
-                });
-            }
-
-            setTimeout(
-                function () {
-                    cooldown = false;
-                },
-                30000
-            );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   QUOTE MARK
+   QUOTE FOUR-CLICK SECRET
 ========================================================================== */
 
 (function setupQuoteMarkSecret() {
@@ -5411,18 +3873,11 @@ enableShakeDetection();
     quoteMark.addEventListener(
         "click",
         function () {
-            playClick();
-
             clicks++;
-
-            pageGlow(
-                quoteMark,
-                350
-            );
 
             if (
                 clicks <
-                    4 ||
+                4 ||
                 revealed
             ) {
                 return;
@@ -5454,8 +3909,8 @@ enableShakeDetection();
                 }
             );
 
-            showAvignaToast(
-                "💬 the quote had a footnote all along."
+            showSecretToast(
+                "💬 quote footnote unlocked"
             );
 
             spotlightElement(
@@ -5468,200 +3923,366 @@ enableShakeDetection();
 
 
 /* ==========================================================================
-   GIFT TAUNTS
+   QUOTE DOUBLE CLICK
 ========================================================================== */
 
-(function setupGiftTaunts() {
-    const lockedNotice =
-        document.getElementById(
-            "gift-locked-notice"
+if (quoteSection) {
+    quoteSection.addEventListener(
+        "dblclick",
+        function (event) {
+            playClick();
+
+            if (
+                typeof confetti ===
+                "function"
+            ) {
+                confetti({
+                    particleCount: 70,
+                    spread: 90,
+                    startVelocity: 40,
+                    origin: {
+                        x:
+                            event.clientX /
+                            innerWidth,
+                        y:
+                            event.clientY /
+                            innerHeight
+                    }
+                });
+            }
+        }
+    );
+}
+
+
+/* ==========================================================================
+   STAT ORDER SECRET
+========================================================================== */
+
+(function setupStatCombo() {
+    const stats =
+        document.querySelectorAll(
+            ".stats .stat"
         );
 
-    if (!lockedNotice) {
+    if (!stats.length) {
         return;
     }
 
-    const taunts = [
-        "🔒 nope.",
-        "🔒 still nope.",
-        "🔒 the shop is right above you, genius.",
-        "🔒 clicking harder does not unlock it.",
-        "🔒 buy the three things. that's it. that's the trick.",
-        "🔒 I'm not going to stop saying nope."
-    ];
-
     let index = 0;
 
-    lockedNotice.addEventListener(
-        "click",
-        function () {
-            if (
-                boughtConvo &&
-                boughtMsg &&
-                boughtBlur
-            ) {
-                return;
-            }
+    stats.forEach(
+        function (
+            stat,
+            statIndex
+        ) {
+            stat.style.cursor =
+                "pointer";
 
-            playClick();
+            stat.addEventListener(
+                "click",
+                function () {
+                    if (
+                        statIndex ===
+                        index
+                    ) {
+                        index++;
 
-            lockedNotice.classList.remove(
-                "gift-taunt-shake"
+                        if (
+                            index ===
+                            stats.length
+                        ) {
+                            index = 0;
+
+                            showSecretToast(
+                                "📊 stats sequence complete"
+                            );
+
+                            spotlightElement(
+                                document.querySelector(
+                                    ".stats"
+                                ),
+                                1800
+                            );
+
+                            createScanline(
+                                "#4fffe8"
+                            );
+                        }
+                    } else {
+                        index =
+                            statIndex ===
+                            0
+                                ? 1
+                                : 0;
+                    }
+                }
             );
-
-            void lockedNotice.offsetWidth;
-
-            lockedNotice.classList.add(
-                "gift-taunt-shake"
-            );
-
-            showAvignaToast(
-                taunts[
-                    index %
-                        taunts.length
-                ]
-            );
-
-            pageGlow(
-                lockedNotice,
-                600
-            );
-
-            index++;
         }
     );
 })();
 
 
 /* ==========================================================================
-   HUNGER CHEAT
+   JUDGEMENT LONG PRESS
 ========================================================================== */
 
-(function setupHungerCheat() {
-    const hungerBar =
-        document.querySelector(
-            ".hunger-bar"
+(function setupJudgementSecret() {
+    const stats =
+        document.querySelectorAll(
+            ".stats .stat"
         );
 
-    if (!hungerBar) {
+    const judgement =
+        stats[
+            stats.length - 1
+        ];
+
+    if (!judgement) {
         return;
     }
 
-    let clicks = 0;
+    let timer = null;
 
-    hungerBar.addEventListener(
-        "click",
+    judgement.addEventListener(
+        "mousedown",
         function () {
-            if (!isUnlocked()) {
-                return;
-            }
+            timer =
+                setTimeout(
+                    function () {
+                        if (
+                            judgement.querySelector(
+                                ".roast-tooltip"
+                            )
+                        ) {
+                            return;
+                        }
 
-            playClick();
+                        const tooltip =
+                            document.createElement(
+                                "span"
+                            );
 
-            clicks++;
+                        tooltip.className =
+                            "roast-tooltip visible";
 
-            pageGlow(
-                hungerBar,
-                250
-            );
+                        tooltip.textContent =
+                            "(peer reviewed by Neerav, who is extremely biased)";
 
-            if (
-                clicks <
-                5
-            ) {
-                return;
-            }
+                        judgement.appendChild(
+                            tooltip
+                        );
 
-            clicks = 0;
+                        spotlightElement(
+                            judgement,
+                            1800
+                        );
+                    },
+                    1800
+                );
+        }
+    );
 
-            const old =
-                hungerPercent;
-
-            hungerPercent =
-                0;
-
-            refreshHungerDisplay();
-            updatePageFilter();
-
-            showAvignaToast(
-                "🍽️ cheat activated: hunger reset. shh."
-            );
-
-            activateHungerDrain(
-                old
-            );
-
-            spawnEmojiRain(
-                [
-                    "🍕",
-                    "🍔",
-                    "🥟",
-                    "🥢"
-                ],
-                10,
-                3
+    [
+        "mouseup",
+        "mouseleave"
+    ].forEach(
+        function (eventName) {
+            judgement.addEventListener(
+                eventName,
+                function () {
+                    clearTimeout(
+                        timer
+                    );
+                }
             );
         }
     );
 })();
 
-function activateHungerDrain(
-    oldValue = 20
-) {
-    const bar =
-        document.querySelector(
-            ".hunger-bar"
+
+/* ==========================================================================
+   MESSAGE POSTSCRIPT
+========================================================================== */
+
+(function setupMessagePostscript() {
+    const message =
+        document.getElementById(
+            "message"
         );
 
-    if (!bar) {
+    if (!message) {
         return;
     }
 
-    bar.classList.add(
-        "hunger-draining"
-    );
+    let clicks = 0;
 
-    let value =
-        Math.max(
-            0,
-            oldValue
-        );
-
-    const timer =
-        setInterval(
-            function () {
-                value -= 5;
-
-                hungerPercent =
-                    Math.max(
-                        0,
-                        value
-                    );
-
-                refreshHungerDisplay();
-                updatePageFilter();
-
-                if (
-                    value <=
-                    0
-                ) {
-                    clearInterval(
-                        timer
-                    );
-                }
-            },
-            50
-        );
-
-    setTimeout(
+    message.addEventListener(
+        "click",
         function () {
-            bar.classList.remove(
-                "hunger-draining"
+            if (!boughtMsg) {
+                return;
+            }
+
+            clicks++;
+
+            if (
+                clicks <
+                6
+            ) {
+                return;
+            }
+
+            if (
+                message.querySelector(
+                    ".message-ps"
+                )
+            ) {
+                return;
+            }
+
+            message.classList.add(
+                "message-corrupted"
             );
-        },
-        1000
+
+            setTimeout(
+                function () {
+                    message.classList.remove(
+                        "message-corrupted"
+                    );
+
+                    const ps =
+                        document.createElement(
+                            "span"
+                        );
+
+                    ps.className =
+                        "message-ps";
+
+                    ps.textContent =
+                        "P.S. — you clicked this six times. I respect the dedication.";
+
+                    message.appendChild(
+                        ps
+                    );
+
+                    requestAnimationFrame(
+                        function () {
+                            ps.classList.add(
+                                "visible"
+                            );
+                        }
+                    );
+
+                    showSecretToast(
+                        "📝 postscript unlocked"
+                    );
+                },
+                500
+            );
+        }
     );
-}
+})();
+
+
+/* ==========================================================================
+   MONEY ATM
+========================================================================== */
+
+(function setupMoneyATM() {
+    const display =
+        document.getElementById(
+            "display-money"
+        );
+
+    if (!display) {
+        return;
+    }
+
+    let clicks = 0;
+    let timer = null;
+    let cooldown = false;
+
+    display.addEventListener(
+        "click",
+        function () {
+            if (cooldown) {
+                return;
+            }
+
+            clicks++;
+
+            clearTimeout(timer);
+
+            timer =
+                setTimeout(
+                    function () {
+                        clicks = 0;
+                    },
+                    2500
+                );
+
+            if (
+                clicks <
+                8
+            ) {
+                return;
+            }
+
+            clicks = 0;
+            cooldown = true;
+
+            money += 200;
+
+            refreshMoneyDisplay();
+
+            showSecretToast(
+                "🏧 hidden ATM found. +$200"
+            );
+
+            const float =
+                document.createElement(
+                    "div"
+                );
+
+            float.className =
+                "money-float-secret";
+
+            float.textContent =
+                "+$200";
+
+            const rect =
+                display.getBoundingClientRect();
+
+            float.style.left =
+                rect.left +
+                rect.width / 2 +
+                "px";
+
+            float.style.top =
+                rect.top +
+                "px";
+
+            document.body.appendChild(
+                float
+            );
+
+            setTimeout(
+                function () {
+                    float.remove();
+                },
+                1400
+            );
+
+            setTimeout(
+                function () {
+                    cooldown = false;
+                },
+                30000
+            );
+        }
+    );
+})();
 
 
 /* ==========================================================================
@@ -5681,9 +4302,7 @@ function activateHungerDrain(
 
                 card.addEventListener(
                     "click",
-                    function (
-                        event
-                    ) {
+                    function (event) {
                         if (
                             event.target.closest(
                                 ".food-button"
@@ -5692,8 +4311,6 @@ function activateHungerDrain(
                         ) {
                             return;
                         }
-
-                        playClick();
 
                         clicks++;
 
@@ -5707,8 +4324,7 @@ function activateHungerDrain(
                         claimed =
                             true;
 
-                        money +=
-                            30;
+                        money += 30;
 
                         refreshMoneyDisplay();
 
@@ -5716,27 +4332,20 @@ function activateHungerDrain(
                             "bonus-glow"
                         );
 
-                        showAvignaToast(
-                            "👨‍🍳 chef's special found. +$30."
-                        );
-
-                        pageGlow(
-                            card,
-                            1400
+                        showSecretToast(
+                            "👨‍🍳 chef's special. +$30"
                         );
 
                         starBurst(
                             card.getBoundingClientRect()
                                 .left +
-                                card.offsetWidth /
-                                    2,
+                                card.offsetWidth / 2,
                             card.getBoundingClientRect()
                                 .top +
-                                card.offsetHeight /
-                                    2,
+                                card.offsetHeight / 2,
                             [
-                                "💰",
                                 "🍴",
+                                "💰",
                                 "✨"
                             ]
                         );
@@ -5744,6 +4353,66 @@ function activateHungerDrain(
                 );
             }
         );
+})();
+
+
+/* ==========================================================================
+   HUNGER BAR CHEAT
+========================================================================== */
+
+(function setupHungerBarCheat() {
+    const bar =
+        document.querySelector(
+            ".hunger-bar"
+        );
+
+    if (!bar) {
+        return;
+    }
+
+    let clicks = 0;
+
+    bar.addEventListener(
+        "click",
+        function () {
+            if (!isUnlocked()) {
+                return;
+            }
+
+            clicks++;
+
+            if (
+                clicks <
+                5
+            ) {
+                return;
+            }
+
+            clicks = 0;
+
+            hungerPercent =
+                0;
+
+            refreshHungerDisplay();
+
+            updatePageFilter();
+
+            showSecretToast(
+                "🍽️ hunger reset"
+            );
+
+            spawnEmojiRain(
+                [
+                    "🍕",
+                    "🍔",
+                    "🥟",
+                    "🥢"
+                ],
+                10,
+                3
+            );
+        }
+    );
 })();
 
 
@@ -5772,15 +4441,8 @@ function activateHungerDrain(
                 return;
             }
 
-            playClick();
-
-            showAvignaToast(
-                "🍜 food storm summoned."
-            );
-
-            pageGlow(
-                section,
-                1200
+            showSecretToast(
+                "🍜 food storm"
             );
 
             spawnEmojiRain(
@@ -5788,635 +4450,12 @@ function activateHungerDrain(
                     "🍕",
                     "🍔",
                     "🥟",
-                    "🍜",
-                    "🧋"
+                    "🍜"
                 ],
-                16,
+                14,
                 3.5
             );
         }
-    );
-})();
-
-
-/* ==========================================================================
-   EMOJI RAIN
-========================================================================== */
-
-function spawnEmojiRain(
-    emojiList,
-    count,
-    duration
-) {
-    for (
-        let i = 0;
-        i < count;
-        i++
-    ) {
-        const drop =
-            document.createElement(
-                "div"
-            );
-
-        drop.className =
-            "rain-emoji";
-
-        drop.textContent =
-            emojiList[
-                Math.floor(
-                    Math.random() *
-                        emojiList.length
-                )
-            ];
-
-        drop.style.left =
-            Math.random() *
-                100 +
-            "vw";
-
-        drop.style.animationDuration =
-            duration +
-            Math.random() *
-                2 +
-            "s";
-
-        drop.style.fontSize =
-            1.4 +
-            Math.random() *
-                1.8 +
-            "rem";
-
-        document.body.appendChild(
-            drop
-        );
-
-        setTimeout(
-            function () {
-                drop.remove();
-            },
-            (duration + 3) *
-                1000
-        );
-    }
-}
-
-
-/* ==========================================================================
-   MYSTERY MODE
-========================================================================== */
-
-(function setupMysteryMode() {
-    if (!themeIcon) {
-        return;
-    }
-
-    let clicks = 0;
-    let timer = null;
-
-    themeIcon.addEventListener(
-        "click",
-        function (event) {
-            clicks++;
-
-            clearTimeout(
-                timer
-            );
-
-            timer =
-                setTimeout(
-                    function () {
-                        clicks = 0;
-                    },
-                    1800
-                );
-
-            if (
-                clicks <
-                7
-            ) {
-                return;
-            }
-
-            clicks = 0;
-
-            event.stopPropagation();
-
-            showAvignaToast(
-                "🕶️ MYSTERY MODE. don't ask questions."
-            );
-
-            document.body.style.filter =
-                "grayscale(1) invert(1)";
-
-            showSecretBadge(
-                "MYSTERY MODE",
-                1800
-            );
-
-            setTimeout(
-                function () {
-                    document.body.style.filter =
-                        "none";
-                },
-                2000
-            );
-        },
-        true
-    );
-})();
-
-
-/* ==========================================================================
-   EYEBROW SECRET
-========================================================================== */
-
-(function setupEyebrowSecret() {
-    const eyebrow =
-        document.querySelector(
-            ".eyebrow"
-        );
-
-    if (!eyebrow) {
-        return;
-    }
-
-    const roasts = [
-        "( ok she's actually pretty cool, don't tell her I said that )",
-        "( this website took longer than her attention span usually lasts )",
-        "( certified: 1 (one) certified goofball )",
-        "( no refunds on this birthday, sorry )"
-    ];
-
-    let clicks = 0;
-    let timer = null;
-
-    eyebrow.addEventListener(
-        "click",
-        function () {
-            clicks++;
-
-            playClick();
-
-            clearTimeout(
-                timer
-            );
-
-            timer =
-                setTimeout(
-                    function () {
-                        clicks = 0;
-                    },
-                    700
-                );
-
-            if (
-                clicks <
-                3
-            ) {
-                return;
-            }
-
-            clicks = 0;
-
-            showAvignaToast(
-                roasts[
-                    Math.floor(
-                        Math.random() *
-                            roasts.length
-                    )
-                ]
-            );
-
-            glitchElement(
-                eyebrow
-            );
-
-            createScanline(
-                "#4fffe8"
-            );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   JUDGEMENT LONG PRESS
-========================================================================== */
-
-(function setupJudgementLongPress() {
-    const stats =
-        document.querySelectorAll(
-            ".stats .stat"
-        );
-
-    const judgement =
-        stats[
-            stats.length -
-                1
-        ];
-
-    if (!judgement) {
-        return;
-    }
-
-    let timer = null;
-
-    function start() {
-        timer =
-            setTimeout(
-                function () {
-                    const tooltip =
-                        document.createElement(
-                            "span"
-                        );
-
-                    tooltip.className =
-                        "roast-tooltip visible";
-
-                    tooltip.textContent =
-                        "( peer reviewed by Neerav, who is extremely biased )";
-
-                    judgement.appendChild(
-                        tooltip
-                    );
-
-                    showAvignaToast(
-                        "⚖️ the judgement stat had a footnote."
-                    );
-
-                    spotlightElement(
-                        judgement,
-                        2000
-                    );
-                },
-                1800
-            );
-    }
-
-    function cancel() {
-        clearTimeout(
-            timer
-        );
-    }
-
-    judgement.addEventListener(
-        "mousedown",
-        start
-    );
-
-    judgement.addEventListener(
-        "touchstart",
-        start,
-        {
-            passive: true
-        }
-    );
-
-    judgement.addEventListener(
-        "mouseup",
-        cancel
-    );
-
-    judgement.addEventListener(
-        "mouseleave",
-        cancel
-    );
-
-    judgement.addEventListener(
-        "touchend",
-        cancel
-    );
-})();
-
-
-/* ==========================================================================
-   MUTE PRANK
-========================================================================== */
-
-(function setupMutePrank() {
-    if (!muteBtn) {
-        return;
-    }
-
-    let clicks = 0;
-    let timer = null;
-
-    muteBtn.addEventListener(
-        "click",
-        function () {
-            clicks++;
-
-            clearTimeout(
-                timer
-            );
-
-            timer =
-                setTimeout(
-                    function () {
-                        clicks = 0;
-                    },
-                    2000
-                );
-
-            if (
-                clicks <
-                10
-            ) {
-                return;
-            }
-
-            clicks = 0;
-
-            showAvignaToast(
-                "🦠 VIRUS DETECTED. relax, it's fake."
-            );
-
-            document.body.classList.add(
-                "screen-shake"
-            );
-
-            document.body.classList.add(
-                "secret-chromatic"
-            );
-
-            showSecretBadge(
-                "VIRUS DETECTED",
-                1100
-            );
-
-            setTimeout(
-                function () {
-                    document.body.classList.remove(
-                        "screen-shake"
-                    );
-
-                    document.body.classList.remove(
-                        "secret-chromatic"
-                    );
-                },
-                900
-            );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   SHOP DESCRIPTION
-========================================================================== */
-
-(function setupShopDescriptionSecret() {
-    const paragraphs =
-        document.querySelectorAll(
-            ".shop-option p"
-        );
-
-    const paragraph =
-        paragraphs[1];
-
-    if (!paragraph) {
-        return;
-    }
-
-    let clicks = 0;
-
-    paragraph.style.cursor =
-        "help";
-
-    paragraph.addEventListener(
-        "click",
-        function () {
-            playClick();
-
-            clicks++;
-
-            if (
-                clicks <
-                3
-            ) {
-                return;
-            }
-
-            clicks = 0;
-
-            showAvignaToast(
-                "🌫️ the blur was never a bug. it was a feature. probably."
-            );
-
-            spotlightElement(
-                paragraph,
-                1800
-            );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   UNDRAGGABLE HERO
-========================================================================== */
-
-(function setupUndraggableHero() {
-    const heroTitle =
-        document.querySelector(
-            ".hero-title"
-        );
-
-    if (!heroTitle) {
-        return;
-    }
-
-    heroTitle.draggable =
-        true;
-
-    heroTitle.addEventListener(
-        "dragstart",
-        function (event) {
-            event.preventDefault();
-
-            showAvignaToast(
-                "📌 nice try, can't drag this away either."
-            );
-
-            glitchElement(
-                heroTitle
-            );
-
-            createRipple(
-                innerWidth / 2,
-                innerHeight / 3,
-                "#baff6a"
-            );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   FAKE LOADING START
-========================================================================== */
-
-(function setupFakeLoadingStart() {
-    const startButton =
-        document.querySelector(
-            'a[href="#about"].button'
-        );
-
-    if (!startButton) {
-        return;
-    }
-
-    let timer = null;
-
-    const lines = [
-        "Calculating goofiness levels...",
-        "Politely asking judgement to cooperate...",
-        "Loading 1 (one) friendship...",
-        "Compressing 500+ inside jokes...",
-        "Almost there, unlike her deadlines..."
-    ];
-
-    function startPress() {
-        timer =
-            setTimeout(
-                function () {
-                    playClick();
-
-                    const overlay =
-                        document.createElement(
-                            "div"
-                        );
-
-                    overlay.className =
-                        "fake-loading-overlay";
-
-                    overlay.innerHTML = `
-                        <div>
-                            INITIALIZING BIRTHDAY.EXE
-                        </div>
-
-                        <div class="fake-loading-bar-track">
-                            <div class="fake-loading-bar-fill"></div>
-                        </div>
-
-                        <div class="fake-loading-line"></div>
-                    `;
-
-                    document.body.appendChild(
-                        overlay
-                    );
-
-                    const fill =
-                        overlay.querySelector(
-                            ".fake-loading-bar-fill"
-                        );
-
-                    const line =
-                        overlay.querySelector(
-                            ".fake-loading-line"
-                        );
-
-                    let progress = 0;
-                    let lineIndex = 0;
-
-                    line.textContent =
-                        lines[0];
-
-                    const interval =
-                        setInterval(
-                            function () {
-                                progress +=
-                                    8 +
-                                    Math.random() *
-                                        10;
-
-                                progress =
-                                    Math.min(
-                                        progress,
-                                        100
-                                    );
-
-                                fill.style.width =
-                                    progress +
-                                    "%";
-
-                                const expected =
-                                    Math.floor(
-                                        (
-                                            progress /
-                                            100
-                                        ) *
-                                            lines.length
-                                    );
-
-                                if (
-                                    expected !==
-                                        lineIndex &&
-                                    expected <
-                                        lines.length
-                                ) {
-                                    lineIndex =
-                                        expected;
-
-                                    line.textContent =
-                                        lines[
-                                            lineIndex
-                                        ];
-                                }
-
-                                if (
-                                    progress >=
-                                    100
-                                ) {
-                                    clearInterval(
-                                        interval
-                                    );
-
-                                    setTimeout(
-                                        function () {
-                                            overlay.remove();
-
-                                            document
-                                                .getElementById(
-                                                    "about"
-                                                )
-                                                ?.scrollIntoView(
-                                                    {
-                                                        behavior:
-                                                            "smooth"
-                                                    }
-                                                );
-                                        },
-                                        500
-                                    );
-                                }
-                            },
-                            220
-                        );
-                },
-                2500
-            );
-    }
-
-    function cancelPress() {
-        clearTimeout(
-            timer
-        );
-    }
-
-    startButton.addEventListener(
-        "mousedown",
-        startPress
-    );
-
-    startButton.addEventListener(
-        "mouseup",
-        cancelPress
-    );
-
-    startButton.addEventListener(
-        "mouseleave",
-        cancelPress
     );
 })();
 
@@ -6427,11 +4466,10 @@ function spawnEmojiRain(
 
 (function setupShiftClick() {
     const lines = [
-        "you clicked with shift held. legend.",
-        "this bubble means nothing. enjoy it anyway.",
-        "achievement unlocked: found a pointless feature",
-        "shift clicking won't give you admin access",
-        "yes, this was intentional. mostly."
+        "you clicked with shift held.",
+        "shift clicking won't give you admin access.",
+        "achievement unlocked: pointless discovery.",
+        "yes, this was intentional."
     ];
 
     document.addEventListener(
@@ -6456,7 +4494,7 @@ function spawnEmojiRain(
                 lines[
                     Math.floor(
                         Math.random() *
-                            lines.length
+                        lines.length
                     )
                 ];
 
@@ -6473,12 +4511,6 @@ function spawnEmojiRain(
                 bubble
             );
 
-            createRipple(
-                event.clientX,
-                event.clientY,
-                "#ff8cd9"
-            );
-
             setTimeout(
                 function () {
                     bubble.remove();
@@ -6488,6 +4520,30 @@ function spawnEmojiRain(
         }
     );
 })();
+
+
+/* ==========================================================================
+   RIGHT CLICK
+========================================================================== */
+
+document.addEventListener(
+    "contextmenu",
+    function (event) {
+        if (!isUnlocked()) {
+            return;
+        }
+
+        event.preventDefault();
+
+        showSecretToast(
+            "🖱️ nice try."
+        );
+
+        createScanline(
+            "#4fffe8"
+        );
+    }
+);
 
 
 /* ==========================================================================
@@ -6506,40 +4562,34 @@ document.addEventListener(
 
         event.preventDefault();
 
-        showAvignaToast(
-            "🖱️ middle click? on a birthday website? bold."
-        );
-
-        createRipple(
-            event.clientX,
-            event.clientY,
-            "#42d9ff"
-        );
-
-        createScanline(
-            "#42d9ff"
+        showSecretToast(
+            "🖱️ middle click?"
         );
     }
 );
 
 
 /* ==========================================================================
-   FAST SCROLL
+   FAST SCROLL SECRET
 ========================================================================== */
 
-(function setupFastScroll() {
+(function setupFastScrollSecret() {
     let lastY =
         window.scrollY;
 
     let lastTime =
         Date.now();
 
-    let warned = false;
+    let warned =
+        false;
 
     window.addEventListener(
         "scroll",
         function () {
-            if (!isUnlocked()) {
+            if (
+                !isUnlocked() ||
+                warned
+            ) {
                 return;
             }
 
@@ -6548,38 +4598,35 @@ document.addEventListener(
 
             const deltaY =
                 Math.abs(
-                    window.scrollY -
-                        lastY
+                    scrollY -
+                    lastY
                 );
 
             const deltaTime =
                 now -
                 lastTime;
 
-            const documentHeight =
+            const height =
                 document.documentElement
                     .scrollHeight -
-                window.innerHeight;
+                innerHeight;
 
             const nearBottom =
-                documentHeight >
-                    0 &&
-                window.scrollY /
-                    documentHeight >
-                    0.92;
+                height > 0 &&
+                scrollY /
+                    height >
+                    .92;
 
             if (
                 deltaTime > 0 &&
                 deltaTime < 120 &&
                 deltaY > 900 &&
-                nearBottom &&
-                !warned
+                nearBottom
             ) {
-                warned =
-                    true;
+                warned = true;
 
-                showAvignaToast(
-                    "🏃 slow down, savor the content. or don't."
+                showToast(
+                    "🏃 okay slow down."
                 );
 
                 document.body.classList.add(
@@ -6604,7 +4651,7 @@ document.addEventListener(
             }
 
             lastY =
-                window.scrollY;
+                scrollY;
 
             lastTime =
                 now;
@@ -6617,80 +4664,309 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   ANTI-KONAMI
+   RESIZE SECRET
 ========================================================================== */
 
-const antiKonamiCode = [
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "a",
-    "b"
-];
+(function setupResizeSecret() {
+    let count = 0;
+    let timer = null;
 
-let antiKonamiIndex =
-    0;
+    window.addEventListener(
+        "resize",
+        function () {
+            if (!isUnlocked()) {
+                return;
+            }
 
-document.addEventListener(
-    "keydown",
-    function (event) {
+            count++;
+
+            clearTimeout(
+                timer
+            );
+
+            timer =
+                setTimeout(
+                    function () {
+                        count = 0;
+                    },
+                    4000
+                );
+
+            if (
+                count >=
+                5
+            ) {
+                count = 0;
+
+                showSecretToast(
+                    "📐 you broke responsive design."
+                );
+
+                document.body.classList.add(
+                    "resize-panic"
+                );
+
+                createScanline(
+                    "#42d9ff"
+                );
+
+                setTimeout(
+                    function () {
+                        document.body.classList.remove(
+                            "resize-panic"
+                        );
+                    },
+                    1500
+                );
+            }
+        }
+    );
+})();
+
+
+/* ==========================================================================
+   ORIENTATION SECRET
+========================================================================== */
+
+window.addEventListener(
+    "orientationchange",
+    function () {
         if (!isUnlocked()) {
             return;
         }
 
-        const key =
-            event.key.length === 1
-                ? event.key.toLowerCase()
-                : event.key;
+        showSecretToast(
+            "📱 orientation changed."
+        );
+
+        const flash =
+            document.createElement(
+                "div"
+            );
+
+        flash.className =
+            "orientation-secret";
+
+        document.body.appendChild(
+            flash
+        );
+
+        setTimeout(
+            function () {
+                flash.remove();
+            },
+            1600
+        );
+    }
+);
+
+
+/* ==========================================================================
+   FULLSCREEN SECRET
+========================================================================== */
+
+document.addEventListener(
+    "fullscreenchange",
+    function () {
+        if (
+            !isUnlocked() ||
+            !document.fullscreenElement
+        ) {
+            return;
+        }
+
+        showSecretToast(
+            "🎬 DIRECTOR'S CUT"
+        );
+
+        createScanline(
+            "#ff79b5"
+        );
+
+        flashPage(
+            "rgba(255,120,220,.1)",
+            600
+        );
+    }
+);
+
+
+/* ==========================================================================
+   OFFLINE / ONLINE
+========================================================================== */
+
+window.addEventListener(
+    "offline",
+    function () {
+        if (!isUnlocked()) {
+            return;
+        }
 
         if (
-            key ===
-            antiKonamiCode[
-                antiKonamiIndex
-            ]
+            document.getElementById(
+                "offline-secret"
+            )
         ) {
-            antiKonamiIndex++;
+            return;
+        }
 
-            if (
-                antiKonamiIndex ===
-                antiKonamiCode.length
-            ) {
-                antiKonamiIndex =
-                    0;
+        const banner =
+            document.createElement(
+                "div"
+            );
 
-                showAvignaToast(
-                    "🔄 anti-konami detected. undoing... nothing. there was nothing to undo."
-                );
+        banner.className =
+            "offline-secret";
 
-                triggerInvertFlash();
+        banner.id =
+            "offline-secret";
 
-                shockwave();
+        banner.textContent =
+            "⚠ CONNECTION LOST — birthday.exe is confused";
 
-                createScanline(
-                    "#ff73b5"
-                );
-            }
-        } else {
-            antiKonamiIndex =
-                key ===
-                antiKonamiCode[0]
-                    ? 1
-                    : 0;
+        document.body.appendChild(
+            banner
+        );
+    }
+);
+
+window.addEventListener(
+    "online",
+    function () {
+        const banner =
+            document.getElementById(
+                "offline-secret"
+            );
+
+        if (banner) {
+            banner.remove();
+        }
+
+        if (!isUnlocked()) {
+            return;
+        }
+
+        showSecretToast(
+            "📡 connection restored."
+        );
+
+        if (
+            typeof confetti ===
+            "function"
+        ) {
+            confetti({
+                particleCount: 35,
+                spread: 70,
+                origin: {
+                    x: .5,
+                    y: .3
+                }
+            });
         }
     }
 );
 
 
 /* ==========================================================================
-   29-SECOND EVENT
+   TEXT SELECTION SECRET
 ========================================================================== */
 
-let lastGoldenMinute =
+let loreTriggered =
+    false;
+
+document.addEventListener(
+    "selectionchange",
+    function () {
+        if (
+            loreTriggered ||
+            !isUnlocked()
+        ) {
+            return;
+        }
+
+        const selection =
+            window.getSelection();
+
+        if (!selection) {
+            return;
+        }
+
+        const text =
+            selection
+                .toString()
+                .trim();
+
+        if (
+            text.length >=
+            100
+        ) {
+            loreTriggered =
+                true;
+
+            const lore =
+                document.createElement(
+                    "div"
+                );
+
+            lore.className =
+                "lore-secret";
+
+            lore.innerHTML = `
+                <strong>
+                    CLASSIFIED BIRTHDAY LORE
+                </strong>
+
+                <br><br>
+
+                You selected enough text to
+                qualify as a suspicious investigator.
+
+                <br><br>
+
+                Unfortunately:
+
+                <br><br>
+
+                there is no classified information.
+            `;
+
+            document.body.appendChild(
+                lore
+            );
+
+            requestAnimationFrame(
+                function () {
+                    lore.classList.add(
+                        "visible"
+                    );
+                }
+            );
+
+            setTimeout(
+                function () {
+                    lore.classList.remove(
+                        "visible"
+                    );
+                },
+                4500
+            );
+
+            setTimeout(
+                function () {
+                    lore.remove();
+                },
+                5100
+            );
+        }
+    }
+);
+
+
+/* ==========================================================================
+   29-SECOND SECRET
+========================================================================== */
+
+let last29SecondMinute =
     -1;
 
 setInterval(
@@ -6706,22 +4982,17 @@ setInterval(
             now.getSeconds() ===
                 29 &&
             now.getMinutes() !==
-                lastGoldenMinute
+                last29SecondMinute
         ) {
-            lastGoldenMinute =
+            last29SecondMinute =
                 now.getMinutes();
 
             document.body.classList.add(
                 "golden-second-event"
             );
 
-            showAvignaToast(
+            showSecretToast(
                 "✨ 29 seconds."
-            );
-
-            flashPage(
-                "rgba(255,216,107,.15)",
-                500
             );
 
             starBurst(
@@ -6749,7 +5020,7 @@ setInterval(
 
 
 /* ==========================================================================
-   MIDPOINT SCROLL
+   MIDPOINT SECRET
 ========================================================================== */
 
 let midpointTriggered =
@@ -6770,7 +5041,9 @@ window.addEventListener(
                 .scrollHeight -
             innerHeight;
 
-        if (maxScroll <= 0) {
+        if (
+            maxScroll <= 0
+        ) {
             return;
         }
 
@@ -6779,16 +5052,14 @@ window.addEventListener(
             maxScroll;
 
         if (
-            progress >=
-                0.5 &&
-            progress <=
-                0.55
+            progress >= .49 &&
+            progress <= .52
         ) {
             midpointTriggered =
                 true;
 
-            showAvignaToast(
-                "🌀 you found the middle of nowhere."
+            showSecretToast(
+                "🌀 you found the middle."
             );
 
             const portal =
@@ -6826,10 +5097,6 @@ window.addEventListener(
                 },
                 1400
             );
-
-            createScanline(
-                "#b58cff"
-            );
         }
     },
     {
@@ -6839,7 +5106,7 @@ window.addEventListener(
 
 
 /* ==========================================================================
-   BOTTOM -> TOP
+   BOTTOM → TOP SECRET
 ========================================================================== */
 
 let reachedBottom =
@@ -6855,22 +5122,24 @@ window.addEventListener(
             return;
         }
 
-        const maxScroll =
+        const height =
             document.documentElement
                 .scrollHeight -
             innerHeight;
 
-        if (maxScroll <= 0) {
+        if (
+            height <= 0
+        ) {
             return;
         }
 
         const progress =
             scrollY /
-            maxScroll;
+            height;
 
         if (
             progress >
-            0.97
+            .97
         ) {
             reachedBottom =
                 true;
@@ -6879,38 +5148,24 @@ window.addEventListener(
         if (
             reachedBottom &&
             progress <
-                0.08 &&
+                .08 &&
             !returnedFromBottom
         ) {
             returnedFromBottom =
                 true;
 
-            showAvignaToast(
-                "🔄 you went all the way down... and came back."
-            );
-
-            document.body.classList.add(
-                "bottom-return-effect"
+            showSecretToast(
+                "🔄 all the way down, then back."
             );
 
             spawnEmojiRain(
                 [
                     "⬆️",
                     "✨",
-                    "🎂",
                     "💫"
                 ],
-                12,
+                8,
                 3
-            );
-
-            setTimeout(
-                function () {
-                    document.body.classList.remove(
-                        "bottom-return-effect"
-                    );
-                },
-                1000
             );
         }
     },
@@ -6921,112 +5176,254 @@ window.addEventListener(
 
 
 /* ==========================================================================
-   RESIZE PANIC
+   HERO EDGE
 ========================================================================== */
 
-(function setupResizeSecret() {
-    let count = 0;
-    let timer = null;
+(function setupHeroEdgeSecret() {
+    const hero =
+        document.querySelector(
+            ".hero"
+        );
 
-    window.addEventListener(
-        "resize",
-        function () {
-            if (!isUnlocked()) {
+    if (!hero) {
+        return;
+    }
+
+    let triggered =
+        false;
+
+    hero.addEventListener(
+        "mousemove",
+        function (event) {
+            if (
+                triggered ||
+                !isUnlocked()
+            ) {
                 return;
             }
 
-            count++;
-
-            clearTimeout(
-                timer
-            );
-
-            timer =
-                setTimeout(
-                    function () {
-                        count = 0;
-                    },
-                    4000
-                );
+            const rect =
+                hero.getBoundingClientRect();
 
             if (
-                count >=
-                5
+                rect.right -
+                event.clientX <
+                14
             ) {
-                count = 0;
+                triggered =
+                    true;
 
-                showAvignaToast(
-                    "📐 RESPONSIVE PANIC DETECTED."
+                const whisper =
+                    document.createElement(
+                        "div"
+                    );
+
+                whisper.className =
+                    "hero-edge-secret";
+
+                whisper.textContent =
+                    "psst...";
+
+                document.body.appendChild(
+                    whisper
                 );
 
-                document.body.classList.add(
-                    "resize-panic"
+                requestAnimationFrame(
+                    function () {
+                        whisper.style.opacity =
+                            "1";
+
+                        whisper.style.transform =
+                            "translateY(-50%) translateX(0)";
+                    }
                 );
 
                 createScanline(
-                    "#42d9ff"
+                    "#4fffe8"
                 );
 
                 setTimeout(
                     function () {
-                        document.body.classList.remove(
-                            "resize-panic"
-                        );
+                        whisper.style.opacity =
+                            "0";
                     },
-                    1500
+                    2200
+                );
+
+                setTimeout(
+                    function () {
+                        whisper.remove();
+                    },
+                    2800
                 );
             }
+        },
+        {
+            passive: true
         }
     );
 })();
 
 
 /* ==========================================================================
-   ORIENTATION
+   CORNER SECRET
 ========================================================================== */
 
-window.addEventListener(
-    "orientationchange",
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
+(function setupCornerSecret() {
+    let triggered =
+        false;
 
-        showAvignaToast(
-            "📱 orientation changed. fancy."
+    document.addEventListener(
+        "mousemove",
+        function (event) {
+            if (
+                triggered ||
+                !isUnlocked()
+            ) {
+                return;
+            }
+
+            if (
+                event.clientX <= 10 &&
+                event.clientY <= 10
+            ) {
+                triggered =
+                    true;
+
+                const panel =
+                    document.createElement(
+                        "div"
+                    );
+
+                panel.className =
+                    "corner-coordinate-secret";
+
+                panel.innerHTML = `
+                    LAT: 29.08<br>
+                    MEM: FRIENDSHIP<br>
+                    STATUS: CLASSIFIED
+                `;
+
+                document.body.appendChild(
+                    panel
+                );
+
+                requestAnimationFrame(
+                    function () {
+                        panel.classList.add(
+                            "visible"
+                        );
+                    }
+                );
+
+                setTimeout(
+                    function () {
+                        panel.classList.remove(
+                            "visible"
+                        );
+                    },
+                    4500
+                );
+
+                setTimeout(
+                    function () {
+                        panel.remove();
+                    },
+                    5100
+                );
+            }
+        },
+        {
+            passive: true
+        }
+    );
+})();
+
+
+/* ==========================================================================
+   SERIAL NUMBER SECRET
+========================================================================== */
+
+(function setupSerialSecret() {
+    const serial =
+        document.querySelector(
+            ".serial-number"
         );
 
-        const flash =
-            document.createElement(
-                "div"
+    if (!serial) {
+        return;
+    }
+
+    let found = false;
+
+    serial.addEventListener(
+        "mouseenter",
+        function () {
+            if (found) {
+                return;
+            }
+
+            found =
+                true;
+
+            const original =
+                serial.textContent;
+
+            showSecretToast(
+                "📁 FILE DETECTED"
             );
 
-        flash.className =
-            "orientation-secret";
+            let count = 0;
 
-        document.body.appendChild(
-            flash
-        );
+            const timer =
+                setInterval(
+                    function () {
+                        let result =
+                            "";
 
-        spawnEmojiRain(
-            [
-                "🎂",
-                "🎈",
-                "✨",
-                "🌈"
-            ],
-            10,
-            3
-        );
+                        const chars =
+                            "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-        setTimeout(
-            function () {
-                flash.remove();
-            },
-            1600
-        );
-    }
-);
+                        for (
+                            let i = 0;
+                            i <
+                            original.length;
+                            i++
+                        ) {
+                            result +=
+                                original[i] ===
+                                " "
+                                    ? " "
+                                    : chars[
+                                        Math.floor(
+                                            Math.random() *
+                                            chars.length
+                                        )
+                                    ];
+                        }
+
+                        serial.textContent =
+                            result;
+
+                        count++;
+
+                        if (
+                            count >=
+                            6
+                        ) {
+                            clearInterval(
+                                timer
+                            );
+
+                            serial.textContent =
+                                original;
+                        }
+                    },
+                    80
+                );
+        }
+    );
+})();
 
 
 /* ==========================================================================
@@ -7070,34 +5467,9 @@ document.addEventListener(
                 "tab-return-flash"
             );
 
-            showAvignaToast(
-                "👀 you disappeared for " +
-                Math.floor(
-                    awayTime /
-                        1000
-                ) +
-                " seconds."
+            showToast(
+                "👀 welcome back."
             );
-
-            flashPage(
-                "rgba(79,255,232,.12)",
-                500
-            );
-
-            if (
-                typeof confetti ===
-                "function"
-            ) {
-                confetti({
-                    particleCount: 65,
-                    spread: 100,
-                    startVelocity: 35,
-                    origin: {
-                        x: 0.5,
-                        y: 0.35
-                    }
-                });
-            }
 
             setTimeout(
                 function () {
@@ -7113,234 +5485,72 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   FULLSCREEN
+   IDLE
 ========================================================================== */
 
-document.addEventListener(
-    "fullscreenchange",
-    function () {
-        if (
-            !isUnlocked() ||
-            !document.fullscreenElement
-        ) {
-            return;
-        }
+const idleMessages = [
+    "👀 You still there?",
+    "The website is getting lonely.",
+    "There are secrets hidden here.",
+    "You're really just gonna stare at it?"
+];
 
-        showSecretBadge(
-            "BIRTHDAY: DIRECTOR'S CUT",
-            1800
+function resetIdleTimer() {
+    if (!isUnlocked()) {
+        return;
+    }
+
+    clearTimeout(
+        idleTimer
+    );
+
+    idleTimer =
+        setTimeout(
+            showIdleMessage,
+            20000
         );
+}
 
-        flashPage(
-            "rgba(255,120,220,.12)",
-            700
-        );
+function showIdleMessage() {
+    if (!isUnlocked()) {
+        return;
+    }
 
-        createScanline(
-            "#ff79b5"
+    showToast(
+        idleMessages[
+            idleIndex %
+            idleMessages.length
+        ]
+    );
+
+    idleIndex++;
+
+    resetIdleTimer();
+}
+
+[
+    "mousemove",
+    "mousedown",
+    "keydown",
+    "scroll",
+    "touchstart"
+].forEach(
+    function (eventName) {
+        document.addEventListener(
+            eventName,
+            resetIdleTimer,
+            {
+                passive: true
+            }
         );
     }
 );
+
+resetIdleTimer();
 
 
 /* ==========================================================================
-   OFFLINE / ONLINE
-========================================================================== */
-
-window.addEventListener(
-    "offline",
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        showAvignaToast(
-            "📡 BIRTHDAY SERVERS HAVE VANISHED."
-        );
-
-        const existing =
-            document.getElementById(
-                "offline-secret-banner"
-            );
-
-        if (existing) {
-            return;
-        }
-
-        const banner =
-            document.createElement(
-                "div"
-            );
-
-        banner.className =
-            "offline-secret";
-
-        banner.id =
-            "offline-secret-banner";
-
-        banner.textContent =
-            "⚠ CONNECTION LOST — birthday.exe is confused";
-
-        document.body.appendChild(
-            banner
-        );
-
-        flashPage(
-            "rgba(255,50,50,.12)",
-            600
-        );
-    }
-);
-
-window.addEventListener(
-    "online",
-    function () {
-        const banner =
-            document.getElementById(
-                "offline-secret-banner"
-            );
-
-        if (banner) {
-            banner.remove();
-        }
-
-        if (!isUnlocked()) {
-            return;
-        }
-
-        showAvignaToast(
-            "📡 connection restored. birthday.exe survived."
-        );
-
-        shockwave();
-
-        if (
-            typeof confetti ===
-            "function"
-        ) {
-            confetti({
-                particleCount: 40,
-                spread: 80,
-                startVelocity: 30,
-                origin: {
-                    x: 0.5,
-                    y: 0.3
-                }
-            });
-        }
-    }
-);
-
-
-/* ==========================================================================
-   TEXT SELECTION SECRET
-========================================================================== */
-
-let loreTriggered =
-    false;
-
-document.addEventListener(
-    "selectionchange",
-    function () {
-        if (
-            loreTriggered ||
-            !isUnlocked()
-        ) {
-            return;
-        }
-
-        const selection =
-            window.getSelection();
-
-        if (!selection) {
-            return;
-        }
-
-        const selected =
-            selection
-                .toString()
-                .trim();
-
-        if (
-            selected.length >=
-            100
-        ) {
-            loreTriggered =
-                true;
-
-            showAvignaToast(
-                "📜 LORE UNLOCKED."
-            );
-
-            const lore =
-                document.createElement(
-                    "div"
-                );
-
-            lore.className =
-                "lore-secret";
-
-            lore.innerHTML = `
-                <strong>
-                    CLASSIFIED BIRTHDAY LORE
-                </strong>
-
-                <br><br>
-
-                You selected enough text
-                to qualify as a suspicious
-                investigator.
-
-                <br><br>
-
-                Unfortunately, the classified
-                information is:
-
-                <br><br>
-
-                there is no classified information.
-            `;
-
-            document.body.appendChild(
-                lore
-            );
-
-            setTimeout(
-                function () {
-                    lore.classList.add(
-                        "visible"
-                    );
-                },
-                50
-            );
-
-            flashPage(
-                "rgba(123,91,255,.12)",
-                500
-            );
-
-            setTimeout(
-                function () {
-                    lore.classList.remove(
-                        "visible"
-                    );
-                },
-                5000
-            );
-
-            setTimeout(
-                function () {
-                    lore.remove();
-                },
-                5600
-            );
-        }
-    }
-);
-
-
-/* ==========================================================================
-   PRINT SECRET
+   PRINT
 ========================================================================== */
 
 window.addEventListener(
@@ -7350,13 +5560,8 @@ window.addEventListener(
             return;
         }
 
-        showAvignaToast(
-            "🖨️ PRINTING CLASSIFIED BIRTHDAY DOCUMENTS."
-        );
-
-        flashPage(
-            "rgba(255,0,0,.08)",
-            500
+        showSecretToast(
+            "🖨️ CLASSIFIED DOCUMENT MODE"
         );
     }
 );
@@ -7368,49 +5573,11 @@ window.addEventListener(
             return;
         }
 
-        showAvignaToast(
-            "🖨️ report successfully printed. probably."
+        showToast(
+            "🖨️ document escaped."
         );
     }
 );
-
-
-/* ==========================================================================
-   REDUCED MOTION
-========================================================================== */
-
-const reducedMotionQuery =
-    window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-    );
-
-if (
-    reducedMotionQuery.addEventListener
-) {
-    reducedMotionQuery.addEventListener(
-        "change",
-        function (event) {
-            if (!isUnlocked()) {
-                return;
-            }
-
-            if (event.matches) {
-                showAvignaToast(
-                    "♿ calm mode detected."
-                );
-            } else {
-                showAvignaToast(
-                    "⚡ FULL MOTION RESTORED."
-                );
-
-                flashPage(
-                    "rgba(79,255,232,.1)",
-                    500
-                );
-            }
-        }
-    );
-}
 
 
 /* ==========================================================================
@@ -7423,19 +5590,15 @@ setTimeout(
             return;
         }
 
-        showAvignaToast(
-            "⏱️ you've been here for two minutes. respectfully... go outside."
-        );
-
-        const warning =
+        const panel =
             document.createElement(
                 "div"
             );
 
-        warning.className =
+        panel.className =
             "visitor-secret";
 
-        warning.innerHTML = `
+        panel.innerHTML = `
             <div class="visitor-secret-title">
                 VISITOR TIMEOUT
             </div>
@@ -7454,21 +5617,15 @@ setTimeout(
         `;
 
         document.body.appendChild(
-            warning
+            panel
         );
 
-        setTimeout(
+        requestAnimationFrame(
             function () {
-                warning.classList.add(
+                panel.classList.add(
                     "visible"
                 );
-            },
-            50
-        );
-
-        flashPage(
-            "rgba(79,255,232,.12)",
-            700
+            }
         );
 
         if (
@@ -7480,26 +5637,26 @@ setTimeout(
                 spread: 100,
                 startVelocity: 40,
                 origin: {
-                    x: 0.5,
-                    y: 0.35
+                    x: .5,
+                    y: .35
                 }
             });
         }
 
         setTimeout(
             function () {
-                warning.classList.remove(
+                panel.classList.remove(
                     "visible"
                 );
             },
-            5500
+            5000
         );
 
         setTimeout(
             function () {
-                warning.remove();
+                panel.remove();
             },
-            6200
+            5600
         );
     },
     120000
@@ -7507,622 +5664,309 @@ setTimeout(
 
 
 /* ==========================================================================
-   SERIAL NUMBER SECRET
+   KONAMI
 ========================================================================== */
 
-(function setupSerialSecret() {
-    const serial =
-        document.querySelector(
-            ".serial-number"
-        );
+const konamiCode = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "b",
+    "a"
+];
 
-    if (!serial) {
-        return;
+document.addEventListener(
+    "keydown",
+    function (event) {
+        if (!isUnlocked()) {
+            return;
+        }
+
+        const key =
+            event.key.length === 1
+                ? event.key.toLowerCase()
+                : event.key;
+
+        if (
+            key ===
+            konamiCode[
+                konamiIndex
+            ]
+        ) {
+            konamiIndex++;
+
+            if (
+                konamiIndex ===
+                konamiCode.length
+            ) {
+                konamiIndex =
+                    0;
+
+                activateKonami();
+            }
+        } else {
+            konamiIndex =
+                key ===
+                konamiCode[0]
+                    ? 1
+                    : 0;
+        }
+    }
+);
+
+function activateKonami() {
+    showSecretToast(
+        "🎮 KONAMI CODE ACTIVATED"
+    );
+
+    document.body.classList.add(
+        "arcade-secret-active"
+    );
+
+    createScanline(
+        "#ff8cd9"
+    );
+
+    createScanline(
+        "#4fffe8"
+    );
+
+    if (
+        typeof confetti ===
+        "function"
+    ) {
+        confetti({
+            particleCount: 220,
+            spread: 180,
+            startVelocity: 65,
+            gravity: .75,
+            origin: {
+                x: .5,
+                y: .5
+            }
+        });
     }
 
-    let triggered = false;
-
-    serial.addEventListener(
-        "mouseenter",
+    setTimeout(
         function () {
-            if (triggered) {
-                return;
-            }
-
-            triggered =
-                true;
-
-            showAvignaToast(
-                "📁 FILE: AVIGNA_FINAL.exe"
+            document.body.classList.remove(
+                "arcade-secret-active"
             );
-
-            glitchElement(
-                serial
-            );
-
-            createScanline(
-                "#4fffe8"
-            );
-
-            const original =
-                serial.textContent;
-
-            let flashes = 0;
-
-            const interval =
-                setInterval(
-                    function () {
-                        let output =
-                            "";
-
-                        const chars =
-                            "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-                        for (
-                            let i = 0;
-                            i <
-                            original.length;
-                            i++
-                        ) {
-                            output +=
-                                original[
-                                    i
-                                ] ===
-                                " "
-                                    ? " "
-                                    : chars[
-                                          Math.floor(
-                                              Math.random() *
-                                                  chars.length
-                                          )
-                                      ];
-                        }
-
-                        serial.textContent =
-                            output;
-
-                        flashes++;
-
-                        if (
-                            flashes >=
-                            6
-                        ) {
-                            clearInterval(
-                                interval
-                            );
-
-                            serial.textContent =
-                                "FILE: AVIGNA_FINAL.exe";
-                        }
-                    },
-                    90
-                );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   CORNER SECRET
-========================================================================== */
-
-(function setupCornerSecret() {
-    let triggered =
-        false;
-
-    document.addEventListener(
-        "mousemove",
-        function (event) {
-            if (
-                triggered ||
-                !isUnlocked()
-            ) {
-                return;
-            }
-
-            if (
-                event.clientX <=
-                    12 &&
-                event.clientY <=
-                    12
-            ) {
-                triggered =
-                    true;
-
-                showAvignaToast(
-                    "📍 you found the corner."
-                );
-
-                const corner =
-                    document.createElement(
-                        "div"
-                    );
-
-                corner.className =
-                    "corner-coordinate-secret";
-
-                corner.innerHTML = `
-                    <span>LAT: 29.08</span><br>
-                    <span>MEM: FRIENDSHIP</span><br>
-                    <span>STATUS: CLASSIFIED</span>
-                `;
-
-                document.body.appendChild(
-                    corner
-                );
-
-                requestAnimationFrame(
-                    function () {
-                        corner.classList.add(
-                            "visible"
-                        );
-                    }
-                );
-
-                setTimeout(
-                    function () {
-                        corner.classList.remove(
-                            "visible"
-                        );
-                    },
-                    5000
-                );
-
-                setTimeout(
-                    function () {
-                        corner.remove();
-                    },
-                    5600
-                );
-
-                createRipple(
-                    10,
-                    10,
-                    "#4fffe8"
-                );
-            }
         },
-        {
-            passive: true
-        }
+        2500
     );
-})();
+}
 
 
 /* ==========================================================================
-   MEMORY SCROLL SECRET
+   ANTI-KONAMI
 ========================================================================== */
 
-let memoryTriggered =
-    false;
+const antiKonamiCode = [
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "a",
+    "b"
+];
 
-window.addEventListener(
-    "scroll",
-    function () {
-        if (
-            memoryTriggered ||
-            !isUnlocked()
-        ) {
+document.addEventListener(
+    "keydown",
+    function (event) {
+        if (!isUnlocked()) {
             return;
         }
 
-        const maxScroll =
-            document.documentElement
-                .scrollHeight -
-            innerHeight;
-
-        if (maxScroll <= 0) {
-            return;
-        }
-
-        const progress =
-            scrollY /
-            maxScroll;
+        const key =
+            event.key.length === 1
+                ? event.key.toLowerCase()
+                : event.key;
 
         if (
-            progress >=
-                0.285 &&
-            progress <=
-                0.31
+            key ===
+            antiKonamiCode[
+                antiKonamiIndex
+            ]
         ) {
-            memoryTriggered =
-                true;
+            antiKonamiIndex++;
 
-            const memory =
-                document.createElement(
-                    "div"
+            if (
+                antiKonamiIndex ===
+                antiKonamiCode.length
+            ) {
+                antiKonamiIndex =
+                    0;
+
+                showSecretToast(
+                    "🔄 anti-konami detected"
                 );
 
-            memory.className =
-                "memory-fragment-secret";
+                triggerInvertFlash();
 
-            memory.textContent =
-                "MEMORY_01: someone here has terrible judgement.";
-
-            document.body.appendChild(
-                memory
-            );
-
-            requestAnimationFrame(
-                function () {
-                    memory.classList.add(
-                        "visible"
-                    );
-                }
-            );
-
-            showAvignaToast(
-                "🧠 MEMORY FRAGMENT FOUND."
-            );
-
-            flashPage(
-                "rgba(79,255,232,.08)",
-                600
-            );
-
-            setTimeout(
-                function () {
-                    memory.classList.remove(
-                        "visible"
-                    );
-                },
-                3500
-            );
-
-            setTimeout(
-                function () {
-                    memory.remove();
-                },
-                4100
-            );
+                createShockwave();
+            }
+        } else {
+            antiKonamiIndex =
+                key ===
+                antiKonamiCode[0]
+                    ? 1
+                    : 0;
         }
-    },
-    {
-        passive: true
     }
 );
 
 
 /* ==========================================================================
-   FOOTER SECRET
+   SHAKE TO PARTY
 ========================================================================== */
 
-let footerSecretTriggered =
-    false;
+let lastShakeTime = 0;
 
-window.addEventListener(
-    "scroll",
-    function () {
-        if (
-            footerSecretTriggered ||
-            !isUnlocked()
-        ) {
-            return;
-        }
+let lastAcceleration = {
+    x: 0,
+    y: 0,
+    z: 0
+};
 
-        const maxScroll =
-            document.documentElement
-                .scrollHeight -
-            innerHeight;
+const SHAKE_THRESHOLD =
+    18;
 
-        if (
-            maxScroll > 0 &&
-            scrollY /
-                maxScroll >=
-                0.985
-        ) {
-            footerSecretTriggered =
-                true;
+function handleDeviceMotion(event) {
+    const acceleration =
+        event.accelerationIncludingGravity;
 
-            const secret =
-                document.createElement(
-                    "div"
-                );
-
-            secret.className =
-                "footer-ghost-secret";
-
-            secret.textContent =
-                "you weren't supposed to find this.";
-
-            document.body.appendChild(
-                secret
-            );
-
-            requestAnimationFrame(
-                function () {
-                    secret.classList.add(
-                        "visible"
-                    );
-                }
-            );
-
-            showAvignaToast(
-                "👁️ something is watching the footer."
-            );
-
-            setTimeout(
-                function () {
-                    secret.classList.remove(
-                        "visible"
-                    );
-                },
-                4500
-            );
-
-            setTimeout(
-                function () {
-                    secret.remove();
-                },
-                5200
-            );
-        }
-    },
-    {
-        passive: true
+    if (!acceleration) {
+        return;
     }
-);
 
-
-/* ==========================================================================
-   HERO EDGE SECRET
-========================================================================== */
-
-(function setupHeroEdgeSecret() {
-    const hero =
-        document.querySelector(
-            ".hero"
+    const deltaX =
+        Math.abs(
+            acceleration.x -
+            lastAcceleration.x
         );
 
-    if (!hero) {
-        return;
-    }
+    const deltaY =
+        Math.abs(
+            acceleration.y -
+            lastAcceleration.y
+        );
 
-    let triggered =
-        false;
+    const deltaZ =
+        Math.abs(
+            acceleration.z -
+            lastAcceleration.z
+        );
 
-    hero.addEventListener(
-        "mousemove",
-        function (event) {
-            if (triggered) {
-                return;
-            }
+    lastAcceleration = {
+        x: acceleration.x,
+        y: acceleration.y,
+        z: acceleration.z
+    };
 
-            const rect =
-                hero.getBoundingClientRect();
+    const total =
+        deltaX +
+        deltaY +
+        deltaZ;
 
-            if (
-                rect.right -
-                    event.clientX <
-                    18
-            ) {
-                triggered =
-                    true;
+    const now =
+        Date.now();
 
-                const whisper =
-                    document.createElement(
-                        "div"
-                    );
+    if (
+        total >
+            SHAKE_THRESHOLD &&
+        now -
+            lastShakeTime >
+            2000 &&
+        isUnlocked()
+    ) {
+        lastShakeTime =
+            now;
 
-                whisper.className =
-                    "hero-edge-secret";
+        showSecretToast(
+            "📱 shake detected."
+        );
 
-                whisper.textContent =
-                    "psst...";
+        createShockwave();
 
-                document.body.appendChild(
-                    whisper
-                );
-
-                requestAnimationFrame(
-                    function () {
-                        whisper.classList.add(
-                            "visible"
-                        );
-                    }
-                );
-
-                createScanline(
-                    "#4fffe8"
-                );
-
-                setTimeout(
-                    function () {
-                        whisper.classList.remove(
-                            "visible"
-                        );
-                    },
-                    2200
-                );
-
-                setTimeout(
-                    function () {
-                        whisper.remove();
-                    },
-                    2800
-                );
-            }
-        },
-        {
-            passive: true
+        if (
+            typeof confetti ===
+            "function"
+        ) {
+            confetti({
+                particleCount: 120,
+                spread: 140,
+                startVelocity: 50,
+                origin: {
+                    x: .5,
+                    y: .5
+                }
+            });
         }
-    );
-})();
+    }
+}
 
-
-/* ==========================================================================
-   THEME HOVER SECRET
-========================================================================== */
-
-(function setupThemeHoverSecret() {
-    if (!themeSwitch) {
+function enableShakeDetection() {
+    if (
+        typeof DeviceMotionEvent ===
+        "undefined"
+    ) {
         return;
     }
 
-    let timer = null;
-
-    themeSwitch.addEventListener(
-        "mouseenter",
-        function () {
-            clearTimeout(
-                timer
-            );
-
-            timer =
-                setTimeout(
-                    function () {
-                        showAvignaToast(
-                            "👀 you noticed the theme button."
-                        );
-
-                        if (
-                            themeSwitchText
-                        ) {
-                            themeSwitchText.textContent =
-                                "...THERE'S ANOTHER MODE";
-
-                            pageGlow(
-                                themeSwitch,
-                                1500
-                            );
-
-                            setTimeout(
-                                updateThemeButton,
-                                2200
-                            );
+    if (
+        typeof DeviceMotionEvent.requestPermission ===
+        "function"
+    ) {
+        document.addEventListener(
+            "click",
+            function requestMotionOnce() {
+                DeviceMotionEvent
+                    .requestPermission()
+                    .then(
+                        function (state) {
+                            if (
+                                state ===
+                                "granted"
+                            ) {
+                                window.addEventListener(
+                                    "devicemotion",
+                                    handleDeviceMotion
+                                );
+                            }
                         }
-                    },
-                    3000
-                );
-        }
-    );
-
-    themeSwitch.addEventListener(
-        "mouseleave",
-        function () {
-            clearTimeout(
-                timer
-            );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   TAB NAVIGATION SECRET
-========================================================================== */
-
-(function setupTabSecret() {
-    let count = 0;
-    let triggered =
-        false;
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-            if (
-                event.key !== "Tab" ||
-                triggered ||
-                !isUnlocked()
-            ) {
-                return;
-            }
-
-            count++;
-
-            if (
-                count >=
-                12
-            ) {
-                triggered =
-                    true;
-
-                const terminal =
-                    document.createElement(
-                        "div"
+                    )
+                    .catch(
+                        function () {}
                     );
 
-                terminal.className =
-                    "terminal-secret";
-
-                terminal.innerHTML = `
-                    <strong>
-                        > BIRTHDAY_OS TERMINAL
-                    </strong>
-
-                    <br><br>
-
-                    > keyboard route detected
-                    <br>
-                    > visitor classification: CURIOUS
-                    <br>
-                    > security status: questionable
-                    <br>
-                    > admin rights: absolutely not
-                    <br><br>
-
-                    > congratulations anyway.
-                `;
-
-                const close =
-                    document.createElement(
-                        "button"
-                    );
-
-                close.textContent =
-                    "CLOSE";
-
-                Object.assign(
-                    close.style,
-                    {
-                        marginTop: "20px",
-                        padding: "10px 18px",
-                        background:
-                            "transparent",
-                        color: "#4fffe8",
-                        border:
-                            "1px solid rgba(79,255,232,.3)",
-                        borderRadius:
-                            "10px",
-                        fontFamily:
-                            "DM Mono,monospace",
-                        cursor:
-                            "pointer"
-                    }
+                document.removeEventListener(
+                    "click",
+                    requestMotionOnce
                 );
-
-                close.onclick =
-                    function () {
-                        terminal.remove();
-                    };
-
-                terminal.appendChild(
-                    close
-                );
-
-                document.body.appendChild(
-                    terminal
-                );
-
-                requestAnimationFrame(
-                    function () {
-                        terminal.classList.add(
-                            "visible"
-                        );
-                    }
-                );
-
-                showAvignaToast(
-                    "⌨️ keyboard explorer detected."
-                );
-
-                createScanline(
-                    "#4fffe8"
-                );
+            },
+            {
+                once: true
             }
-        }
-    );
-})();
+        );
+    } else {
+        window.addEventListener(
+            "devicemotion",
+            handleDeviceMotion
+        );
+    }
+}
+
+enableShakeDetection();
 
 
 /* ==========================================================================
@@ -8135,7 +5979,7 @@ updatePageFilter();
 
 
 /* ==========================================================================
-   DEVTOOLS ART
+   DEVTOOLS MESSAGE
 ========================================================================== */
 
 console.log(
@@ -8144,11 +5988,11 @@ console.log(
 );
 
 console.log(
-    "%cThis website reacts to things. Explore it.",
+    "%cThere are secrets hidden throughout this website.",
     "font-size:14px;color:#baff6a;"
 );
 
 console.log(
-    "%cTry the Konami code too. ↑ ↑ ↓ ↓ ← → ← → B A",
+    "%cTry the Konami code: ↑ ↑ ↓ ↓ ← → ← → B A",
     "font-size:12px;color:#ff8cd9;"
 );
