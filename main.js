@@ -1,50 +1,84 @@
 /* ==========================================================================
-   BIRTHDAY WEBSITE — CLEAN SECRET EDITION
+   BIRTHDAY.EXE — MAIN JAVASCRIPT
 
-   MAIN SYSTEMS
+   CORE SYSTEMS
    - Birthday countdown + IST lock
-   - Countdown stages + countdown parties
+   - Countdown visual stages
+   - 10-minute / 1-minute birthday parties
    - Blue / Pink theme
-   - Money system
+   - Background / birthday / dance / click audio
+   - Money generation
    - Hunger system
-   - Food system
+   - Food restaurant
    - Shop progression
    - Gift progression
-   - Dance / Movies / Books
-   - Cinema Mode + Exit
-   - Birthday poem
-   - Konami / Anti-Konami
-   - Typing secrets
-   - Logo secrets
-   - Quote secrets
-   - Stats combo
-   - Message postscript
-   - Food ending
+   - Dance mode
+   - Cinema mode + exit
+   - Books / birthday diary poem
+   - Idle system
    - Final gift + confetti
 
-   EXPLORATION / MECHANIC SECRETS
-   - Tab return
-   - Scroll direction combo
-   - Perfect pause
-   - 100% completion
-   - $500 milestone
-   - Hunger survival
+   CLICK / HOLD SECRETS
+   - A. logo ×5
+   - A. logo long press
+   - Avigna ×3
+   - Eyebrow ×3
+   - Quote mark ×4
+   - Quote double click
+   - Stats sequence
+   - Judgement long press
+   - Birthday message ×6
+   - Money display ×8
+   - Food card ×4
+   - Hunger bar ×5
+   - Gift lock clicks
+   - Mute ×10
+   - Theme icon ×7
+   - Start button long press
+   - Shop description ×3
+   - Food section double click
+   - Right click
+   - Middle click
+   - Shift click
+   - Dance ×10
+   - Movies ×10
+   - Books ×10
 
-   REMOVED FROM OLDER VERSION
-   - Fast mouse sparkle
-   - Mouse leaving ghost
-   - Midpoint portal
-   - Top-left corner secret
-   - Hero edge secret
-   - Serial hover secret
-   - Text selection secret
-   - Two-minute visitor timer
-   - Print secret
-   - Fullscreen secret
-   - Offline / online secrets
-   - Orientation secret
-   - Resize secret
-   - 29-second event
+   TYPING SECRETS
+   - avigna
+   - secret
+   - cake
+   - matrix
+   - disco
+   - rainbow
+   - flip
+   - debug
+   - banana
+   - cat
+   - pizza
+   - boom
+   - yolo
+   - trail
+   - invert
+
+   KEYBOARD CODES
+   - Konami
+   - Anti-Konami
+
+   INTENTIONAL EXPLORATION SECRETS
+   - Return to tab after 10+ seconds
+   - Reverse scroll direction 3 times
+   - Pause over birthday message for 8 seconds
+   - Reach 100% page completion
+   - Reach exactly $500
+   - Reach 100% hunger and eat
+
+   TAB TITLE
+   - Leaving the tab changes title to "come back pleamseee 🥺"
+
+   IMPORTANT
+   All secret effects are connected to Avigna's birthday
+   and the fictional system BIRTHDAY.EXE.
 ========================================================================== */
 
 
@@ -99,6 +133,7 @@ const countdownStatus =
         "countdown-status"
     );
 
+
 const themeSwitch =
     document.getElementById(
         "theme-switch"
@@ -114,20 +149,29 @@ const themeIcon =
         "theme-icon"
     );
 
+
 const blackOut =
     document.querySelector(
         ".black-screen"
     );
+
 
 const foodButtons =
     document.querySelectorAll(
         ".food-button"
     );
 
+const foodCards =
+    document.querySelectorAll(
+        ".food-card"
+    );
+
+
 const shopButtons =
     document.querySelectorAll(
         ".shop-button"
     );
+
 
 const affordText =
     document.getElementById(
@@ -139,6 +183,7 @@ const shopAffordText =
         "shop-afford-text"
     );
 
+
 const chat =
     document.getElementById(
         "msg-card"
@@ -148,6 +193,7 @@ const nextMsg =
     document.getElementById(
         "nextMessage"
     );
+
 
 const clickAudio =
     document.getElementById(
@@ -169,29 +215,58 @@ const danceAudio =
         "dance-audio"
     );
 
+
 const pageContent =
     document.getElementById(
         "page-content"
     );
+
 
 const muteBtn =
     document.getElementById(
         "mute-toggle"
     );
 
+
 const scrollProgress =
     document.getElementById(
         "scroll-progress"
     );
+
 
 const avignaToast =
     document.getElementById(
         "avigna-toast"
     );
 
+
 const secretLogo =
     document.getElementById(
         "secret-logo"
+    );
+
+
+const birthdayMessage =
+    document.getElementById(
+        "message"
+    );
+
+
+const quoteSection =
+    document.querySelector(
+        ".trust-text"
+    );
+
+
+const quoteMark =
+    document.querySelector(
+        ".quote-mark"
+    );
+
+
+const quoteMaker =
+    document.querySelector(
+        ".quote-maker"
     );
 
 
@@ -200,90 +275,165 @@ const secretLogo =
 ========================================================================== */
 
 let money = 0;
+
 let hungerPercent = 0;
-
-let msgIndex = 0;
-
-let boughtConvo = false;
-let boughtMsg = false;
-let boughtBlur = false;
-
-let doBlur = true;
-
-let movieModeOn = false;
-let cinemaModeOn = false;
-
-let discoModeOn = false;
-let rainbowModeOn = false;
 
 let foodBought = 0;
 
-let warningGiven = false;
-let foodieEndingTriggered = false;
 
-let confettiStarted = false;
+let msgIndex = 0;
 
-let audioStarted = false;
-let isMuted = false;
 
-let typedBuffer = "";
+let boughtConvo = false;
 
-let konamiIndex = 0;
-let antiKonamiIndex = 0;
+let boughtMsg = false;
 
-let idleTimer = null;
-let idleIndex = 0;
+let boughtBlur = false;
 
-let cinemaExitButton = null;
-let rainbowInterval = null;
-let debugHudInterval = null;
+
+let doBlur = true;
+
+
+let movieModeOn = false;
+
+let cinemaModeOn = false;
+
+
+let discoModeOn = false;
+
+let rainbowModeOn = false;
+
+
+let foodieEndingTriggered =
+    false;
+
+let confettiStarted =
+    false;
+
+
+let audioStarted =
+    false;
+
+let isMuted =
+    false;
+
+
+let typedBuffer =
+    "";
+
+
+let konamiIndex =
+    0;
+
+let antiKonamiIndex =
+    0;
+
+
+let idleTimer =
+    null;
+
+let idleNudgeCount =
+    0;
+
+
+let cinemaExitButton =
+    null;
+
+
+let rainbowInterval =
+    null;
+
+let debugHudInterval =
+    null;
+
+
+let avignaToastTimeout =
+    null;
+
+
+/* ==========================================================================
+   COUNTDOWN STATE
+========================================================================== */
+
+let birthdayCountdownInterval =
+    null;
+
+let countdownEffectStage =
+    "normal";
+
+let tenMinutePartyStarted =
+    false;
+
+let oneMinutePartyStarted =
+    false;
+
+
+/* ==========================================================================
+   OTHER STATE
+========================================================================== */
+
+let warningGiven =
+    false;
 
 
 /* ==========================================================================
    EXPLORATION SECRET STATE
 ========================================================================== */
 
-/* Secret #1:
-   Returning to the tab after 10+ seconds. */
+/* Return to tab */
 
 let hiddenAt = null;
 
 
-/* Secret #2:
-   Reverse scroll direction 3 times quickly. */
+/* Reverse scrolling */
 
-let lastScrollPosition = window.scrollY;
-let lastScrollDirection = 0;
-let scrollDirectionChanges = 0;
-let scrollComboTimer = null;
-let scrollComboTriggered = false;
+let lastScrollPosition =
+    window.scrollY;
 
+let lastScrollDirection =
+    0;
 
-/* Secret #3:
-   Stay still for 8 seconds over the birthday message. */
+let scrollDirectionChanges =
+    0;
 
-let pauseTimer = null;
-let pauseCandidate = null;
-let pauseTriggered = false;
+let scrollComboTimer =
+    null;
 
-
-/* Secret #4:
-   Reach 100% scroll progress. */
-
-let completionSecretTriggered = false;
+let scrollComboTriggered =
+    false;
 
 
-/* Secret #5:
-   Reach exactly $500. */
+/* Perfect pause */
 
-let fiveHundredTriggered = false;
+let pauseTimer =
+    null;
+
+let pauseCandidate =
+    false;
+
+let pauseTriggered =
+    false;
 
 
-/* Secret #6:
-   Survive 100% hunger and then eat. */
+/* Page completion */
 
-let hungerSurvivalTriggered = false;
-let hungerReachedMaximum = false;
+let completionSecretTriggered =
+    false;
+
+
+/* $500 */
+
+let fiveHundredTriggered =
+    false;
+
+
+/* Hunger survival */
+
+let hungerReachedMaximum =
+    false;
+
+let hungerSurvivalTriggered =
+    false;
 
 
 /* ==========================================================================
@@ -295,6 +445,7 @@ function isUnlocked() {
         "birthday-unlocked"
     );
 }
+
 
 function playClick() {
     if (
@@ -311,13 +462,14 @@ function playClick() {
     );
 }
 
-function showToast(message) {
+
+function showAvignaToast(message) {
     if (!avignaToast) {
         return;
     }
 
     clearTimeout(
-        showToast.timeout
+        avignaToastTimeout
     );
 
     avignaToast.textContent =
@@ -327,7 +479,7 @@ function showToast(message) {
         "show"
     );
 
-    showToast.timeout =
+    avignaToastTimeout =
         setTimeout(
             function () {
                 avignaToast.classList.remove(
@@ -338,34 +490,39 @@ function showToast(message) {
         );
 }
 
+
 function showSecretToast(message) {
-    showToast(
-        "🔐 " + message
+    showAvignaToast(
+        "🎂 BIRTHDAY.EXE // " +
+        message
     );
 }
 
+
 function flashPage(
-    color = "rgba(79,255,232,.12)",
-    duration = 500
+    color,
+    duration
 ) {
-    const overlay =
+    const flash =
         document.createElement(
             "div"
         );
 
-    overlay.className =
+    flash.className =
         "secret-page-flash";
 
-    overlay.style.background =
-        color;
+    if (color) {
+        flash.style.background =
+            color;
+    }
 
     document.body.appendChild(
-        overlay
+        flash
     );
 
     requestAnimationFrame(
         function () {
-            overlay.classList.add(
+            flash.classList.add(
                 "visible"
             );
         }
@@ -373,46 +530,51 @@ function flashPage(
 
     setTimeout(
         function () {
-            overlay.classList.remove(
+            flash.classList.remove(
                 "visible"
             );
         },
-        duration / 2
+        Math.max(
+            150,
+            duration / 2
+        )
     );
 
     setTimeout(
         function () {
-            overlay.remove();
+            flash.remove();
         },
         duration
     );
 }
 
-function createScanline(
-    color = "#4fffe8"
-) {
-    const scan =
+
+function createScanline(color) {
+    const scanline =
         document.createElement(
             "div"
         );
 
-    scan.className =
+    scanline.className =
         "secret-scanline";
 
-    scan.style.color =
-        color;
+    if (color) {
+        scanline.style.color =
+            color;
+    }
 
     document.body.appendChild(
-        scan
+        scanline
     );
 
     setTimeout(
         function () {
-            scan.remove();
+            scanline.remove();
         },
         1400
     );
 }
+
 
 function createShockwave() {
     const wave =
@@ -435,7 +597,10 @@ function createShockwave() {
     );
 }
 
-function glitchElement(element) {
+
+function glitchElement(
+    element
+) {
     if (!element) {
         return;
     }
@@ -460,9 +625,10 @@ function glitchElement(element) {
     );
 }
 
+
 function pageGlow(
     element,
-    duration = 1200
+    duration
 ) {
     if (!element) {
         return;
@@ -484,13 +650,14 @@ function pageGlow(
                 "secret-glow-pulse"
             );
         },
-        duration
+        duration || 1200
     );
 }
 
+
 function spotlightElement(
     element,
-    duration = 2200
+    duration
 ) {
     if (!element) {
         return;
@@ -560,30 +727,35 @@ function spotlightElement(
                 "secret-target-highlight"
             );
         },
-        duration
+        duration || 2200
     );
 
     setTimeout(
         function () {
             spotlight.remove();
         },
-        duration + 600
+        (duration || 2200) + 600
     );
 }
+
 
 function starBurst(
     x,
     y,
-    symbols = [
-        "✦",
-        "✧",
-        "✨",
-        "★"
-    ]
+    symbols
 ) {
+    const list =
+        symbols ||
+        [
+            "🎂",
+            "✨",
+            "🎈",
+            "★"
+        ];
+
     for (
         let i = 0;
-        i < 12;
+        i < 14;
         i++
     ) {
         const star =
@@ -595,10 +767,10 @@ function starBurst(
             "secret-star";
 
         star.textContent =
-            symbols[
+            list[
                 Math.floor(
                     Math.random() *
-                    symbols.length
+                    list.length
                 )
             ];
 
@@ -633,11 +805,8 @@ function starBurst(
 
 
 /* ==========================================================================
-   BIRTHDAY COUNTDOWN
+   INDIA / IST TIME
 ========================================================================== */
-
-let birthdayCountdownInterval =
-    null;
 
 function getIndiaDateParts() {
     const formatter =
@@ -679,6 +848,7 @@ function getIndiaDateParts() {
 
     parts.forEach(
         function (part) {
+
             if (
                 part.type !==
                 "literal"
@@ -688,31 +858,60 @@ function getIndiaDateParts() {
                 ] =
                     part.value;
             }
+
         }
     );
 
     return {
+
         year:
-            Number(values.year),
+            Number(
+                values.year
+            ),
 
         month:
-            Number(values.month),
+            Number(
+                values.month
+            ),
 
         day:
-            Number(values.day),
+            Number(
+                values.day
+            ),
 
         hour:
-            Number(values.hour),
+            Number(
+                values.hour
+            ),
 
         minute:
-            Number(values.minute),
+            Number(
+                values.minute
+            ),
 
         second:
-            Number(values.second)
+            Number(
+                values.second
+            )
+
     };
 }
 
+
+function isBirthdayToday() {
+
+    const india =
+        getIndiaDateParts();
+
+    return (
+        india.month === 8 &&
+        india.day === 29
+    );
+}
+
+
 function getBirthdayTarget() {
+
     const india =
         getIndiaDateParts();
 
@@ -733,6 +932,7 @@ function getBirthdayTarget() {
         india.month === 8 &&
         india.day >= 29
     ) {
+
         target =
             new Date(
                 Date.UTC(
@@ -750,36 +950,25 @@ function getBirthdayTarget() {
     return target;
 }
 
-function isBirthdayToday() {
-    const india =
-        getIndiaDateParts();
 
-    return (
-        india.month === 8 &&
-        india.day === 29
-    );
-}
+function formatNumber(
+    number
+) {
 
-function formatNumber(number) {
     return String(number)
-        .padStart(2, "0");
+        .padStart(
+            2,
+            "0"
+        );
 }
 
 
 /* ==========================================================================
-   COUNTDOWN STAGES
+   COUNTDOWN
 ========================================================================== */
 
-let countdownEffectStage =
-    "normal";
-
-let tenMinutePartyStarted =
-    false;
-
-let oneMinutePartyStarted =
-    false;
-
 function resetCountdownEffectClasses() {
+
     document.body.classList.remove(
         "countdown-normal",
         "countdown-3-hours",
@@ -791,73 +980,103 @@ function resetCountdownEffectClasses() {
     );
 }
 
+
 function updateCountdownEffects(
     totalSeconds
 ) {
-    let stage =
+
+    let newStage =
         "normal";
 
     if (
         totalSeconds <= 60
     ) {
-        stage =
+
+        newStage =
             "1-minute";
-    } else if (
-        totalSeconds <= 600
-    ) {
-        stage =
-            "10-minutes";
-    } else if (
-        totalSeconds <= 1800
-    ) {
-        stage =
-            "30-minutes";
-    } else if (
-        totalSeconds <= 3600
-    ) {
-        stage =
-            "1-hour";
-    } else if (
-        totalSeconds <= 7200
-    ) {
-        stage =
-            "2-hours";
-    } else if (
-        totalSeconds <= 10800
-    ) {
-        stage =
-            "3-hours";
+
     }
 
+    else if (
+        totalSeconds <= 600
+    ) {
+
+        newStage =
+            "10-minutes";
+
+    }
+
+    else if (
+        totalSeconds <= 1800
+    ) {
+
+        newStage =
+            "30-minutes";
+
+    }
+
+    else if (
+        totalSeconds <= 3600
+    ) {
+
+        newStage =
+            "1-hour";
+
+    }
+
+    else if (
+        totalSeconds <= 7200
+    ) {
+
+        newStage =
+            "2-hours";
+
+    }
+
+    else if (
+        totalSeconds <= 10800
+    ) {
+
+        newStage =
+            "3-hours";
+
+    }
+
+
     if (
-        stage !==
+        newStage !==
         countdownEffectStage
     ) {
+
         countdownEffectStage =
-            stage;
+            newStage;
 
         resetCountdownEffectClasses();
 
         document.body.classList.add(
             "countdown-" +
-            stage
+            newStage
         );
     }
+
 
     if (
         totalSeconds <= 600 &&
         !tenMinutePartyStarted
     ) {
+
         tenMinutePartyStarted =
             true;
 
         triggerTenMinuteParty();
     }
 
+
     if (
         totalSeconds <= 60 &&
         !oneMinutePartyStarted
     ) {
+
         oneMinutePartyStarted =
             true;
 
@@ -865,87 +1084,135 @@ function updateCountdownEffects(
     }
 }
 
+
 function updateBirthdayCountdown() {
+
     if (!lockScreen) {
         return;
     }
 
+
     if (isBirthdayToday()) {
+
         unlockBirthdayWebsite();
+
         return;
     }
 
+
+    const target =
+        getBirthdayTarget();
+
+
     const difference =
-        getBirthdayTarget()
-            .getTime() -
+        target.getTime() -
         Date.now();
+
 
     if (
         difference <= 0
     ) {
+
         unlockBirthdayWebsite();
+
         return;
     }
 
+
     const totalSeconds =
         Math.floor(
-            difference / 1000
+            difference /
+            1000
         );
+
 
     const days =
         Math.floor(
-            totalSeconds / 86400
+            totalSeconds /
+            86400
         );
+
 
     const hours =
         Math.floor(
-            (totalSeconds % 86400) /
+            (
+                totalSeconds %
+                86400
+            ) /
             3600
         );
 
+
     const minutes =
         Math.floor(
-            (totalSeconds % 3600) /
+            (
+                totalSeconds %
+                3600
+            ) /
             60
         );
 
+
     const seconds =
-        totalSeconds % 60;
+        totalSeconds %
+        60;
+
 
     if (countdownDays) {
+
         countdownDays.textContent =
-            formatNumber(days);
+            formatNumber(
+                days
+            );
     }
+
 
     if (countdownHours) {
+
         countdownHours.textContent =
-            formatNumber(hours);
+            formatNumber(
+                hours
+            );
     }
+
 
     if (countdownMinutes) {
+
         countdownMinutes.textContent =
-            formatNumber(minutes);
+            formatNumber(
+                minutes
+            );
     }
+
 
     if (countdownSeconds) {
+
         countdownSeconds.textContent =
-            formatNumber(seconds);
+            formatNumber(
+                seconds
+            );
     }
 
+
     if (countdownStatus) {
+
         countdownStatus.textContent =
             "SYSTEM LOCKED";
     }
+
 
     updateCountdownEffects(
         totalSeconds
     );
 }
 
+
 function unlockBirthdayWebsite() {
+
     if (
         birthdayCountdownInterval
     ) {
+
         clearInterval(
             birthdayCountdownInterval
         );
@@ -954,64 +1221,90 @@ function unlockBirthdayWebsite() {
             null;
     }
 
+
     resetCountdownEffectClasses();
+
 
     document.body.classList.remove(
         "birthday-locked"
     );
 
+
     document.body.classList.add(
         "birthday-unlocked"
     );
 
+
     if (countdownStatus) {
+
         countdownStatus.textContent =
             "ACCESS GRANTED";
     }
 
+
     flashPage(
-        "rgba(79,255,232,.16)",
-        900
+        "rgba(255,216,107,.16)",
+        1000
     );
+
+
+    showAvignaToast(
+        "🎂 BIRTHDAY.EXE // ACCESS GRANTED"
+    );
+
 
     setTimeout(
         function () {
+
             if (lockScreen) {
                 lockScreen.remove();
             }
+
         },
         2200
     );
 }
 
+
 function initializeBirthdayLock() {
+
     if (isBirthdayToday()) {
+
         document.body.classList.add(
             "birthday-unlocked"
         );
 
+
         if (countdownStatus) {
+
             countdownStatus.textContent =
                 "ACCESS GRANTED";
         }
 
+
         setTimeout(
             function () {
+
                 if (lockScreen) {
                     lockScreen.remove();
                 }
+
             },
             2200
         );
 
+
         return;
     }
+
 
     document.body.classList.add(
         "birthday-locked"
     );
 
+
     updateBirthdayCountdown();
+
 
     birthdayCountdownInterval =
         setInterval(
@@ -1019,6 +1312,7 @@ function initializeBirthdayLock() {
             1000
         );
 }
+
 
 initializeBirthdayLock();
 
@@ -1028,10 +1322,17 @@ initializeBirthdayLock();
 ========================================================================== */
 
 function triggerTenMinuteParty() {
+
     flashPage(
-        "rgba(186,255,106,.12)",
-        800
+        "rgba(255,216,107,.13)",
+        850
     );
+
+
+    showAvignaToast(
+        "🎉 BIRTHDAY.EXE // PARTY INITIALIZED"
+    );
+
 
     if (
         typeof confetti !==
@@ -1040,180 +1341,312 @@ function triggerTenMinuteParty() {
         return;
     }
 
+
     confetti({
-        particleCount: 180,
-        spread: 160,
-        startVelocity: 55,
-        gravity: .8,
-        ticks: 300,
+
+        particleCount:
+            180,
+
+        spread:
+            160,
+
+        startVelocity:
+            55,
+
+        gravity:
+            .8,
+
+        ticks:
+            300,
+
         origin: {
-            x: .5,
-            y: .65
+            x:
+                .5,
+
+            y:
+                .65
         }
+
     });
+
 
     let bursts = 0;
 
-    const timer =
+
+    const partyInterval =
         setInterval(
             function () {
+
                 confetti({
-                    particleCount: 18,
-                    spread: 100,
-                    startVelocity: 35,
-                    gravity: .8,
+
+                    particleCount:
+                        18,
+
+                    spread:
+                        100,
+
+                    startVelocity:
+                        35,
+
+                    gravity:
+                        .8,
+
                     origin: {
                         x:
                             Math.random() *
                             .35,
-                        y: .9
+
+                        y:
+                            .9
                     }
+
                 });
 
+
                 confetti({
-                    particleCount: 18,
-                    spread: 100,
-                    startVelocity: 35,
-                    gravity: .8,
+
+                    particleCount:
+                        18,
+
+                    spread:
+                        100,
+
+                    startVelocity:
+                        35,
+
+                    gravity:
+                        .8,
+
                     origin: {
                         x:
                             .65 +
                             Math.random() *
                             .35,
-                        y: .9
+
+                        y:
+                            .9
                     }
+
                 });
 
+
                 bursts++;
+
 
                 if (
                     bursts >= 15
                 ) {
+
                     clearInterval(
-                        timer
+                        partyInterval
                     );
                 }
+
             },
             450
         );
 }
 
+
 function triggerOneMinuteParty() {
+
     flashPage(
-        "rgba(79,255,232,.18)",
-        900
+        "rgba(255,216,107,.18)",
+        1000
     );
 
+
     createShockwave();
+
+
+    showAvignaToast(
+        "🎂 BIRTHDAY.EXE // FINAL COUNTDOWN"
+    );
+
 
     if (
         typeof confetti ===
         "function"
     ) {
-        confetti({
-            particleCount: 350,
-            spread: 180,
-            startVelocity: 70,
-            gravity: .75,
-            ticks: 400,
-            origin: {
-                x: .5,
-                y: .6
-            }
-        });
 
         confetti({
-            particleCount: 150,
-            angle: 60,
-            spread: 55,
-            startVelocity: 60,
-            gravity: .8,
+
+            particleCount:
+                350,
+
+            spread:
+                180,
+
+            startVelocity:
+                70,
+
+            gravity:
+                .75,
+
+            ticks:
+                400,
+
             origin: {
-                x: 0,
-                y: 1
+                x:
+                    .5,
+
+                y:
+                    .6
             }
+
         });
 
+
         confetti({
-            particleCount: 150,
-            angle: 120,
-            spread: 55,
-            startVelocity: 60,
-            gravity: .8,
+
+            particleCount:
+                150,
+
+            angle:
+                60,
+
+            spread:
+                55,
+
+            startVelocity:
+                60,
+
+            gravity:
+                .8,
+
             origin: {
-                x: 1,
-                y: 1
+                x:
+                    0,
+
+                y:
+                    1
             }
+
         });
+
+
+        confetti({
+
+            particleCount:
+                150,
+
+            angle:
+                120,
+
+            spread:
+                55,
+
+            startVelocity:
+                60,
+
+            gravity:
+                .8,
+
+            origin: {
+                x:
+                    1,
+
+                y:
+                    1
+            }
+
+        });
+
     }
+
 
     startCountdownPartyObjects();
 }
 
-function startCountdownPartyObjects() {
-    let count = 0;
 
-    const timer =
+function startCountdownPartyObjects() {
+
+    let objectCount = 0;
+
+
+    const objectInterval =
         setInterval(
             function () {
+
                 createCountdownPartyObject();
 
-                count++;
+
+                objectCount++;
+
 
                 if (
-                    count >= 45
+                    objectCount >=
+                    45
                 ) {
+
                     clearInterval(
-                        timer
+                        objectInterval
                     );
                 }
+
             },
             250
         );
 }
 
+
 function createCountdownPartyObject() {
+
     const object =
         document.createElement(
             "div"
         );
 
+
     object.className =
         "countdown-party-object";
 
+
     if (
-        Math.random() < .55
+        Math.random() <
+        .55
     ) {
+
         object.classList.add(
             "countdown-balloon"
         );
 
         object.textContent =
             "🎈";
-    } else {
+
+    }
+
+    else {
+
         object.classList.add(
             "countdown-cake"
         );
 
         object.textContent =
-            Math.random() < .5
+            Math.random() <
+            .5
                 ? "🎂"
                 : "🧁";
     }
+
 
     object.style.left =
         Math.random() *
         100 +
         "vw";
 
+
     object.style.animationDuration =
         3 +
-        Math.random() * 3 +
+        Math.random() *
+        3 +
         "s";
+
 
     document.body.appendChild(
         object
     );
+
 
     setTimeout(
         function () {
@@ -1225,32 +1658,40 @@ function createCountdownPartyObject() {
 
 
 /* ==========================================================================
-   THEME
+   THEME SWITCH
 ========================================================================== */
 
 function updateThemeButton() {
+
     const pinkMode =
         document.body.classList.contains(
             "theme-pink"
         );
 
+
     if (themeSwitchText) {
+
         themeSwitchText.textContent =
             pinkMode
                 ? "PINK MODE"
                 : "BLUE MODE";
     }
 
+
     if (themeIcon) {
+
         themeIcon.textContent =
             pinkMode
                 ? "🌸"
                 : "🌲";
     }
 
+
     if (themeSwitch) {
+
         themeSwitch.setAttribute(
             "aria-label",
+
             pinkMode
                 ? "Switch to blue theme"
                 : "Switch to pink theme"
@@ -1258,15 +1699,19 @@ function updateThemeButton() {
     }
 }
 
+
 function toggleTheme() {
+
     document.body.classList.toggle(
         "theme-pink"
     );
+
 
     const pinkMode =
         document.body.classList.contains(
             "theme-pink"
         );
+
 
     localStorage.setItem(
         "birthday-theme",
@@ -1275,28 +1720,37 @@ function toggleTheme() {
             : "blue"
     );
 
+
     updateThemeButton();
 }
+
 
 if (
     localStorage.getItem(
         "birthday-theme"
     ) === "pink"
 ) {
+
     document.body.classList.add(
         "theme-pink"
     );
 }
 
+
 if (themeSwitch) {
+
     themeSwitch.addEventListener(
         "click",
         function () {
+
             playClick();
+
             toggleTheme();
+
         }
     );
 }
+
 
 updateThemeButton();
 
@@ -1306,6 +1760,7 @@ updateThemeButton();
 ========================================================================== */
 
 function startBackgroundAudio() {
+
     if (
         !isUnlocked() ||
         audioStarted ||
@@ -1314,11 +1769,14 @@ function startBackgroundAudio() {
         return;
     }
 
+
     audioStarted =
         true;
 
+
     backgroundAudio.loop =
         true;
+
 
     backgroundAudio
         .play()
@@ -1327,21 +1785,27 @@ function startBackgroundAudio() {
         );
 }
 
+
 document.addEventListener(
     "click",
     startBackgroundAudio
 );
 
+
 if (danceAudio) {
+
     danceAudio.addEventListener(
         "ended",
         function () {
+
             if (!backgroundAudio) {
                 return;
             }
 
+
             backgroundAudio.currentTime =
                 0;
+
 
             backgroundAudio
                 .play()
@@ -1352,16 +1816,21 @@ if (danceAudio) {
     );
 }
 
+
 if (bdayAudio) {
+
     bdayAudio.addEventListener(
         "ended",
         function () {
+
             if (!backgroundAudio) {
                 return;
             }
 
+
             backgroundAudio.currentTime =
                 0;
+
 
             backgroundAudio
                 .play()
@@ -1372,12 +1841,20 @@ if (bdayAudio) {
     );
 }
 
+
+/* ==========================================================================
+   MUTE
+========================================================================== */
+
 if (muteBtn) {
+
     muteBtn.addEventListener(
         "click",
         function () {
+
             isMuted =
                 !isMuted;
+
 
             [
                 backgroundAudio,
@@ -1386,17 +1863,21 @@ if (muteBtn) {
                 clickAudio
             ].forEach(
                 function (audio) {
+
                     if (audio) {
                         audio.muted =
                             isMuted;
                     }
+
                 }
             );
+
 
             muteBtn.textContent =
                 isMuted
                     ? "🔇"
                     : "🔊";
+
         }
     );
 }
@@ -1407,31 +1888,46 @@ if (muteBtn) {
 ========================================================================== */
 
 function updatePageFilter() {
+
     if (!pageContent) {
         return;
     }
 
+
     const filters = [];
 
+
     if (doBlur) {
+
         filters.push(
             `blur(${hungerPercent / 65}px)`
         );
     }
 
+
     if (movieModeOn) {
+
         filters.push(
-            "grayscale(.6)",
+            "grayscale(.6)"
+        );
+
+        filters.push(
             "sepia(.3)"
         );
     }
 
+
     if (rainbowModeOn) {
+
         filters.push(
-            "hue-rotate(var(--rainbow-hue,0deg))",
+            "hue-rotate(var(--rainbow-hue,0deg))"
+        );
+
+        filters.push(
             "saturate(1.6)"
         );
     }
+
 
     pageContent.style.filter =
         filters.join(" ");
@@ -1443,130 +1939,75 @@ function updatePageFilter() {
 ========================================================================== */
 
 function refreshMoneyDisplay() {
+
     const display =
         document.getElementById(
             "display-money"
         );
 
+
     if (display) {
+
         display.textContent =
             "Money: $" +
             money;
     }
 
+
     if (affordText) {
+
         affordText.innerHTML =
             `<p>Money: $${money}</p>`;
     }
 
+
     if (shopAffordText) {
+
         shopAffordText.innerHTML =
             `<p>Money: $${money}</p>`;
     }
 }
 
+
+function reduceMoney(
+    price
+) {
+
+    money -=
+        price;
+
+
+    if (
+        money <
+        0
+    ) {
+
+        money =
+            0;
+    }
+
+
+    refreshMoneyDisplay();
+}
+
+
 function updateMoney() {
+
     if (!isUnlocked()) {
         return;
     }
 
-    money += 25;
+
+    money +=
+        25;
+
 
     refreshMoneyDisplay();
+
 
     checkMoneyMilestone();
 }
 
-function reduceMoney(price) {
-    money =
-        Math.max(
-            0,
-            money - price
-        );
-
-    refreshMoneyDisplay();
-}
-
-function checkMoneyMilestone() {
-    if (
-        fiveHundredTriggered ||
-        money !== 500
-    ) {
-        return;
-    }
-
-    fiveHundredTriggered =
-        true;
-
-    const display =
-        document.getElementById(
-            "display-money"
-        );
-
-    if (display) {
-        display.classList.add(
-            "secret-money-milestone"
-        );
-    }
-
-    showSecretToast(
-        "💰 $500 MILESTONE"
-    );
-
-    flashPage(
-        "rgba(255,216,107,.18)",
-        900
-    );
-
-    const badge =
-        document.createElement(
-            "div"
-        );
-
-    badge.className =
-        "money-milestone-badge";
-
-    badge.innerHTML = `
-        <strong>$500 ACHIEVEMENT</strong>
-        <span>Financially irresponsible. Respectable.</span>
-    `;
-
-    document.body.appendChild(
-        badge
-    );
-
-    requestAnimationFrame(
-        function () {
-            badge.classList.add(
-                "visible"
-            );
-        }
-    );
-
-    setTimeout(
-        function () {
-            badge.classList.remove(
-                "visible"
-            );
-        },
-        4200
-    );
-
-    if (
-        typeof confetti ===
-        "function"
-    ) {
-        confetti({
-            particleCount: 90,
-            spread: 100,
-            startVelocity: 45,
-            origin: {
-                x: .5,
-                y: .3
-            }
-        });
-    }
-}
 
 setInterval(
     updateMoney,
@@ -1575,51 +2016,197 @@ setInterval(
 
 
 /* ==========================================================================
+   $500 BIRTHDAY BUDGET SECRET
+========================================================================== */
+
+function checkMoneyMilestone() {
+
+    if (
+        fiveHundredTriggered ||
+        money !== 500
+    ) {
+        return;
+    }
+
+
+    fiveHundredTriggered =
+        true;
+
+
+    const display =
+        document.getElementById(
+            "display-money"
+        );
+
+
+    if (display) {
+
+        display.classList.add(
+            "secret-money-milestone"
+        );
+    }
+
+
+    showSecretToast(
+        "$500 BIRTHDAY BUDGET"
+    );
+
+
+    flashPage(
+        "rgba(255,216,107,.18)",
+        900
+    );
+
+
+    const badge =
+        document.createElement(
+            "div"
+        );
+
+
+    badge.className =
+        "money-milestone-badge";
+
+
+    badge.innerHTML = `
+
+        <strong>
+            BIRTHDAY BUDGET: $500
+        </strong>
+
+        <span>
+            BIRTHDAY.EXE financial milestone reached.
+        </span>
+
+    `;
+
+
+    document.body.appendChild(
+        badge
+    );
+
+
+    requestAnimationFrame(
+        function () {
+
+            badge.classList.add(
+                "visible"
+            );
+
+        }
+    );
+
+
+    setTimeout(
+        function () {
+
+            badge.classList.remove(
+                "visible"
+            );
+
+        },
+        4200
+    );
+
+
+    setTimeout(
+        function () {
+
+            badge.remove();
+
+        },
+        4800
+    );
+
+
+    if (
+        typeof confetti ===
+        "function"
+    ) {
+
+        confetti({
+
+            particleCount:
+                100,
+
+            spread:
+                100,
+
+            startVelocity:
+                45,
+
+            origin: {
+                x:
+                    .5,
+
+                y:
+                    .3
+            }
+
+        });
+    }
+}
+
+
+/* ==========================================================================
    HUNGER
 ========================================================================== */
 
 function refreshHungerDisplay() {
-    const bar =
+
+    const hungerBar =
         document.querySelector(
             ".hunger-bar"
         );
 
-    const label =
+
+    const hungerLabel =
         document.querySelector(
             ".hunger-percentage"
         );
 
-    if (bar) {
-        bar.innerHTML =
+
+    if (hungerBar) {
+
+        hungerBar.innerHTML =
             `<span style="width:${hungerPercent}%"></span>`;
     }
 
-    if (label) {
-        label.textContent =
+
+    if (hungerLabel) {
+
+        hungerLabel.textContent =
             hungerPercent +
             "%";
     }
 }
 
+
 function hungerUpdate() {
+
     if (
         !isUnlocked() ||
-        foodieEndingTriggered
+        foodieEndingTriggered ||
+        !doBlur
     ) {
         return;
     }
+
 
     if (
         hungerPercent <
         100
     ) {
+
         hungerPercent++;
     }
+
 
     if (
         hungerPercent >=
         100
     ) {
+
         hungerPercent =
             100;
 
@@ -1627,23 +2214,30 @@ function hungerUpdate() {
             true;
     }
 
+
     refreshHungerDisplay();
+
     updatePageFilter();
+
 
     const bar =
         document.querySelector(
             ".hunger-bar"
         );
 
+
     if (bar) {
+
         bar.classList.toggle(
             "critical-hunger",
-            hungerPercent >= 90
+            hungerPercent >=
+            90
         );
     }
 }
 
-const hungerInterval =
+
+let hungerInterval =
     setInterval(
         hungerUpdate,
         1000
@@ -1654,107 +2248,140 @@ const hungerInterval =
    HUNGER SURVIVAL SECRET
 ========================================================================== */
 
-function checkHungerSurvival() {
+function triggerHungerSurvivalSecret() {
+
     if (
-        hungerSurvivalTriggered ||
-        !hungerReachedMaximum
+        hungerSurvivalTriggered
     ) {
         return;
     }
 
+
     hungerSurvivalTriggered =
         true;
+
 
     const section =
         document.querySelector(
             ".eat-section"
         );
 
+
     if (section) {
+
         section.classList.add(
             "hunger-recovery-mode"
         );
 
+
         setTimeout(
             function () {
+
                 section.classList.remove(
                     "hunger-recovery-mode"
                 );
+
             },
             3500
         );
     }
 
+
     showSecretToast(
-        "🍽️ SURVIVAL MODE"
+        "BIRTHDAY BUFFET SURVIVOR"
     );
+
 
     flashPage(
         "rgba(255,216,107,.13)",
         700
     );
 
+
     const recovery =
         document.createElement(
             "div"
         );
 
+
     recovery.className =
         "hunger-recovery-secret";
 
+
     recovery.innerHTML = `
-        <strong>RECOVERY MODE</strong>
-        <span>you actually waited until 100% hunger.</span>
+
+        <strong>
+            BIRTHDAY BUFFET SURVIVOR
+        </strong>
+
+        <span>
+            You actually waited until 100% hunger.
+        </span>
+
     `;
+
 
     document.body.appendChild(
         recovery
     );
 
+
     requestAnimationFrame(
         function () {
+
             recovery.classList.add(
                 "visible"
             );
+
         }
     );
 
-    setTimeout(
-        function () {
-            recovery.classList.remove(
-                "visible"
-            );
-        },
-        3000
-    );
 
     setTimeout(
         function () {
-            recovery.remove();
+
+            recovery.classList.remove(
+                "visible"
+            );
+
         },
-        3600
+        3800
+    );
+
+
+    setTimeout(
+        function () {
+
+            recovery.remove();
+
+        },
+        4500
     );
 }
 
 
 /* ==========================================================================
-   SCROLL PROGRESS + COMPLETION SECRET
+   SCROLL PROGRESS
 ========================================================================== */
 
 function updateScrollProgress() {
+
     if (!scrollProgress) {
         return;
     }
+
 
     const scrollTop =
         window.scrollY ||
         document.documentElement
             .scrollTop;
 
+
     const documentHeight =
         document.documentElement
             .scrollHeight -
         window.innerHeight;
+
 
     const percent =
         documentHeight > 0
@@ -1764,14 +2391,18 @@ function updateScrollProgress() {
             ) * 100
             : 0;
 
+
     scrollProgress.style.width =
-        percent + "%";
+        percent +
+        "%";
+
 
     if (
         !completionSecretTriggered &&
         percent >= 99.5 &&
         isUnlocked()
     ) {
+
         completionSecretTriggered =
             true;
 
@@ -1779,101 +2410,160 @@ function updateScrollProgress() {
     }
 }
 
-function triggerCompletionSecret() {
-    const progress =
-        document.getElementById(
-            "scroll-progress"
-        );
-
-    showSecretToast(
-        "100% — YOU MADE IT"
-    );
-
-    flashPage(
-        "rgba(79,255,232,.12)",
-        700
-    );
-
-    if (progress) {
-        progress.classList.add(
-            "completion-progress"
-        );
-    }
-
-    const badge =
-        document.createElement(
-            "div"
-        );
-
-    badge.className =
-        "completion-secret";
-
-    badge.textContent =
-        "100% — YOU MADE IT";
-
-    document.body.appendChild(
-        badge
-    );
-
-    requestAnimationFrame(
-        function () {
-            badge.classList.add(
-                "visible"
-            );
-        }
-    );
-
-    setTimeout(
-        function () {
-            badge.classList.remove(
-                "visible"
-            );
-        },
-        3000
-    );
-
-    setTimeout(
-        function () {
-            badge.remove();
-        },
-        3600
-    );
-}
 
 window.addEventListener(
     "scroll",
     updateScrollProgress,
     {
-        passive: true
+        passive:
+            true
     }
 );
+
 
 window.addEventListener(
     "resize",
     updateScrollProgress
 );
 
+
+function triggerCompletionSecret() {
+
+    showSecretToast(
+        "BIRTHDAY JOURNEY COMPLETE"
+    );
+
+
+    flashPage(
+        "rgba(79,255,232,.12)",
+        700
+    );
+
+
+    if (scrollProgress) {
+
+        scrollProgress.classList.add(
+            "completion-progress"
+        );
+    }
+
+
+    const badge =
+        document.createElement(
+            "div"
+        );
+
+
+    badge.className =
+        "completion-secret";
+
+
+    badge.textContent =
+        "🎂 BIRTHDAY JOURNEY COMPLETE";
+
+
+    document.body.appendChild(
+        badge
+    );
+
+
+    requestAnimationFrame(
+        function () {
+
+            badge.classList.add(
+                "visible"
+            );
+
+        }
+    );
+
+
+    const serials =
+        document.querySelectorAll(
+            ".serial-number"
+        );
+
+
+    serials.forEach(
+        function (
+            serial,
+            index
+        ) {
+
+            setTimeout(
+                function () {
+
+                    serial.classList.add(
+                        "secret-target-highlight"
+                    );
+
+
+                    setTimeout(
+                        function () {
+
+                            serial.classList.remove(
+                                "secret-target-highlight"
+                            );
+
+                        },
+                        450
+                    );
+
+                },
+                index *
+                120
+            );
+        }
+    );
+
+
+    setTimeout(
+        function () {
+
+            badge.classList.remove(
+                "visible"
+            );
+
+        },
+        3200
+    );
+
+
+    setTimeout(
+        function () {
+
+            badge.remove();
+
+        },
+        3800
+    );
+}
+
+
 updateScrollProgress();
 
 
 /* ==========================================================================
-   EXPLORATION SECRET #2
-   REVERSE SCROLL DIRECTION 3 TIMES
+   REVERSE SCROLL SECRET
 ========================================================================== */
 
 window.addEventListener(
     "scroll",
     function () {
+
         if (!isUnlocked()) {
             return;
         }
 
-        const currentY =
+
+        const currentPosition =
             window.scrollY;
 
+
         const delta =
-            currentY -
+            currentPosition -
             lastScrollPosition;
+
 
         if (
             Math.abs(delta) <
@@ -1882,10 +2572,12 @@ window.addEventListener(
             return;
         }
 
+
         const direction =
             delta > 0
                 ? 1
                 : -1;
+
 
         if (
             lastScrollDirection !==
@@ -1893,100 +2585,113 @@ window.addEventListener(
             direction !==
                 lastScrollDirection
         ) {
+
             scrollDirectionChanges++;
+
 
             clearTimeout(
                 scrollComboTimer
             );
 
+
             scrollComboTimer =
                 setTimeout(
                     function () {
+
                         scrollDirectionChanges =
                             0;
+
                     },
                     2500
                 );
+
 
             if (
                 scrollDirectionChanges >=
                     3 &&
                 !scrollComboTriggered
             ) {
+
                 scrollComboTriggered =
                     true;
 
-                triggerScrollDirectionSecret();
+
+                showSecretToast(
+                    "BIRTHDAY TIMELINE REWOUND"
+                );
+
+
+                document.body.classList.add(
+                    "scroll-rewind-secret"
+                );
+
+
+                if (scrollProgress) {
+
+                    scrollProgress.classList.add(
+                        "rewind-progress"
+                    );
+                }
+
+
+                flashPage(
+                    "rgba(181,140,255,.12)",
+                    650
+                );
+
+
+                createScanline(
+                    "#ff8cd9"
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        document.body.classList.remove(
+                            "scroll-rewind-secret"
+                        );
+
+
+                        if (scrollProgress) {
+
+                            scrollProgress.classList.remove(
+                                "rewind-progress"
+                            );
+                        }
+
+                    },
+                    1100
+                );
             }
         }
+
 
         lastScrollDirection =
             direction;
 
+
         lastScrollPosition =
-            currentY;
+            currentPosition;
+
     },
     {
-        passive: true
+        passive:
+            true
     }
 );
 
-function triggerScrollDirectionSecret() {
-    const bar =
-        document.getElementById(
-            "scroll-progress"
-        );
-
-    showSecretToast(
-        "↕️ you found the rewind"
-    );
-
-    document.body.classList.add(
-        "scroll-rewind-secret"
-    );
-
-    if (bar) {
-        bar.classList.add(
-            "rewind-progress"
-        );
-    }
-
-    flashPage(
-        "rgba(123,91,255,.12)",
-        650
-    );
-
-    setTimeout(
-        function () {
-            document.body.classList.remove(
-                "scroll-rewind-secret"
-            );
-
-            if (bar) {
-                bar.classList.remove(
-                    "rewind-progress"
-                );
-            }
-        },
-        1100
-    );
-}
-
 
 /* ==========================================================================
-   EXPLORATION SECRET #3
-   PERFECT PAUSE OVER THE BIRTHDAY MESSAGE
+   PERFECT PAUSE SECRET
 ========================================================================== */
 
-const birthdayMessage =
-    document.getElementById(
-        "message"
-    );
-
 if (birthdayMessage) {
+
     birthdayMessage.addEventListener(
         "mouseenter",
         function () {
+
             if (
                 pauseTriggered ||
                 !isUnlocked()
@@ -1994,31 +2699,43 @@ if (birthdayMessage) {
                 return;
             }
 
-            pauseCandidate = true;
+
+            pauseCandidate =
+                true;
+
 
             clearTimeout(
                 pauseTimer
             );
 
+
             pauseTimer =
                 setTimeout(
                     function () {
+
                         if (
                             pauseCandidate
                         ) {
+
                             triggerPerfectPauseSecret();
+
                         }
+
                     },
                     8000
                 );
+
         }
     );
+
 
     birthdayMessage.addEventListener(
         "mouseleave",
         function () {
+
             pauseCandidate =
                 false;
+
 
             clearTimeout(
                 pauseTimer
@@ -2027,77 +2744,114 @@ if (birthdayMessage) {
     );
 }
 
+
 function triggerPerfectPauseSecret() {
+
     if (pauseTriggered) {
         return;
     }
 
+
     pauseTriggered =
         true;
 
-    const area =
+
+    const messageArea =
         document.querySelector(
             ".message-area"
         );
 
-    if (area) {
-        area.classList.add(
+
+    if (messageArea) {
+
+        messageArea.classList.add(
             "memory-mode"
         );
 
+
         setTimeout(
             function () {
-                area.classList.remove(
+
+                messageArea.classList.remove(
                     "memory-mode"
                 );
+
             },
             5000
         );
     }
+
+
+    spotlightElement(
+        birthdayMessage,
+        2200
+    );
+
 
     const memory =
         document.createElement(
             "div"
         );
 
+
     memory.className =
         "memory-secret";
 
+
     memory.innerHTML = `
-        <strong>MEMORY FOUND</strong>
-        <span>you stopped long enough to actually read this.</span>
+
+        <strong>
+            BIRTHDAY MEMORY FOUND
+        </strong>
+
+        <span>
+            You stopped long enough to actually read it.
+        </span>
+
     `;
+
 
     document.body.appendChild(
         memory
     );
 
-    requestAnimationFrame(
-        function () {
-            memory.classList.add(
-                "visible"
-            );
-        }
-    );
 
     showSecretToast(
-        "🕰️ memory found"
+        "BIRTHDAY MEMORY FOUND"
     );
+
 
     setTimeout(
         function () {
+
+            memory.classList.add(
+                "visible"
+            );
+
+        },
+        40
+    );
+
+
+    setTimeout(
+        function () {
+
             memory.classList.remove(
                 "visible"
             );
+
         },
         3800
     );
 
+
     setTimeout(
         function () {
+
             memory.remove();
+
         },
-        4400
+        4500
     );
 }
 
@@ -2107,67 +2861,116 @@ function triggerPerfectPauseSecret() {
 ========================================================================== */
 
 const messages = [
+
     {
-        name: "Neerav",
-        text: "Hailoooo"
+        name:
+            "Neerav",
+
+        text:
+            "Hailoooo"
     },
+
     {
-        name: "Avigna",
-        text: "helloo"
+        name:
+            "Avigna",
+
+        text:
+            "helloo"
     },
+
     {
-        name: "Neerav",
+        name:
+            "Neerav",
+
         text:
             "Well there wasn't really any secret, it was a scam...500$ gone..."
     },
+
     {
-        name: "Avigna",
-        text: "fck u"
+        name:
+            "Avigna",
+
+        text:
+            "fck u"
     },
+
     {
-        name: "Neerav",
+        name:
+            "Neerav",
+
         text:
             "areeeee using such language on ur bday, so uncivilised"
     },
+
     {
-        name: "Avigna",
-        text: "......"
+        name:
+            "Avigna",
+
+        text:
+            "......"
     },
+
     {
-        name: "Neerav",
+        name:
+            "Neerav",
+
         text:
             "acha acha, happy birthday, eat some aloo, be better"
     },
+
     {
-        name: "Avigna",
-        text: "Thanksss"
+        name:
+            "Avigna",
+
+        text:
+            "Thanksss"
     },
+
     {
-        name: "Neerav",
+        name:
+            "Neerav",
+
         text:
             "btw there is a secret...but u will not get it, it is something u need to guess"
     },
+
     {
-        name: "Avigna",
+        name:
+            "Avigna",
+
         text:
             "ki baje....bol naaaa"
     },
+
     {
-        name: "Neerav",
+        name:
+            "Neerav",
+
         text:
             "😜😜😜😜 nahii"
     }
+
 ];
 
+
 if (nextMsg) {
+
     nextMsg.addEventListener(
         "click",
         function () {
+
             playClick();
 
+
             if (!boughtConvo) {
+
+                showAvignaToast(
+                    "🔒 BIRTHDAY CHAT LOCKED"
+                );
+
                 return;
             }
+
 
             if (
                 msgIndex >=
@@ -2176,29 +2979,36 @@ if (nextMsg) {
                 return;
             }
 
+
             if (!chat) {
                 return;
             }
+
 
             const message =
                 messages[
                     msgIndex
                 ];
 
+
             const p =
                 document.createElement(
                     "p"
                 );
 
+
             p.className =
                 "messages";
+
 
             p.innerHTML =
                 `<strong>${message.name}:</strong> ${message.text}`;
 
+
             chat.appendChild(
                 p
             );
+
 
             msgIndex++;
         }
@@ -2212,76 +3022,111 @@ if (nextMsg) {
 
 foodButtons.forEach(
     function (button) {
+
         button.addEventListener(
             "click",
             function () {
+
+                if (
+                    foodieEndingTriggered
+                ) {
+                    return;
+                }
+
+
                 playClick();
+
 
                 const price =
                     Number(
                         button.dataset.price
                     );
 
+
                 const saturation =
                     Number(
                         button.dataset.saturation
                     );
 
+
                 if (
                     money <
-                        price ||
-                    foodieEndingTriggered
+                    price
                 ) {
+
+                    showAvignaToast(
+                        "💸 BIRTHDAY.EXE // FUNDS LOW"
+                    );
+
                     return;
                 }
 
-                const survivedHunger =
+
+                const survivedMaximumHunger =
                     hungerReachedMaximum;
 
-                reduceMoney(price);
+
+                reduceMoney(
+                    price
+                );
+
 
                 foodBought++;
 
+
                 hungerPercent -=
                     saturation;
+
 
                 if (
                     hungerPercent <
                     0
                 ) {
+
                     hungerPercent =
                         0;
                 }
 
+
                 refreshHungerDisplay();
+
                 updatePageFilter();
 
+
                 if (
-                    survivedHunger
+                    survivedMaximumHunger
                 ) {
-                    checkHungerSurvival();
+
+                    triggerHungerSurvivalSecret();
                 }
+
 
                 if (
                     foodBought > 45 &&
                     !warningGiven
                 ) {
+
                     warningGiven =
                         true;
 
+
                     alert(
-                        "Stomach is about to burst, take it easy bhai"
+                        "Birthday.EXE warning: stomach capacity reaching concerning levels."
                     );
                 }
+
 
                 if (
                     foodBought >=
                     25
                 ) {
+
                     activateFoodieEnding();
                 }
+
             }
         );
+
     }
 );
 
@@ -2291,106 +3136,103 @@ foodButtons.forEach(
 ========================================================================== */
 
 function activateFoodieEnding() {
+
     if (
         foodieEndingTriggered
     ) {
         return;
     }
 
+
     foodieEndingTriggered =
         true;
+
 
     clearInterval(
         hungerInterval
     );
 
+
     if (blackOut) {
+
         blackOut.classList.add(
             "black-out"
         );
     }
 
-    flashPage(
-        "rgba(255,60,60,.2)",
-        700
-    );
 
     const ending =
         document.createElement(
             "div"
         );
 
+
     ending.className =
         "foodie-ending-text";
 
+
     ending.innerHTML = `
+
         <div class="foodie-header">
-            🚑 FOODIE EMERGENCY 🚑
+            🎂 BIRTHDAY FOOD EMERGENCY 🎂
         </div>
 
-        <p>
-            So… you ate
-            <strong><em>everything.</em></strong>
-        </p>
 
         <p>
-            At first, it was fine.
-            You ate one thing, then another,
-            and honestly nobody judged you.
+            BIRTHDAY.EXE has detected
+            an absolutely unreasonable
+            amount of food consumption.
         </p>
 
-        <p>
-            But then you kept eating.
-        </p>
 
         <p>
-            Pizza? Gone.<br>
-            Burger? Gone.<br>
+            Pizza? Gone.
+            <br>
+            Burger? Gone.
+            <br>
             Momos? Absolutely demolished.
         </p>
+
 
         <p>
             Aur phir bhi ruk nahi rahi thi sali. 💀
         </p>
 
+
         <p>
-            Itna khaya sala restaurant bankrupt ho gaya,
+            Itna khaya sala restaurant
+            bankrupt ho gaya,
             koi sharam hai.
         </p>
 
-        <p>
-            Now... paramedics have appeared.
-        </p>
 
         <p>
-            They looked at u... they looked at the
-            restaurant owner... and sighed.
+            The birthday buffet has officially
+            entered emergency mode.
         </p>
 
-        <p>
-            They put u in the ambulance...
-            it couldn't move...
-        </p>
 
         <p>
-            sala tanki hai.
+            <strong>
+                <em>
+                    SECRET BIRTHDAY ENDING UNLOCKED 💀
+                </em>
+            </strong>
         </p>
 
-        <p>
-            The doctors were shipped to ur location
-            but it was too late....
-        </p>
 
         <p>
-            <strong><em>
-                SECRET ENDING UNLOCKED 💀
-            </em></strong>
+            Next birthday,
+            maybe eat slightly less.
         </p>
+
     `;
+
 
     document.body.appendChild(
         ending
     );
+
 
     createRestartButton();
 }
@@ -2401,6 +3243,7 @@ function activateFoodieEnding() {
 ========================================================================== */
 
 function createRestartButton() {
+
     if (
         document.querySelector(
             ".restart-button"
@@ -2409,23 +3252,30 @@ function createRestartButton() {
         return;
     }
 
+
     const button =
         document.createElement(
             "button"
         );
 
+
     button.className =
         "restart-button";
 
+
     button.textContent =
-        "Restart Website";
+        "Restart Birthday.EXE";
+
 
     button.addEventListener(
         "click",
         function () {
+
             location.reload();
+
         }
     );
+
 
     document.body.appendChild(
         button
@@ -2439,18 +3289,23 @@ function createRestartButton() {
 
 shopButtons.forEach(
     function (button) {
+
         button.addEventListener(
             "click",
             function () {
+
                 playClick();
+
 
                 const price =
                     Number(
                         button.dataset.price
                     );
 
+
                 const unlock =
                     button.dataset.unlock;
+
 
                 if (
                     (
@@ -2469,182 +3324,241 @@ shopButtons.forEach(
                         boughtBlur
                     )
                 ) {
+
                     return;
                 }
+
 
                 if (
                     money <
                     price
                 ) {
-                    showToast(
-                        "💸 not enough money."
+
+                    showAvignaToast(
+                        "💸 BIRTHDAY.EXE // INSUFFICIENT FUNDS"
                     );
 
                     return;
                 }
 
-                reduceMoney(price);
+
+                reduceMoney(
+                    price
+                );
+
 
                 if (
                     unlock ===
                     "conversation"
                 ) {
+
                     boughtConvo =
                         true;
 
-                    const locked =
+
+                    const lockedChat =
                         document.getElementById(
                             "locked-chat"
                         );
 
-                    if (locked) {
-                        locked.textContent =
+
+                    if (lockedChat) {
+
+                        lockedChat.textContent =
                             "🔓";
                     }
+
+
+                    showAvignaToast(
+                        "🎂 BIRTHDAY CHAT UNLOCKED"
+                    );
                 }
+
 
                 if (
                     unlock ===
                     "message"
                 ) {
+
                     boughtMsg =
                         true;
+
 
                     const message =
                         document.getElementById(
                             "message"
                         );
 
-                    const locked =
+
+                    const lockedMessage =
                         document.getElementById(
                             "locked-message"
                         );
 
+
                     if (message) {
+
                         message.classList.add(
                             "message-animation"
                         );
+
 
                         message.style.opacity =
                             "1";
                     }
 
-                    if (locked) {
-                        locked.textContent =
+
+                    if (lockedMessage) {
+
+                        lockedMessage.textContent =
                             "🔓";
                     }
+
+
+                    showAvignaToast(
+                        "💌 BIRTHDAY MESSAGE UNLOCKED"
+                    );
                 }
+
 
                 if (
                     unlock ===
                     "blur"
                 ) {
+
                     doBlur =
                         false;
 
+
                     boughtBlur =
                         true;
+
 
                     clearInterval(
                         hungerInterval
                     );
 
+
                     updatePageFilter();
+
+
+                    showAvignaToast(
+                        "✨ BIRTHDAY DEFECT REMOVED"
+                    );
                 }
+
 
                 button.textContent =
                     "Bought";
 
+
                 button.style.background =
                     "black";
 
-                installShopUpgrade(
-                    button
-                );
+
+                const option =
+                    button.closest(
+                        ".shop-option"
+                    );
+
+
+                if (option) {
+
+                    option.classList.add(
+                        "secret-border"
+                    );
+
+
+                    if (
+                        !option.querySelector(
+                            ".secret-installation"
+                        )
+                    ) {
+
+                        const install =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        install.className =
+                            "secret-installation";
+
+
+                        install.textContent =
+                            "✓ BIRTHDAY.EXE INSTALLED";
+
+
+                        option.appendChild(
+                            install
+                        );
+
+
+                        requestAnimationFrame(
+                            function () {
+
+                                install.classList.add(
+                                    "visible"
+                                );
+
+                            }
+                        );
+                    }
+                }
+
 
                 refreshMoneyDisplay();
 
                 checkGiftUnlock();
+
             }
         );
+
     }
 );
 
-function installShopUpgrade(
-    button
-) {
-    const option =
-        button.closest(
-            ".shop-option"
-        );
-
-    if (!option) {
-        return;
-    }
-
-    option.classList.add(
-        "secret-border"
-    );
-
-    let badge =
-        option.querySelector(
-            ".secret-installation"
-        );
-
-    if (!badge) {
-        badge =
-            document.createElement(
-                "div"
-            );
-
-        badge.className =
-            "secret-installation";
-
-        badge.textContent =
-            "✓ INSTALLED";
-
-        option.appendChild(
-            badge
-        );
-    }
-
-    requestAnimationFrame(
-        function () {
-            badge.classList.add(
-                "visible"
-            );
-        }
-    );
-}
 
 function checkGiftUnlock() {
+
     if (
         boughtConvo &&
         boughtMsg &&
         boughtBlur
     ) {
-        const locked =
+
+        const lockedNotice =
             document.getElementById(
                 "gift-locked-notice"
             );
 
-        const section =
+
+        const giftSection =
             document.getElementById(
                 "gift-section"
             );
 
-        if (locked) {
-            locked.style.display =
+
+        if (lockedNotice) {
+
+            lockedNotice.style.display =
                 "none";
         }
 
-        if (section) {
-            section.style.display =
+
+        if (giftSection) {
+
+            giftSection.style.display =
                 "block";
 
+
             pageGlow(
-                section,
+                giftSection,
                 1200
+            );
+
+
+            showAvignaToast(
+                "🎁 BIRTHDAY GIFT UNLOCKED"
             );
         }
     }
@@ -2656,28 +3570,41 @@ function checkGiftUnlock() {
 ========================================================================== */
 
 (function setupGiftLockTaunts() {
-    const locked =
+
+    const lockedNotice =
         document.getElementById(
             "gift-locked-notice"
         );
 
-    if (!locked) {
+
+    if (!lockedNotice) {
         return;
     }
 
+
     const taunts = [
-        "🔒 nope.",
-        "🔒 still nope.",
+
+        "🔒 BIRTHDAY.EXE // ACCESS DENIED",
+
+        "🔒 still locked.",
+
         "🔒 the shop is right above you.",
-        "🔒 buy the three upgrades.",
-        "🔒 clicking harder won't help."
+
+        "🔒 buy the three birthday upgrades.",
+
+        "🔒 clicking harder won't help.",
+
+        "🔒 you know what to do."
     ];
+
 
     let index = 0;
 
-    locked.addEventListener(
+
+    lockedNotice.addEventListener(
         "click",
         function () {
+
             if (
                 boughtConvo &&
                 boughtMsg &&
@@ -2686,28 +3613,35 @@ function checkGiftUnlock() {
                 return;
             }
 
+
             playClick();
 
-            locked.classList.remove(
+
+            lockedNotice.classList.remove(
                 "gift-taunt-shake"
             );
 
-            void locked.offsetWidth;
 
-            locked.classList.add(
+            void lockedNotice.offsetWidth;
+
+
+            lockedNotice.classList.add(
                 "gift-taunt-shake"
             );
 
-            showToast(
+
+            showAvignaToast(
                 taunts[
                     index %
                     taunts.length
                 ]
             );
 
+
             index++;
         }
     );
+
 })();
 
 
@@ -2715,30 +3649,40 @@ function checkGiftUnlock() {
    FINAL GIFT
 ========================================================================== */
 
-const bdayBtn =
+const initialGiftButton =
     document.querySelector(
-        ".gift-button"
+        "#gift-section .gift-button"
     );
 
-if (bdayBtn) {
-    bdayBtn.addEventListener(
+
+if (initialGiftButton) {
+
+    initialGiftButton.addEventListener(
         "click",
         function () {
+
             if (!pageContent) {
                 return;
             }
+
 
             pageContent.classList.add(
                 "gift-layout"
             );
 
+
             pageContent.style.filter =
                 "none";
 
+
             pageContent.innerHTML = `
-                <h2 class="section-header white appear">
-                    Gift Unlocked 🎁
+
+                <h2
+                    class="section-header white appear"
+                >
+                    🎂 Gift Unlocked 🎂
                 </h2>
+
 
                 <img
                     src="image/Screenshot 2026-08-19 181429.png"
@@ -2746,53 +3690,75 @@ if (bdayBtn) {
                     class="appear"
                 >
 
-                <p class="white appear">
+
+                <p
+                    class="white appear"
+                >
                     The audacity for u to ask more
                     after all this btw... sighhh
                 </p>
 
+
                 <button
-                    id="final-confetti-button"
                     class="gift-button appear"
+                    id="final-confetti-button"
                 >
                     Celebrate 🎉
                 </button>
+
             `;
+
 
             playClick();
 
+
             flashPage(
-                "rgba(255,255,255,.16)",
-                800
+                "rgba(255,216,107,.16)",
+                850
             );
 
+
+            showAvignaToast(
+                "🎁 BIRTHDAY.EXE // FINAL GIFT"
+            );
+
+
             if (backgroundAudio) {
+
                 backgroundAudio.pause();
             }
 
+
             if (bdayAudio) {
+
                 bdayAudio.currentTime =
                     0;
 
                 bdayAudio.volume =
                     1;
 
-                bdayAudio
-                    .play()
-                    .catch(
-                        function () {}
-                    );
+                bdayAudio.play().catch(
+                    function () {}
+                );
             }
 
+
             window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: "instant"
+                top:
+                    0,
+
+                left:
+                    0,
+
+                behavior:
+                    "instant"
             });
 
-            setupFinalConfettiButton();
+
+            setupFinalConfetti();
 
             createRestartButton();
+
         }
     );
 }
@@ -2800,95 +3766,151 @@ if (bdayBtn) {
 
 /* ==========================================================================
    FINAL GIFT CONFETTI
-   Canvas is attached directly to BODY so it covers the visible gift screen.
 ========================================================================== */
 
-function setupFinalConfettiButton() {
+function setupFinalConfetti() {
+
     const button =
         document.getElementById(
             "final-confetti-button"
         );
 
+
     if (!button) {
         return;
     }
 
+
     button.addEventListener(
         "click",
         function () {
+
             if (
                 confettiStarted ||
                 typeof confetti !==
-                "function"
+                    "function"
             ) {
                 return;
             }
 
+
             confettiStarted =
                 true;
+
+
+            showAvignaToast(
+                "🎉 BIRTHDAY.EXE // PARTY MODE"
+            );
+
 
             const canvas =
                 document.createElement(
                     "canvas"
                 );
 
+
             canvas.className =
                 "gift-confetti-canvas";
+
 
             document.body.appendChild(
                 canvas
             );
 
+
             const giftConfetti =
                 confetti.create(
                     canvas,
                     {
-                        resize: true,
-                        useWorker: true
+                        resize:
+                            true,
+
+                        useWorker:
+                            true
                     }
                 );
 
-            function shoot() {
-                giftConfetti({
-                    particleCount: 16,
-                    angle: 60,
-                    spread: 50,
-                    startVelocity: 80,
-                    gravity: .8,
-                    ticks: 250,
-                    origin: {
-                        x: 0,
-                        y: 1
-                    }
-                });
+
+            function shootConfetti() {
 
                 giftConfetti({
-                    particleCount: 16,
-                    angle: 120,
-                    spread: 50,
-                    startVelocity: 80,
-                    gravity: .8,
-                    ticks: 250,
+
+                    particleCount:
+                        18,
+
+                    angle:
+                        60,
+
+                    spread:
+                        50,
+
+                    startVelocity:
+                        80,
+
+                    gravity:
+                        .8,
+
+                    ticks:
+                        250,
+
                     origin: {
-                        x: 1,
-                        y: 1
+                        x:
+                            0,
+
+                        y:
+                            1
                     }
+
+                });
+
+
+                giftConfetti({
+
+                    particleCount:
+                        18,
+
+                    angle:
+                        120,
+
+                    spread:
+                        50,
+
+                    startVelocity:
+                        80,
+
+                    gravity:
+                        .8,
+
+                    ticks:
+                        250,
+
+                    origin: {
+                        x:
+                            1,
+
+                        y:
+                            1
+                    }
+
                 });
             }
 
-            shoot();
+
+            shootConfetti();
+
 
             setInterval(
-                shoot,
+                shootConfetti,
                 120
             );
+
         }
     );
 }
 
 
 /* ==========================================================================
-   HOBBY SYSTEM
+   HOBBY EASTER EGG HELPER
 ========================================================================== */
 
 function setupHobbyEasterEgg(
@@ -2896,23 +3918,35 @@ function setupHobbyEasterEgg(
     threshold,
     callback
 ) {
+
     const card =
         document.querySelector(
             selector
         );
 
+
     if (!card) {
         return;
     }
 
+
     let clicks = 0;
+
 
     card.addEventListener(
         "click",
         function () {
+
+            if (!isUnlocked()) {
+                return;
+            }
+
+
             clicks++;
 
+
             playClick();
+
 
             if (
                 clicks <
@@ -2921,264 +3955,370 @@ function setupHobbyEasterEgg(
                 return;
             }
 
+
             clicks = 0;
 
-            callback(card);
+
+            callback(
+                card
+            );
         }
     );
 }
 
 
 /* ==========================================================================
-   DANCE
+   DANCE — ×10
 ========================================================================== */
 
 setupHobbyEasterEgg(
     ".dance",
     10,
     function (card) {
+
         card.classList.add(
             "dance-mode"
         );
 
-        showSecretToast(
-            "SHE'S GOT THE MOVES 💃"
-        );
-
-        pageGlow(
-            card,
-            1500
-        );
 
         if (
             !card.querySelector(
                 ".dance-label"
             )
         ) {
+
             const label =
                 document.createElement(
                     "p"
                 );
 
+
             label.className =
                 "hobby-unlock-text dance-label";
 
+
             label.textContent =
-                "SHE'S GOT THE MOVES 💃";
+                "BIRTHDAY PARTY MODE 💃";
+
 
             card.appendChild(
                 label
             );
         }
 
+
+        showSecretToast(
+            "BIRTHDAY PARTY MODE"
+        );
+
+
+        pageGlow(
+            card,
+            1500
+        );
+
+
         if (backgroundAudio) {
+
             backgroundAudio.pause();
         }
 
+
         if (danceAudio) {
+
             danceAudio.currentTime =
                 0;
 
-            danceAudio
-                .play()
-                .catch(
-                    function () {}
-                );
+
+            danceAudio.play().catch(
+                function () {}
+            );
         }
+
 
         if (
             typeof confetti ===
             "function"
         ) {
+
             confetti({
-                particleCount: 100,
-                spread: 120,
-                startVelocity: 45,
+
+                particleCount:
+                    100,
+
+                spread:
+                    120,
+
+                startVelocity:
+                    45,
+
                 origin: {
-                    x: .5,
-                    y: .65
+                    x:
+                        .5,
+
+                    y:
+                        .65
                 }
+
             });
         }
 
+
         setTimeout(
             function () {
+
                 card.classList.remove(
                     "dance-mode"
                 );
+
             },
             10000
         );
+
     }
 );
 
 
 /* ==========================================================================
-   MOVIES / CINEMA MODE
+   MOVIES / CINEMA — ×10
 ========================================================================== */
 
 setupHobbyEasterEgg(
     ".movies",
     10,
     function (card) {
-        startCinemaMode(card);
+
+        startCinemaMode(
+            card
+        );
+
     }
 );
 
-function startCinemaMode(card) {
+
+function startCinemaMode(
+    card
+) {
+
     if (cinemaModeOn) {
         return;
     }
 
+
     cinemaModeOn =
         true;
+
 
     movieModeOn =
         true;
 
+
     showSecretToast(
-        "🎬 CINEMA MODE"
+        "AVIGNA'S BIRTHDAY PREMIERE"
     );
+
 
     pageGlow(
         card,
         1000
     );
 
+
     const overlay =
         document.createElement(
             "div"
         );
 
+
     overlay.className =
         "movie-overlay";
 
-    overlay.innerHTML =
-        `<span class="movie-countdown">3</span>`;
+
+    overlay.innerHTML = `
+
+        <span class="movie-countdown">
+            3
+        </span>
+
+    `;
+
 
     document.body.appendChild(
         overlay
     );
+
 
     const number =
         overlay.querySelector(
             ".movie-countdown"
         );
 
+
     let count = 3;
+
 
     const timer =
         setInterval(
             function () {
+
                 count--;
+
 
                 if (
                     count > 0
                 ) {
+
                     number.textContent =
                         count;
-                } else if (
-                    count === 0
+
+                }
+
+                else if (
+                    count ===
+                    0
                 ) {
+
                     number.textContent =
-                        "CINEMA 🎬";
-                } else {
+                        "AVIGNA'S BIRTHDAY PREMIERE 🎬";
+
+                }
+
+                else {
+
                     clearInterval(
                         timer
                     );
 
+
                     overlay.remove();
+
 
                     updatePageFilter();
 
+
                     activateCinemaBars();
+
                 }
+
             },
             1000
         );
 }
 
+
 function activateCinemaBars() {
+
     const top =
         document.createElement(
             "div"
         );
+
 
     const bottom =
         document.createElement(
             "div"
         );
 
+
     top.className =
         "cinema-bars-secret top";
 
+
     bottom.className =
         "cinema-bars-secret bottom";
+
 
     document.body.appendChild(
         top
     );
 
+
     document.body.appendChild(
         bottom
     );
 
+
     if (pageContent) {
+
         pageContent.classList.add(
             "secret-letterbox"
         );
     }
 
+
     requestAnimationFrame(
         function () {
+
             top.classList.add(
                 "visible"
             );
 
+
             bottom.classList.add(
                 "visible"
             );
+
         }
     );
+
 
     createCinemaExitButton();
 }
 
+
 function createCinemaExitButton() {
+
+    if (cinemaExitButton) {
+        return;
+    }
+
+
     cinemaExitButton =
         document.createElement(
             "button"
         );
 
+
     cinemaExitButton.className =
         "cinema-exit-button";
+
 
     cinemaExitButton.textContent =
         "EXIT CINEMA MODE";
 
+
     cinemaExitButton.addEventListener(
         "click",
         function () {
+
             playClick();
+
             exitCinemaMode();
+
         }
     );
+
 
     document.body.appendChild(
         cinemaExitButton
     );
 }
 
+
 function exitCinemaMode() {
+
     if (!cinemaModeOn) {
         return;
     }
 
+
     cinemaModeOn =
         false;
 
+
     movieModeOn =
         false;
+
 
     document
         .querySelectorAll(
@@ -3186,133 +4326,178 @@ function exitCinemaMode() {
         )
         .forEach(
             function (bar) {
+
                 bar.classList.remove(
                     "visible"
                 );
 
+
                 setTimeout(
                     function () {
+
                         bar.remove();
+
                     },
                     600
                 );
+
             }
         );
 
+
     if (pageContent) {
+
         pageContent.classList.remove(
             "secret-letterbox"
         );
     }
 
+
     if (cinemaExitButton) {
+
         cinemaExitButton.remove();
+
 
         cinemaExitButton =
             null;
     }
 
+
     updatePageFilter();
 
-    showToast(
-        "🎬 Cinema Mode Off"
+
+    showAvignaToast(
+        "🎬 BIRTHDAY PREMIERE ENDED"
     );
 }
+
 
 document.addEventListener(
     "keydown",
     function (event) {
+
         if (
             event.key ===
                 "Escape" &&
             cinemaModeOn
         ) {
+
             exitCinemaMode();
         }
+
     }
 );
 
 
 /* ==========================================================================
-   BOOKS
+   BOOKS — ×10
 ========================================================================== */
 
 setupHobbyEasterEgg(
     ".books",
     10,
     function (card) {
+
         card.classList.add(
             "book-mode"
         );
+
 
         if (
             !card.querySelector(
                 ".books-label"
             )
         ) {
+
             const label =
                 document.createElement(
                     "p"
                 );
 
+
             label.className =
                 "hobby-unlock-text books-label";
 
+
             label.textContent =
-                '"just one more chapter" — famous last words 📖';
+                "BIRTHDAY DIARY ENTRY UNLOCKED 📖";
+
 
             card.appendChild(
                 label
             );
         }
 
+
         spotlightElement(
             card,
             1800
         );
 
+
         showBirthdayPoem();
+
     }
 );
 
+
 function showBirthdayPoem() {
+
     if (
         document.querySelector(
             ".poem-overlay"
         )
     ) {
+
         return;
     }
 
+
     if (pageContent) {
+
         pageContent.classList.add(
             "page-fade-out"
         );
     }
 
-    const overlay =
+
+    const poemOverlay =
         document.createElement(
             "div"
         );
 
-    overlay.className =
+
+    poemOverlay.className =
         "poem-overlay";
 
-    overlay.innerHTML = `
+
+    poemOverlay.innerHTML = `
+
         <div class="poem-text">
+
+            <p>
+                <strong>
+                    BIRTHDAY DIARY ENTRY
+                </strong>
+            </p>
 
             <p>
                 Today,
                 <br><br>
 
-                In the dead of night, fireworks blossom like tiny stars.
+                In the dead of night,
+                fireworks blossom like tiny stars.
+
                 <br>
 
-                Seated on the garden soil, the seasons turn without notice.
+                Seated on the garden soil,
+                the seasons turn without notice.
             </p>
 
             <p>
-                In this garden of life, another flower blooms
+                In this garden of life,
+                another flower blooms.
+
                 <br>
 
                 With stories both radiant and dreary.
@@ -3320,6 +4505,7 @@ function showBirthdayPoem() {
 
             <p>
                 The flowers, with their beauty and grime,
+
                 <br>
 
                 are reflections of our actions over time.
@@ -3327,6 +4513,7 @@ function showBirthdayPoem() {
 
             <p>
                 The sound of laughter and muffled cries
+
                 <br>
 
                 breathe a soul into one's life.
@@ -3334,76 +4521,100 @@ function showBirthdayPoem() {
 
             <p>
                 Under the winds of change and time
+
                 <br>
 
-                Mountains erode, rivers run dry, and yet—the flowers remain,
+                Mountains erode, rivers run dry,
+                and yet—the flowers remain,
+
                 <br>
 
                 quietly unchanged.
             </p>
 
             <p>
-                And so, between the silence and noise, we remain
+                And so, between the silence and noise,
+                we remain,
+
                 <br>
 
-                not forever, but nurturing a flower while we still can,
+                not forever,
+                but nurturing a flower while we still can,
+
                 <br>
 
-                forever immortalizing ourselves, in the panels of time.
+                forever immortalizing ourselves,
+                in the panels of time.
             </p>
 
         </div>
 
+
         <button class="button poem-return-button">
-            ← Back to the page
+            ← Return to Birthday.EXE
         </button>
+
     `;
 
+
     document.body.appendChild(
-        overlay
+        poemOverlay
     );
 
-    setTimeout(
+
+    requestAnimationFrame(
         function () {
-            overlay.classList.add(
+
+            poemOverlay.classList.add(
                 "visible"
             );
-        },
-        50
+
+        }
     );
 
-    overlay
-        .querySelector(
+
+    const returnButton =
+        poemOverlay.querySelector(
             ".poem-return-button"
-        )
-        .addEventListener(
-            "click",
-            function () {
-                playClick();
-
-                overlay.classList.remove(
-                    "visible"
-                );
-
-                setTimeout(
-                    function () {
-                        overlay.remove();
-
-                        if (pageContent) {
-                            pageContent.classList.remove(
-                                "page-fade-out"
-                            );
-                        }
-                    },
-                    900
-                );
-            }
         );
+
+
+    returnButton.addEventListener(
+        "click",
+        function () {
+
+            playClick();
+
+
+            poemOverlay.classList.remove(
+                "visible"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    poemOverlay.remove();
+
+
+                    if (pageContent) {
+
+                        pageContent.classList.remove(
+                            "page-fade-out"
+                        );
+                    }
+
+                },
+                900
+            );
+
+        }
+    );
 }
 
 
 /* ==========================================================================
-   TYPING SECRET EFFECTS
+   TYPING SECRET — EMOJI RAIN
 ========================================================================== */
 
 function spawnEmojiRain(
@@ -3411,18 +4622,22 @@ function spawnEmojiRain(
     count,
     duration
 ) {
+
     for (
         let i = 0;
         i < count;
         i++
     ) {
+
         const drop =
             document.createElement(
                 "div"
             );
 
+
         drop.className =
             "rain-emoji";
+
 
         drop.textContent =
             emojiList[
@@ -3432,10 +4647,12 @@ function spawnEmojiRain(
                 )
             ];
 
+
         drop.style.left =
             Math.random() *
             100 +
             "vw";
+
 
         drop.style.animationDuration =
             duration +
@@ -3443,273 +4660,237 @@ function spawnEmojiRain(
             2 +
             "s";
 
+
         drop.style.fontSize =
             1.4 +
             Math.random() *
             1.8 +
             "rem";
 
+
         document.body.appendChild(
             drop
         );
+
 
         setTimeout(
             function () {
                 drop.remove();
             },
-            (duration + 3) *
-            1000
+            (
+                duration +
+                3
+            ) * 1000
         );
     }
 }
 
-function spawnFlyingPizza() {
-    const pizza =
-        document.createElement(
-            "div"
-        );
 
-    pizza.textContent =
-        "🍕";
+/* ==========================================================================
+   TYPING — AVIGNA
+========================================================================== */
 
-    Object.assign(
-        pizza.style,
-        {
-            position: "fixed",
-            top: "45%",
-            left: "-120px",
-            fontSize: "5rem",
-            zIndex: "30000",
-            pointerEvents: "none",
-            transition:
-                "transform 2.4s linear, opacity 2.4s linear"
-        }
-    );
-
-    document.body.appendChild(
-        pizza
-    );
+function activateAvignaTypingSecret() {
 
     showSecretToast(
-        "🍕 pizza summoned"
+        "AVIGNA // BIRTHDAY GIRL IDENTIFIED"
     );
 
-    requestAnimationFrame(
-        function () {
-            pizza.style.transform =
-                "translateX(calc(100vw + 200px)) rotate(1080deg)";
-        }
-    );
 
-    setTimeout(
-        function () {
-            pizza.style.opacity =
-                "0";
-        },
-        2000
-    );
+    if (pageContent) {
 
-    setTimeout(
-        function () {
-            pizza.remove();
-        },
-        2600
-    );
-}
-
-function triggerScreenCrack() {
-    const overlay =
-        document.createElement(
-            "div"
+        pageContent.classList.add(
+            "secret-chromatic"
         );
 
-    overlay.className =
-        "screen-crack-overlay";
-
-    overlay.innerHTML = `
-        <svg
-            width="100%"
-            height="100%"
-            viewBox="0 0 400 800"
-            preserveAspectRatio="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <g
-                stroke="rgba(255,255,255,.55)"
-                stroke-width="1.4"
-                fill="none"
-            >
-                <path d="
-                    M200 400 L120 120
-                    M200 400 L280 90
-                    M200 400 L60 300
-                    M200 400 L340 260
-                    M200 400 L150 620
-                    M200 400 L260 680
-                    M200 400 L40 520
-                    M200 400 L370 480
-                "/>
-            </g>
-        </svg>
-    `;
-
-    document.body.appendChild(
-        overlay
-    );
-
-    requestAnimationFrame(
-        function () {
-            overlay.classList.add(
-                "visible"
-            );
-        }
-    );
-
-    document.body.classList.add(
-        "screen-shake"
-    );
-
-    createShockwave();
-
-    showSecretToast(
-        "💥 uh oh."
-    );
-
-    setTimeout(
-        function () {
-            document.body.classList.remove(
-                "screen-shake"
-            );
-        },
-        400
-    );
-
-    setTimeout(
-        function () {
-            overlay.classList.remove(
-                "visible"
-            );
-
-            setTimeout(
-                function () {
-                    overlay.remove();
-                },
-                300
-            );
-        },
-        2000
-    );
-}
-
-function activateTrailMode() {
-    if (
-        activateTrailMode.active
-    ) {
-        return;
-    }
-
-    activateTrailMode.active =
-        true;
-
-    showSecretToast(
-        "✨ trail mode"
-    );
-
-    const emojis = [
-        "✨",
-        "💫",
-        "⭐"
-    ];
-
-    function handler(event) {
-        if (
-            Math.random() >
-            .35
-        ) {
-            return;
-        }
-
-        const trail =
-            document.createElement(
-                "div"
-            );
-
-        trail.className =
-            "mouse-trail-emoji";
-
-        trail.textContent =
-            emojis[
-                Math.floor(
-                    Math.random() *
-                    emojis.length
-                )
-            ];
-
-        trail.style.left =
-            event.clientX +
-            "px";
-
-        trail.style.top =
-            event.clientY +
-            "px";
-
-        document.body.appendChild(
-            trail
-        );
 
         setTimeout(
             function () {
-                trail.remove();
+
+                pageContent.classList.remove(
+                    "secret-chromatic"
+                );
+
             },
             900
         );
     }
 
-    document.addEventListener(
-        "mousemove",
-        handler
-    );
 
-    setTimeout(
-        function () {
-            document.removeEventListener(
-                "mousemove",
-                handler
-            );
+    const heroName =
+        document.querySelector(
+            ".hero-title span:nth-child(3)"
+        );
 
-            activateTrailMode.active =
-                false;
-        },
-        8000
+
+    if (heroName) {
+
+        const original =
+            heroName.textContent;
+
+
+        heroName.textContent =
+            "BIRTHDAY GIRL";
+
+
+        pageGlow(
+            heroName,
+            1300
+        );
+
+
+        setTimeout(
+            function () {
+
+                heroName.textContent =
+                    original;
+
+            },
+            1300
+        );
+    }
+
+
+    starBurst(
+
+        innerWidth / 2,
+
+        innerHeight / 3,
+
+        [
+            "🎂",
+            "💗",
+            "🎈",
+            "✨"
+        ]
+
     );
 }
 
-function triggerInvertFlash() {
+
+/* ==========================================================================
+   TYPING — SECRET
+========================================================================== */
+
+function activateSecretTypingSecret() {
+
     showSecretToast(
-        "🙃 inverted"
+        "CLASSIFIED: AVIGNA'S BIRTHDAY FILE"
     );
 
-    document.body.classList.remove(
-        "invert-flash"
+
+    flashPage(
+        "rgba(181,140,255,.18)",
+        800
     );
 
-    void document.body.offsetWidth;
 
-    document.body.classList.add(
-        "invert-flash"
+    createScanline(
+        "#ff8cd9"
     );
+
+
+    const file =
+        document.createElement(
+            "div"
+        );
+
+
+    file.className =
+        "birthday-classified-secret";
+
+
+    file.innerHTML = `
+
+        <strong>
+            CLASSIFIED BIRTHDAY FILE
+        </strong>
+
+        <span>
+            SUBJECT: AVIGNA
+        </span>
+
+        <span>
+            DATE: 29 AUGUST
+        </span>
+
+        <span>
+            STATUS: BIRTHDAY GIRL
+        </span>
+
+    `;
+
+
+    document.body.appendChild(
+        file
+    );
+
 
     setTimeout(
         function () {
-            document.body.classList.remove(
-                "invert-flash"
+
+            file.classList.add(
+                "visible"
             );
+
         },
-        3000
+        40
+    );
+
+
+    setTimeout(
+        function () {
+
+            file.classList.remove(
+                "visible"
+            );
+
+        },
+        3500
+    );
+
+
+    setTimeout(
+        function () {
+
+            file.remove();
+
+        },
+        4200
     );
 }
+
+
+/* ==========================================================================
+   TYPING — CAKE
+========================================================================== */
+
+function activateCakeSecret() {
+
+    showSecretToast(
+        "BIRTHDAY CAKE PARADE"
+    );
+
+
+    spawnEmojiRain(
+        [
+            "🎂",
+            "🧁",
+            "🎈",
+            "🎉"
+        ],
+        22,
+        4
+    );
+}
+
+
+/* ==========================================================================
+   TYPING — MATRIX
+========================================================================== */
 
 function spawnMatrixRain() {
+
     if (
         document.querySelector(
             ".matrix-rain-canvas"
@@ -3718,79 +4899,118 @@ function spawnMatrixRain() {
         return;
     }
 
+
     showSecretToast(
-        "💊 Wake up..."
+        "BIRTHDAY MATRIX // MEMORY OVERFLOW"
     );
+
 
     const canvas =
         document.createElement(
             "canvas"
         );
 
+
     canvas.className =
         "matrix-rain-canvas";
+
 
     Object.assign(
         canvas.style,
         {
-            position: "fixed",
-            inset: "0",
-            width: "100vw",
-            height: "100vh",
-            zIndex: "29960",
-            pointerEvents: "none",
-            opacity: "0",
+            position:
+                "fixed",
+
+            inset:
+                "0",
+
+            width:
+                "100vw",
+
+            height:
+                "100vh",
+
+            zIndex:
+                "29960",
+
+            pointerEvents:
+                "none",
+
+            opacity:
+                "0",
+
             transition:
                 "opacity .5s ease"
         }
     );
 
+
     document.body.appendChild(
         canvas
     );
+
 
     const ctx =
         canvas.getContext(
             "2d"
         );
 
-    function resize() {
+
+    function sizeCanvas() {
+
         canvas.width =
-            innerWidth;
+            window.innerWidth;
+
 
         canvas.height =
-            innerHeight;
+            window.innerHeight;
     }
 
-    resize();
+
+    sizeCanvas();
+
 
     const chars =
-        "アイウエオカキクケコ01AVIGNA";
+        "29AUGUSTAVIGNA🎂🎈🎉✨0123456789BIRTHDAY";
 
-    const size = 18;
+
+    const fontSize =
+        18;
+
+
+    const columns =
+        Math.ceil(
+            canvas.width /
+            fontSize
+        );
+
 
     const drops =
         new Array(
-            Math.ceil(
-                canvas.width /
-                size
-            )
+            columns
         ).fill(1);
+
 
     requestAnimationFrame(
         function () {
+
             canvas.style.opacity =
                 "1";
+
         }
     );
 
+
     let frames = 0;
 
-    const timer =
+
+    const matrixTimer =
         setInterval(
             function () {
+
                 ctx.fillStyle =
                     "rgba(2,6,8,.18)";
+
 
                 ctx.fillRect(
                     0,
@@ -3799,19 +5019,23 @@ function spawnMatrixRain() {
                     canvas.height
                 );
 
+
                 ctx.fillStyle =
                     "#4fffb0";
 
+
                 ctx.font =
-                    size +
+                    fontSize +
                     "px monospace";
+
 
                 for (
                     let i = 0;
                     i < drops.length;
                     i++
                 ) {
-                    const char =
+
+                    const glyph =
                         chars[
                             Math.floor(
                                 Math.random() *
@@ -3819,198 +5043,296 @@ function spawnMatrixRain() {
                             )
                         ];
 
+
                     ctx.fillText(
-                        char,
-                        i * size,
+                        glyph,
+
+                        i *
+                        fontSize,
+
                         drops[i] *
-                        size
+                        fontSize
                     );
 
+
                     if (
-                        drops[i] * size >
-                        canvas.height &&
-                        Math.random() > .975
+                        drops[i] *
+                            fontSize >
+                            canvas.height &&
+                        Math.random() >
+                            .975
                     ) {
-                        drops[i] = 0;
+
+                        drops[i] =
+                            0;
                     }
+
 
                     drops[i]++;
                 }
 
+
                 frames++;
+
 
                 if (
                     frames >=
                     420
                 ) {
+
                     clearInterval(
-                        timer
+                        matrixTimer
                     );
+
 
                     canvas.style.opacity =
                         "0";
 
+
                     setTimeout(
                         function () {
+
                             canvas.remove();
+
                         },
                         700
                     );
                 }
+
             },
             40
         );
 }
 
+
+/* ==========================================================================
+   TYPING — DISCO
+========================================================================== */
+
 function activateDiscoMode() {
+
     if (discoModeOn) {
         return;
     }
 
+
     discoModeOn =
         true;
+
+
+    showSecretToast(
+        "BIRTHDAY PARTY MODE"
+    );
+
 
     const overlay =
         document.createElement(
             "div"
         );
 
+
     overlay.className =
         "disco-overlay";
+
 
     Object.assign(
         overlay.style,
         {
-            position: "fixed",
-            inset: "0",
-            zIndex: "29955",
-            pointerEvents: "none",
-            mixBlendMode: "overlay",
-            opacity: ".55"
+            position:
+                "fixed",
+
+            inset:
+                "0",
+
+            zIndex:
+                "29955",
+
+            pointerEvents:
+                "none",
+
+            mixBlendMode:
+                "overlay",
+
+            opacity:
+                ".55"
         }
     );
+
 
     document.body.appendChild(
         overlay
     );
 
+
     const colors = [
+
         "#ff3d9a",
+
         "#ffd93d",
+
         "#3dfff0",
+
         "#7b3dff",
+
         "#3dff6a",
+
         "#ff3d3d"
+
     ];
+
 
     let index = 0;
 
-    showSecretToast(
-        "🪩 DISCO MODE"
-    );
 
-    const timer =
+    const discoTimer =
         setInterval(
             function () {
+
                 overlay.style.background =
                     colors[
                         index %
                         colors.length
                     ];
 
+
                 index++;
+
             },
             160
         );
 
+
     setTimeout(
         function () {
+
             clearInterval(
-                timer
+                discoTimer
             );
+
 
             overlay.remove();
 
+
             discoModeOn =
                 false;
+
         },
         6000
     );
 }
 
+
+/* ==========================================================================
+   TYPING — RAINBOW
+========================================================================== */
+
 function activateRainbowMode() {
+
     if (rainbowModeOn) {
         return;
     }
 
+
     rainbowModeOn =
         true;
 
+
     showSecretToast(
-        "🌈 RAINBOW MODE"
+        "BIRTHDAY RAINBOW MODE"
     );
 
-    let hue = 0;
+
+    let hue =
+        0;
+
 
     rainbowInterval =
         setInterval(
             function () {
+
                 hue =
-                    (hue + 6) %
-                    360;
+                    (
+                        hue +
+                        6
+                    ) % 360;
+
 
                 if (pageContent) {
+
                     pageContent.style.setProperty(
                         "--rainbow-hue",
-                        hue + "deg"
+
+                        hue +
+                        "deg"
                     );
                 }
 
+
                 updatePageFilter();
+
             },
             40
         );
 
+
     setTimeout(
         function () {
+
             clearInterval(
                 rainbowInterval
             );
 
+
             rainbowModeOn =
                 false;
 
+
             if (pageContent) {
+
                 pageContent.style.removeProperty(
                     "--rainbow-hue"
                 );
             }
 
+
             updatePageFilter();
+
         },
         8000
     );
 }
 
+
+/* ==========================================================================
+   TYPING — FLIP
+========================================================================== */
+
 function activatePageFlip() {
+
     if (!pageContent) {
         return;
     }
 
+
     showSecretToast(
-        "🙃 who allowed you to touch the keyboard"
+        "BIRTHDAY HAS BEEN TURNED UPSIDE DOWN"
     );
+
 
     pageContent.style.transition =
         "transform 1s ease-in-out";
 
+
     pageContent.style.transform =
         "rotate(180deg)";
 
+
     setTimeout(
         function () {
+
             pageContent.style.transform =
                 "rotate(0deg)";
+
         },
         2200
     );
@@ -4018,61 +5340,56 @@ function activatePageFlip() {
 
 
 /* ==========================================================================
-   DEBUG HUD
+   TYPING — DEBUG
 ========================================================================== */
 
 function toggleDebugHud() {
+
     const existing =
         document.querySelector(
             ".debug-hud"
         );
 
+
     if (existing) {
+
         clearInterval(
             debugHudInterval
         );
 
+
         existing.remove();
+
 
         return;
     }
 
+
     showSecretToast(
-        "debug hud online"
+        "BIRTHDAY DIAGNOSTICS ONLINE"
     );
+
 
     const hud =
         document.createElement(
             "div"
         );
 
+
     hud.className =
         "debug-hud";
 
-    Object.assign(
-        hud.style,
-        {
-            position: "fixed",
-            bottom: "18px",
-            left: "18px",
-            zIndex: "30000",
-            padding: "12px 16px",
-            background:
-                "rgba(5,15,19,.94)",
-            border:
-                "1px solid rgba(79,255,232,.35)",
-            borderRadius: "12px",
-            fontFamily:
-                "'DM Mono',monospace",
-            fontSize: ".72rem",
-            color: "#4fffe8",
-            lineHeight: "1.6",
-            cursor: "pointer"
-        }
-    );
 
-    function render() {
+    function renderHud() {
+
         hud.innerHTML =
+
+            "<strong>BIRTHDAY.EXE</strong><br>" +
+
+            "DATE: 29 AUGUST<br>" +
+
+            "STATUS: ACTIVE<br>" +
+
             "MONEY: $" +
             money +
             "<br>" +
@@ -4085,7 +5402,7 @@ function toggleDebugHud() {
             foodBought +
             "<br>" +
 
-            "CONVO: " +
+            "CHAT: " +
             (
                 boughtConvo
                     ? "UNLOCKED"
@@ -4107,26 +5424,34 @@ function toggleDebugHud() {
                     ? "REMOVED"
                     : "ACTIVE"
             );
+
     }
 
-    render();
+
+    renderHud();
+
 
     debugHudInterval =
         setInterval(
-            render,
+            renderHud,
             1000
         );
+
 
     hud.addEventListener(
         "click",
         function () {
+
             clearInterval(
                 debugHudInterval
             );
 
+
             hud.remove();
+
         }
     );
+
 
     document.body.appendChild(
         hud
@@ -4135,163 +5460,530 @@ function toggleDebugHud() {
 
 
 /* ==========================================================================
-   TYPING SECRETS
+   TYPING — BANANA
+========================================================================== */
+
+function activateBananaSecret() {
+
+    showSecretToast(
+        "BIRTHDAY BANANA EMERGENCY"
+    );
+
+
+    spawnEmojiRain(
+        [
+            "🍌",
+            "🎈",
+            "🎂"
+        ],
+        22,
+        4
+    );
+}
+
+
+/* ==========================================================================
+   TYPING — CAT
+========================================================================== */
+
+function activateCatSecret() {
+
+    showSecretToast(
+        "MEOWDY BIRTHDAY"
+    );
+
+
+    spawnEmojiRain(
+        [
+            "🐱",
+            "🐈",
+            "🐈‍⬛",
+            "🎂"
+        ],
+        20,
+        4.5
+    );
+}
+
+
+/* ==========================================================================
+   TYPING — PIZZA
+========================================================================== */
+
+function activatePizzaSecret() {
+
+    showSecretToast(
+        "BIRTHDAY PIZZA DELIVERY"
+    );
+
+
+    const pizza =
+        document.createElement(
+            "div"
+        );
+
+
+    pizza.textContent =
+        "🍕";
+
+
+    Object.assign(
+        pizza.style,
+        {
+            position:
+                "fixed",
+
+            top:
+                "45%",
+
+            left:
+                "-120px",
+
+            fontSize:
+                "5rem",
+
+            zIndex:
+                "30000",
+
+            pointerEvents:
+                "none",
+
+            transition:
+                "transform 2.4s linear, opacity 2.4s linear"
+        }
+    );
+
+
+    document.body.appendChild(
+        pizza
+    );
+
+
+    requestAnimationFrame(
+        function () {
+
+            pizza.style.transform =
+                "translateX(calc(100vw + 200px)) rotate(1080deg)";
+
+        }
+    );
+
+
+    setTimeout(
+        function () {
+
+            pizza.style.opacity =
+                "0";
+
+        },
+        2000
+    );
+
+
+    setTimeout(
+        function () {
+
+            pizza.remove();
+
+        },
+        2600
+    );
+}
+
+
+/* ==========================================================================
+   TYPING — BOOM
+========================================================================== */
+
+function activateBoomSecret() {
+
+    showSecretToast(
+        "BIRTHDAY.EXE HAS EXPLODED"
+    );
+
+
+    const overlay =
+        document.createElement(
+            "div"
+        );
+
+
+    overlay.className =
+        "screen-crack-overlay";
+
+
+    overlay.innerHTML = `
+
+        <svg
+            width="100%"
+            height="100%"
+            viewBox="0 0 400 800"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <g
+                stroke="rgba(255,255,255,.55)"
+                stroke-width="1.4"
+                fill="none"
+            >
+
+                <path d="
+                    M200 400 L120 120
+                    M200 400 L280 90
+                    M200 400 L60 300
+                    M200 400 L340 260
+                    M200 400 L150 620
+                    M200 400 L260 680
+                    M200 400 L40 520
+                    M200 400 L370 480
+                "/>
+
+            </g>
+
+        </svg>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    requestAnimationFrame(
+        function () {
+
+            overlay.classList.add(
+                "visible"
+            );
+
+        }
+    );
+
+
+    document.body.classList.add(
+        "screen-shake"
+    );
+
+
+    createShockwave();
+
+
+    setTimeout(
+        function () {
+
+            document.body.classList.remove(
+                "screen-shake"
+            );
+
+        },
+        400
+    );
+
+
+    setTimeout(
+        function () {
+
+            overlay.classList.remove(
+                "visible"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    overlay.remove();
+
+                },
+                300
+            );
+
+        },
+        2000
+    );
+}
+
+
+/* ==========================================================================
+   TYPING — YOLO
+========================================================================== */
+
+function activateYoloSecret() {
+
+    if (!pageContent) {
+        return;
+    }
+
+
+    showSecretToast(
+        "ANOTHER YEAR UNLOCKED"
+    );
+
+
+    const year =
+        document.createElement(
+            "div"
+        );
+
+
+    year.className =
+        "birthday-year-secret";
+
+
+    year.textContent =
+        "+1 YEAR";
+
+
+    document.body.appendChild(
+        year
+    );
+
+
+    pageContent.classList.remove(
+        "zoom-pulse"
+    );
+
+
+    void pageContent.offsetWidth;
+
+
+    pageContent.classList.add(
+        "zoom-pulse"
+    );
+
+
+    setTimeout(
+        function () {
+
+            pageContent.classList.remove(
+                "zoom-pulse"
+            );
+
+        },
+        1500
+    );
+
+
+    setTimeout(
+        function () {
+
+            year.remove();
+
+        },
+        1800
+    );
+}
+
+
+/* ==========================================================================
+   TYPING — TRAIL
+========================================================================== */
+
+function activateTrailMode() {
+
+    if (
+        activateTrailMode.active
+    ) {
+        return;
+    }
+
+
+    activateTrailMode.active =
+        true;
+
+
+    showSecretToast(
+        "BIRTHDAY CELEBRATION TRAIL"
+    );
+
+
+    const trailEmojis = [
+
+        "🎂",
+        "✨",
+        "🎈",
+        "🎉"
+
+    ];
+
+
+    function trailHandler(
+        event
+    ) {
+
+        if (
+            Math.random() >
+            .35
+        ) {
+            return;
+        }
+
+
+        const trail =
+            document.createElement(
+                "div"
+            );
+
+
+        trail.className =
+            "mouse-trail-emoji";
+
+
+        trail.textContent =
+            trailEmojis[
+                Math.floor(
+                    Math.random() *
+                    trailEmojis.length
+                )
+            ];
+
+
+        trail.style.left =
+            event.clientX +
+            "px";
+
+
+        trail.style.top =
+            event.clientY +
+            "px";
+
+
+        document.body.appendChild(
+            trail
+        );
+
+
+        setTimeout(
+            function () {
+
+                trail.remove();
+
+            },
+            900
+        );
+    }
+
+
+    document.addEventListener(
+        "mousemove",
+        trailHandler
+    );
+
+
+    setTimeout(
+        function () {
+
+            document.removeEventListener(
+                "mousemove",
+                trailHandler
+            );
+
+
+            activateTrailMode.active =
+                false;
+
+        },
+        8000
+    );
+}
+
+
+/* ==========================================================================
+   TYPING — INVERT
+========================================================================== */
+
+function activateInvertSecret() {
+
+    showSecretToast(
+        "ANTI-BIRTHDAY MODE"
+    );
+
+
+    document.body.classList.remove(
+        "invert-flash"
+    );
+
+
+    void document.body.offsetWidth;
+
+
+    document.body.classList.add(
+        "invert-flash"
+    );
+
+
+    setTimeout(
+        function () {
+
+            document.body.classList.remove(
+                "invert-flash"
+            );
+
+        },
+        3000
+    );
+}
+
+
+/* ==========================================================================
+   TYPING SECRET MAP
 ========================================================================== */
 
 const typingSecrets = {
 
-    avigna: function () {
-        showSecretToast(
-            "YOU FOUND THE NAME SECRET"
-        );
+    avigna:
+        activateAvignaTypingSecret,
 
-        document.body.classList.add(
-            "secret-chromatic"
-        );
+    secret:
+        activateSecretTypingSecret,
 
-        starBurst(
-            innerWidth / 2,
-            innerHeight / 3,
-            [
-                "💗",
-                "💚",
-                "✨"
-            ]
-        );
+    cake:
+        activateCakeSecret,
 
-        setTimeout(
-            function () {
-                document.body.classList.remove(
-                    "secret-chromatic"
-                );
-            },
-            800
-        );
-    },
+    matrix:
+        spawnMatrixRain,
 
-    secret: function () {
-        showSecretToast(
-            "SECRET SECRET FOUND"
-        );
+    disco:
+        activateDiscoMode,
 
-        flashPage(
-            "rgba(123,91,255,.18)",
-            650
-        );
+    rainbow:
+        activateRainbowMode,
 
-        createScanline(
-            "#b58cff"
-        );
-    },
+    flip:
+        activatePageFlip,
 
-    cake: function () {
-        spawnEmojiRain(
-            [
-                "🎂",
-                "🧁"
-            ],
-            18,
-            4
-        );
-    },
+    debug:
+        toggleDebugHud,
 
-    matrix: function () {
-        spawnMatrixRain();
-    },
+    banana:
+        activateBananaSecret,
 
-    disco: function () {
-        activateDiscoMode();
-    },
+    cat:
+        activateCatSecret,
 
-    rainbow: function () {
-        activateRainbowMode();
-    },
+    pizza:
+        activatePizzaSecret,
 
-    flip: function () {
-        activatePageFlip();
-    },
+    boom:
+        activateBoomSecret,
 
-    debug: function () {
-        toggleDebugHud();
-    },
+    yolo:
+        activateYoloSecret,
 
-    banana: function () {
-        showSecretToast(
-            "🍌 banana rain"
-        );
+    trail:
+        activateTrailMode,
 
-        spawnEmojiRain(
-            ["🍌"],
-            22,
-            4
-        );
-    },
+    invert:
+        activateInvertSecret
 
-    cat: function () {
-        showSecretToast(
-            "🐱 meow"
-        );
-
-        spawnEmojiRain(
-            [
-                "🐱",
-                "🐈",
-                "🐈‍⬛"
-            ],
-            18,
-            4.5
-        );
-    },
-
-    pizza: function () {
-        spawnFlyingPizza();
-    },
-
-    boom: function () {
-        triggerScreenCrack();
-    },
-
-    yolo: function () {
-        if (!pageContent) {
-            return;
-        }
-
-        pageContent.classList.remove(
-            "zoom-pulse"
-        );
-
-        void pageContent.offsetWidth;
-
-        pageContent.classList.add(
-            "zoom-pulse"
-        );
-
-        showSecretToast(
-            "🎉 YOLO"
-        );
-
-        setTimeout(
-            function () {
-                pageContent.classList.remove(
-                    "zoom-pulse"
-                );
-            },
-            1500
-        );
-    },
-
-    trail: function () {
-        activateTrailMode();
-    },
-
-    invert: function () {
-        triggerInvertFlash();
-    }
 };
+
 
 document.addEventListener(
     "keydown",
     function (event) {
+
         if (
             !isUnlocked() ||
             event.key.length !== 1
@@ -4299,40 +5991,53 @@ document.addEventListener(
             return;
         }
 
+
         typedBuffer +=
             event.key.toLowerCase();
+
 
         if (
             typedBuffer.length >
             30
         ) {
+
             typedBuffer =
                 typedBuffer.slice(
                     -30
                 );
         }
 
+
         const words =
             Object.keys(
                 typingSecrets
             );
+
 
         for (
             let i = 0;
             i < words.length;
             i++
         ) {
+
             const word =
                 words[i];
+
 
             if (
                 typedBuffer.endsWith(
                     word
                 )
             ) {
-                typingSecrets[word]();
 
-                typedBuffer = "";
+                typingSecrets[
+                    word
+                ]();
+
+
+                typedBuffer =
+                    "";
+
 
                 break;
             }
@@ -4346,29 +6051,39 @@ document.addEventListener(
 ========================================================================== */
 
 const konamiCode = [
+
     "ArrowUp",
     "ArrowUp",
+
     "ArrowDown",
     "ArrowDown",
+
     "ArrowLeft",
     "ArrowRight",
+
     "ArrowLeft",
     "ArrowRight",
+
     "b",
     "a"
+
 ];
+
 
 document.addEventListener(
     "keydown",
     function (event) {
+
         if (!isUnlocked()) {
             return;
         }
+
 
         const key =
             event.key.length === 1
                 ? event.key.toLowerCase()
                 : event.key;
+
 
         if (
             key ===
@@ -4376,65 +6091,103 @@ document.addEventListener(
                 konamiIndex
             ]
         ) {
+
             konamiIndex++;
+
 
             if (
                 konamiIndex ===
                 konamiCode.length
             ) {
+
                 konamiIndex =
                     0;
 
-                activateKonami();
+
+                activateKonamiCode();
             }
-        } else {
+
+        }
+
+        else {
+
             konamiIndex =
                 key ===
                 konamiCode[0]
                     ? 1
                     : 0;
         }
+
     }
 );
 
-function activateKonami() {
+
+function activateKonamiCode() {
+
     showSecretToast(
-        "🎮 KONAMI CODE ACTIVATED"
+        "BIRTHDAY CHEAT CODE ACTIVATED"
     );
+
 
     document.body.classList.add(
         "arcade-secret-active"
     );
 
+
+    flashPage(
+        "rgba(255,216,107,.15)",
+        700
+    );
+
+
     createScanline(
         "#ff8cd9"
     );
+
 
     createScanline(
         "#4fffe8"
     );
 
+
     if (
         typeof confetti ===
         "function"
     ) {
+
         confetti({
-            particleCount: 220,
-            spread: 180,
-            startVelocity: 65,
-            gravity: .75,
+
+            particleCount:
+                220,
+
+            spread:
+                180,
+
+            startVelocity:
+                65,
+
+            gravity:
+                .75,
+
             origin: {
-                x: .5,
-                y: .5
+                x:
+                    .5,
+
+                y:
+                    .5
             }
+
         });
     }
 
+
     setTimeout(
         function () {
+
             document.body.classList.remove(
                 "arcade-secret-active"
             );
+
         },
         2500
     );
@@ -4446,29 +6199,39 @@ function activateKonami() {
 ========================================================================== */
 
 const antiKonamiCode = [
+
     "ArrowDown",
     "ArrowDown",
+
     "ArrowUp",
     "ArrowUp",
+
     "ArrowRight",
     "ArrowLeft",
+
     "ArrowRight",
     "ArrowLeft",
+
     "a",
     "b"
+
 ];
+
 
 document.addEventListener(
     "keydown",
     function (event) {
+
         if (!isUnlocked()) {
             return;
         }
+
 
         const key =
             event.key.length === 1
                 ? event.key.toLowerCase()
                 : event.key;
+
 
         if (
             key ===
@@ -4476,112 +6239,173 @@ document.addEventListener(
                 antiKonamiIndex
             ]
         ) {
+
             antiKonamiIndex++;
+
 
             if (
                 antiKonamiIndex ===
                 antiKonamiCode.length
             ) {
+
                 antiKonamiIndex =
                     0;
 
+
                 showSecretToast(
-                    "🔄 anti-konami detected"
+                    "ANTI-BIRTHDAY CODE DETECTED"
                 );
 
-                triggerInvertFlash();
+
+                activateInvertSecret();
+
 
                 createShockwave();
             }
-        } else {
+
+        }
+
+        else {
+
             antiKonamiIndex =
                 key ===
                 antiKonamiCode[0]
                     ? 1
                     : 0;
         }
+
     }
 );
 
 
 /* ==========================================================================
-   LOGO — FIVE CLICKS + LONG PRESS
+   LOGO — FIVE CLICKS
 ========================================================================== */
 
 if (secretLogo) {
-    let clicks = 0;
-    let timer = null;
+
+    let logoClicks =
+        0;
+
+
+    let logoTimer =
+        null;
+
 
     secretLogo.addEventListener(
         "click",
         function () {
-            clicks++;
 
-            clearTimeout(timer);
+            if (!isUnlocked()) {
+                return;
+            }
 
-            timer =
+
+            logoClicks++;
+
+
+            playClick();
+
+
+            clearTimeout(
+                logoTimer
+            );
+
+
+            logoTimer =
                 setTimeout(
                     function () {
-                        clicks = 0;
+
+                        logoClicks =
+                            0;
+
                     },
                     1200
                 );
 
+
             if (
-                clicks <
+                logoClicks <
                 5
             ) {
                 return;
             }
 
-            clicks = 0;
+
+            logoClicks =
+                0;
+
 
             showSecretToast(
-                "🤫 CEO BUTTON FOUND"
+                "BIRTHDAY ADMIN ACCESS"
             );
 
+
             secretLogo.animate(
+
                 [
                     {
                         transform:
-                            "rotate(0) scale(1)"
+                            "rotate(0deg) scale(1)"
                     },
+
                     {
                         transform:
                             "rotate(-15deg) scale(1.3)"
                     },
+
                     {
                         transform:
                             "rotate(15deg) scale(1.3)"
                     },
+
                     {
                         transform:
-                            "rotate(0) scale(1)"
+                            "rotate(0deg) scale(1)"
                     }
                 ],
+
                 {
-                    duration: 600
+                    duration:
+                        600,
+
+                    easing:
+                        "ease-in-out"
                 }
+
             );
 
+
             starBurst(
+
                 60,
+
                 40,
+
                 [
                     "👑",
+                    "🎂",
                     "✨",
                     "🔐"
                 ]
+
             );
+
         }
     );
 
-    let pressTimer = null;
+
+    /* LONG PRESS */
+
+    let logoPressTimer =
+        null;
+
 
     secretLogo.addEventListener(
         "mousedown",
         function () {
-            pressTimer =
+
+            logoPressTimer =
                 setTimeout(
                     triggerRootAccessSecret,
                     2000
@@ -4589,61 +6413,374 @@ if (secretLogo) {
         }
     );
 
+
     secretLogo.addEventListener(
         "mouseup",
         function () {
+
             clearTimeout(
-                pressTimer
+                logoPressTimer
             );
         }
     );
 
+
     secretLogo.addEventListener(
         "mouseleave",
         function () {
+
             clearTimeout(
-                pressTimer
+                logoPressTimer
             );
         }
     );
 }
 
+
+/* ==========================================================================
+   LOGO LONG PRESS — ROOT ACCESS
+========================================================================== */
+
 function triggerRootAccessSecret() {
+
     showSecretToast(
-        "🔓 ROOT ACCESS GRANTED"
+        "BIRTHDAY ADMIN ACCESS GRANTED"
     );
+
+
+    const panel =
+        document.createElement(
+            "div"
+        );
+
+
+    panel.className =
+        "birthday-root-secret";
+
+
+    panel.innerHTML = `
+
+        <strong>
+            BIRTHDAY.EXE // ROOT ACCESS
+        </strong>
+
+        <span>
+            ACCESSING AVIGNA...
+        </span>
+
+        <span>
+            VERIFYING BIRTHDAY...
+        </span>
+
+        <span>
+            29 AUGUST: CONFIRMED
+        </span>
+
+        <span>
+            CAKE REQUIREMENT: CRITICAL
+        </span>
+
+    `;
+
+
+    document.body.appendChild(
+        panel
+    );
+
+
+    requestAnimationFrame(
+        function () {
+
+            panel.classList.add(
+                "visible"
+            );
+
+        }
+    );
+
 
     flashPage(
         "rgba(79,255,232,.18)",
         800
     );
 
+
     createScanline(
         "#4fffe8"
     );
+
 
     glitchElement(
         document.querySelector(
             ".hero"
         )
     );
+
+
+    setTimeout(
+        function () {
+
+            panel.classList.remove(
+                "visible"
+            );
+
+        },
+        3500
+    );
+
+
+    setTimeout(
+        function () {
+
+            panel.remove();
+
+        },
+        4200
+    );
 }
 
 
 /* ==========================================================================
-   QUOTE — FOUR CLICKS
+   HERO NAME — TRIPLE CLICK
+========================================================================== */
+
+(function setupHeroNameSecret() {
+
+    const heroName =
+        document.querySelector(
+            ".hero-title span:nth-child(3)"
+        );
+
+
+    if (!heroName) {
+        return;
+    }
+
+
+    let clicks =
+        0;
+
+
+    let timer =
+        null;
+
+
+    heroName.addEventListener(
+        "dblclick",
+        function (event) {
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    heroName.addEventListener(
+        "click",
+        function () {
+
+            clicks++;
+
+
+            playClick();
+
+
+            clearTimeout(
+                timer
+            );
+
+
+            timer =
+                setTimeout(
+                    function () {
+
+                        clicks =
+                            0;
+
+                    },
+                    700
+                );
+
+
+            if (
+                clicks <
+                3
+            ) {
+                return;
+            }
+
+
+            clicks =
+                0;
+
+
+            const original =
+                heroName.textContent;
+
+
+            showSecretToast(
+                "BIRTHDAY GIRL IDENTIFIED"
+            );
+
+
+            heroName.textContent =
+                "BIRTHDAY GIRL";
+
+
+            pageGlow(
+                heroName,
+                1300
+            );
+
+
+            starBurst(
+
+                heroName
+                    .getBoundingClientRect()
+                    .left +
+                    heroName.offsetWidth /
+                    2,
+
+                heroName
+                    .getBoundingClientRect()
+                    .top +
+                    40,
+
+                [
+                    "🎂",
+                    "💗",
+                    "🎈",
+                    "✨"
+                ]
+
+            );
+
+
+            setTimeout(
+                function () {
+
+                    heroName.textContent =
+                        original;
+
+                },
+                1300
+            );
+
+        }
+    );
+
+})();
+
+
+/* ==========================================================================
+   HERO EYEBROW — TRIPLE CLICK
+========================================================================== */
+
+(function setupEyebrowSecret() {
+
+    const eyebrow =
+        document.querySelector(
+            ".eyebrow"
+        );
+
+
+    if (!eyebrow) {
+        return;
+    }
+
+
+    const messages = [
+
+        "birthday report: certified goofball.",
+
+        "birthday report: attention span still questionable.",
+
+        "birthday report: no refunds.",
+
+        "birthday report: subject appears to be having a birthday."
+
+    ];
+
+
+    let clicks =
+        0;
+
+
+    let timer =
+        null;
+
+
+    eyebrow.style.cursor =
+        "pointer";
+
+
+    eyebrow.addEventListener(
+        "click",
+        function () {
+
+            clicks++;
+
+
+            playClick();
+
+
+            clearTimeout(
+                timer
+            );
+
+
+            timer =
+                setTimeout(
+                    function () {
+
+                        clicks =
+                            0;
+
+                    },
+                    700
+                );
+
+
+            if (
+                clicks <
+                3
+            ) {
+                return;
+            }
+
+
+            clicks =
+                0;
+
+
+            const index =
+                Math.floor(
+                    Math.random() *
+                    messages.length
+                );
+
+
+            showSecretToast(
+                messages[index]
+            );
+
+
+            flashPage(
+                "rgba(255,216,107,.07)",
+                450
+            );
+
+        }
+    );
+
+})();
+
+
+/* ==========================================================================
+   QUOTE MARK — FOUR CLICKS
 ========================================================================== */
 
 (function setupQuoteMarkSecret() {
-    const quoteMark =
-        document.querySelector(
-            ".quote-mark"
-        );
-
-    const quoteMaker =
-        document.querySelector(
-            ".quote-maker"
-        );
 
     if (
         !quoteMark ||
@@ -4652,13 +6789,29 @@ function triggerRootAccessSecret() {
         return;
     }
 
-    let clicks = 0;
-    let revealed = false;
+
+    let clicks =
+        0;
+
+
+    let revealed =
+        false;
+
 
     quoteMark.addEventListener(
         "click",
         function () {
+
+            if (!isUnlocked()) {
+                return;
+            }
+
+
             clicks++;
+
+
+            playClick();
+
 
             if (
                 clicks <
@@ -4668,42 +6821,55 @@ function triggerRootAccessSecret() {
                 return;
             }
 
-            revealed = true;
+
+            revealed =
+                true;
+
 
             const secretLine =
                 document.createElement(
                     "span"
                 );
 
+
             secretLine.className =
                 "quote-secret-line";
 
+
             secretLine.textContent =
-                "(the diary never actually got a second entry. typical.)";
+                "(birthday diary entry #2: somehow you're still reading this.)";
+
 
             quoteMaker.insertAdjacentElement(
                 "afterend",
                 secretLine
             );
 
+
             requestAnimationFrame(
                 function () {
+
                     secretLine.classList.add(
                         "visible"
                     );
+
                 }
             );
 
+
             showSecretToast(
-                "💬 quote footnote unlocked"
+                "BIRTHDAY DIARY FOOTNOTE"
             );
+
 
             spotlightElement(
                 quoteMark,
                 2200
             );
+
         }
     );
+
 })();
 
 
@@ -4711,33 +6877,51 @@ function triggerRootAccessSecret() {
    QUOTE DOUBLE CLICK
 ========================================================================== */
 
-const quoteSection =
-    document.querySelector(
-        ".trust-text"
-    );
-
 if (quoteSection) {
+
     quoteSection.addEventListener(
         "dblclick",
         function (event) {
+
+            if (!isUnlocked()) {
+                return;
+            }
+
+
             playClick();
+
+
+            showAvignaToast(
+                "🎆 BIRTHDAY FIREWORK"
+            );
+
 
             if (
                 typeof confetti ===
                 "function"
             ) {
+
                 confetti({
-                    particleCount: 70,
-                    spread: 90,
-                    startVelocity: 40,
+
+                    particleCount:
+                        75,
+
+                    spread:
+                        90,
+
+                    startVelocity:
+                        40,
+
                     origin: {
                         x:
                             event.clientX /
-                            innerWidth,
+                            window.innerWidth,
+
                         y:
                             event.clientY /
-                            innerHeight
+                            window.innerHeight
                     }
+
                 });
             }
         }
@@ -4746,47 +6930,86 @@ if (quoteSection) {
 
 
 /* ==========================================================================
-   STATS ORDER SECRET
+   STATS ORDER COMBO
 ========================================================================== */
 
-(function setupStatCombo() {
+(function setupStatsCombo() {
+
     const stats =
         document.querySelectorAll(
             ".stats .stat"
         );
 
+
     if (!stats.length) {
         return;
     }
 
-    let index = 0;
+
+    let index =
+        0;
+
 
     stats.forEach(
         function (
             stat,
             statIndex
         ) {
+
             stat.style.cursor =
                 "pointer";
+
 
             stat.addEventListener(
                 "click",
                 function () {
+
+                    if (!isUnlocked()) {
+                        return;
+                    }
+
+
+                    playClick();
+
+
                     if (
                         statIndex ===
                         index
                     ) {
+
                         index++;
+
+
+                        stat.classList.add(
+                            "secret-target-highlight"
+                        );
+
+
+                        setTimeout(
+                            function () {
+
+                                stat.classList.remove(
+                                    "secret-target-highlight"
+                                );
+
+                            },
+                            300
+                        );
+
 
                         if (
                             index ===
                             stats.length
                         ) {
-                            index = 0;
+
+                            index =
+                                0;
+
 
                             showSecretToast(
-                                "📊 stats sequence complete"
+                                "BIRTHDAY STATISTICS VERIFIED"
                             );
+
 
                             spotlightElement(
                                 document.querySelector(
@@ -4795,21 +7018,58 @@ if (quoteSection) {
                                 1800
                             );
 
+
                             createScanline(
-                                "#4fffe8"
+                                "#ffd86b"
                             );
+
+
+                            if (
+                                typeof confetti ===
+                                "function"
+                            ) {
+
+                                confetti({
+
+                                    particleCount:
+                                        80,
+
+                                    spread:
+                                        90,
+
+                                    startVelocity:
+                                        40,
+
+                                    origin: {
+                                        x:
+                                            .5,
+
+                                        y:
+                                            .4
+                                    }
+
+                                });
+                            }
+
                         }
-                    } else {
+
+                    }
+
+                    else {
+
                         index =
                             statIndex ===
                             0
                                 ? 1
                                 : 0;
                     }
+
                 }
             );
+
         }
     );
+
 })();
 
 
@@ -4817,104 +7077,157 @@ if (quoteSection) {
    JUDGEMENT LONG PRESS
 ========================================================================== */
 
-(function setupJudgementSecret() {
+(function setupJudgementLongPress() {
+
     const stats =
         document.querySelectorAll(
             ".stats .stat"
         );
+
 
     const judgement =
         stats[
             stats.length - 1
         ];
 
+
     if (!judgement) {
         return;
     }
 
-    let timer = null;
+
+    let timer =
+        null;
+
+
+    function revealJudgement() {
+
+        if (
+            judgement.querySelector(
+                ".roast-tooltip"
+            )
+        ) {
+            return;
+        }
+
+
+        const tooltip =
+            document.createElement(
+                "span"
+            );
+
+
+        tooltip.className =
+            "roast-tooltip visible";
+
+
+        tooltip.textContent =
+            "(birthday judgement reviewed by Neerav, who is extremely biased)";
+
+
+        judgement.appendChild(
+            tooltip
+        );
+
+
+        showSecretToast(
+            "BIRTHDAY JUDGEMENT FILE FOUND"
+        );
+
+
+        spotlightElement(
+            judgement,
+            1800
+        );
+    }
+
+
+    function startPress() {
+
+        timer =
+            setTimeout(
+                revealJudgement,
+                1800
+            );
+    }
+
+
+    function cancelPress() {
+
+        clearTimeout(
+            timer
+        );
+    }
+
 
     judgement.addEventListener(
         "mousedown",
-        function () {
-            timer =
-                setTimeout(
-                    function () {
-                        if (
-                            judgement.querySelector(
-                                ".roast-tooltip"
-                            )
-                        ) {
-                            return;
-                        }
-
-                        const tooltip =
-                            document.createElement(
-                                "span"
-                            );
-
-                        tooltip.className =
-                            "roast-tooltip visible";
-
-                        tooltip.textContent =
-                            "(peer reviewed by Neerav, who is extremely biased)";
-
-                        judgement.appendChild(
-                            tooltip
-                        );
-
-                        spotlightElement(
-                            judgement,
-                            1800
-                        );
-                    },
-                    1800
-                );
-        }
+        startPress
     );
 
-    [
+
+    judgement.addEventListener(
         "mouseup",
-        "mouseleave"
-    ].forEach(
-        function (eventName) {
-            judgement.addEventListener(
-                eventName,
-                function () {
-                    clearTimeout(
-                        timer
-                    );
-                }
-            );
+        cancelPress
+    );
+
+
+    judgement.addEventListener(
+        "mouseleave",
+        cancelPress
+    );
+
+
+    judgement.addEventListener(
+        "touchstart",
+        startPress,
+        {
+            passive:
+                true
         }
     );
+
+
+    judgement.addEventListener(
+        "touchend",
+        cancelPress
+    );
+
 })();
 
 
 /* ==========================================================================
-   MESSAGE POSTSCRIPT
+   MESSAGE — SIX CLICKS
 ========================================================================== */
 
-(function setupMessagePostscript() {
-    const message =
-        document.getElementById(
-            "message"
-        );
+(function setupMessageSecret() {
 
-    if (!message) {
+    if (!birthdayMessage) {
         return;
     }
 
-    let clicks = 0;
 
-    message.addEventListener(
+    let clicks =
+        0;
+
+
+    birthdayMessage.addEventListener(
         "click",
         function () {
-            if (!boughtMsg) {
+
+            if (
+                !boughtMsg ||
+                !isUnlocked()
+            ) {
                 return;
             }
 
+
             clicks++;
+
+
+            playClick();
+
 
             if (
                 clicks <
@@ -4923,94 +7236,141 @@ if (quoteSection) {
                 return;
             }
 
+
             if (
-                message.querySelector(
+                birthdayMessage.querySelector(
                     ".message-ps"
                 )
             ) {
                 return;
             }
 
-            message.classList.add(
+
+            birthdayMessage.classList.add(
                 "message-corrupted"
             );
 
+
             setTimeout(
                 function () {
-                    message.classList.remove(
+
+                    birthdayMessage.classList.remove(
                         "message-corrupted"
                     );
+
 
                     const ps =
                         document.createElement(
                             "span"
                         );
 
+
                     ps.className =
                         "message-ps";
 
-                    ps.textContent =
-                        "P.S. — you clicked this six times. I respect the dedication.";
 
-                    message.appendChild(
+                    ps.textContent =
+                        "P.S. — Birthday.EXE says you're still reading this. Respect.";
+
+
+                    birthdayMessage.appendChild(
                         ps
                     );
 
+
                     requestAnimationFrame(
                         function () {
+
                             ps.classList.add(
                                 "visible"
                             );
+
                         }
                     );
 
+
                     showSecretToast(
-                        "📝 postscript unlocked"
+                        "HIDDEN BIRTHDAY POSTSCRIPT"
                     );
+
+
+                    spotlightElement(
+                        birthdayMessage,
+                        1500
+                    );
+
                 },
                 500
             );
         }
     );
+
 })();
 
 
 /* ==========================================================================
-   MONEY DISPLAY ATM
+   MONEY DISPLAY — EIGHT CLICKS
 ========================================================================== */
 
 (function setupMoneyATM() {
+
     const display =
         document.getElementById(
             "display-money"
         );
 
+
     if (!display) {
         return;
     }
 
-    let clicks = 0;
-    let timer = null;
-    let cooldown = false;
+
+    let clicks =
+        0;
+
+
+    let timer =
+        null;
+
+
+    let cooldown =
+        false;
+
 
     display.addEventListener(
         "click",
         function () {
-            if (cooldown) {
+
+            if (
+                !isUnlocked() ||
+                cooldown
+            ) {
                 return;
             }
 
+
+            playClick();
+
+
             clicks++;
 
-            clearTimeout(timer);
+
+            clearTimeout(
+                timer
+            );
+
 
             timer =
                 setTimeout(
                     function () {
-                        clicks = 0;
+
+                        clicks =
+                            0;
+
                     },
                     2500
                 );
+
 
             if (
                 clicks <
@@ -5019,159 +7379,230 @@ if (quoteSection) {
                 return;
             }
 
-            clicks = 0;
-            cooldown = true;
 
-            money += 200;
+            clicks =
+                0;
+
+
+            cooldown =
+                true;
+
+
+            money +=
+                200;
+
 
             refreshMoneyDisplay();
 
+
             showSecretToast(
-                "🏧 hidden ATM found. +$200"
+                "BIRTHDAY FUND FOUND // +$200"
             );
 
-            const float =
+
+            const amount =
                 document.createElement(
                     "div"
                 );
 
-            float.className =
+
+            amount.className =
                 "money-float-secret";
 
-            float.textContent =
-                "+$200";
+
+            amount.textContent =
+                "+$200 BIRTHDAY MONEY";
+
 
             const rect =
                 display.getBoundingClientRect();
 
-            float.style.left =
+
+            amount.style.left =
                 rect.left +
-                rect.width / 2 +
+                rect.width /
+                2 +
                 "px";
 
-            float.style.top =
+
+            amount.style.top =
                 rect.top +
                 "px";
 
+
             document.body.appendChild(
-                float
+                amount
             );
+
 
             setTimeout(
                 function () {
-                    float.remove();
+
+                    amount.remove();
+
                 },
-                1400
+                1600
             );
+
+
+            checkMoneyMilestone();
+
 
             setTimeout(
                 function () {
-                    cooldown = false;
+
+                    cooldown =
+                        false;
+
                 },
                 30000
             );
+
         }
     );
+
 })();
 
 
 /* ==========================================================================
-   FOOD CARD BONUS
+   FOOD CARD — FOUR CLICKS
 ========================================================================== */
 
-(function setupFoodCardBonus() {
-    document
-        .querySelectorAll(
-            ".food-card"
-        )
-        .forEach(
-            function (card) {
-                let clicks = 0;
-                let claimed =
-                    false;
+foodCards.forEach(
+    function (card) {
 
-                card.addEventListener(
-                    "click",
-                    function (event) {
-                        if (
-                            event.target.closest(
-                                ".food-button"
-                            ) ||
-                            claimed
-                        ) {
-                            return;
-                        }
+        let clicks =
+            0;
 
-                        clicks++;
 
-                        if (
-                            clicks <
-                            4
-                        ) {
-                            return;
-                        }
+        let claimed =
+            false;
 
-                        claimed =
-                            true;
 
-                        money += 30;
+        card.addEventListener(
+            "click",
+            function (event) {
 
-                        refreshMoneyDisplay();
+                if (
+                    !isUnlocked() ||
+                    claimed
+                ) {
+                    return;
+                }
 
-                        card.classList.add(
-                            "bonus-glow"
-                        );
 
-                        showSecretToast(
-                            "👨‍🍳 chef's special. +$30"
-                        );
+                if (
+                    event.target.closest(
+                        ".food-button"
+                    )
+                ) {
+                    return;
+                }
 
-                        starBurst(
-                            card.getBoundingClientRect()
-                                .left +
-                                card.offsetWidth /
-                                    2,
-                            card.getBoundingClientRect()
-                                .top +
-                                card.offsetHeight /
-                                    2,
-                            [
-                                "🍴",
-                                "💰",
-                                "✨"
-                            ]
-                        );
-                    }
+
+                clicks++;
+
+
+                playClick();
+
+
+                if (
+                    clicks <
+                    4
+                ) {
+                    return;
+                }
+
+
+                claimed =
+                    true;
+
+
+                money +=
+                    30;
+
+
+                refreshMoneyDisplay();
+
+
+                card.classList.add(
+                    "bonus-glow"
                 );
+
+
+                showSecretToast(
+                    "BIRTHDAY SPECIAL // +$30"
+                );
+
+
+                const rect =
+                    card.getBoundingClientRect();
+
+
+                starBurst(
+
+                    rect.left +
+                        rect.width /
+                        2,
+
+                    rect.top +
+                        rect.height /
+                        2,
+
+                    [
+                        "🎂",
+                        "🍴",
+                        "💰",
+                        "✨"
+                    ]
+
+                );
+
+
+                checkMoneyMilestone();
+
             }
         );
-})();
+
+    }
+);
 
 
 /* ==========================================================================
-   HUNGER BAR CHEAT
+   HUNGER BAR — FIVE CLICKS
 ========================================================================== */
 
 (function setupHungerBarCheat() {
-    const bar =
+
+    const hungerBar =
         document.querySelector(
             ".hunger-bar"
         );
 
-    if (!bar) {
+
+    if (!hungerBar) {
         return;
     }
 
-    let clicks = 0;
 
-    bar.addEventListener(
+    let clicks =
+        0;
+
+
+    hungerBar.addEventListener(
         "click",
         function () {
+
             if (!isUnlocked()) {
                 return;
             }
 
+
             clicks++;
+
+
+            playClick();
+
 
             if (
                 clicks <
@@ -5180,91 +7611,639 @@ if (quoteSection) {
                 return;
             }
 
-            clicks = 0;
+
+            clicks =
+                0;
+
 
             hungerPercent =
                 0;
 
+
             refreshHungerDisplay();
+
 
             updatePageFilter();
 
+
             showSecretToast(
-                "🍽️ hunger reset"
+                "BIRTHDAY BUFFET RESET"
             );
+
 
             spawnEmojiRain(
                 [
                     "🍕",
                     "🍔",
                     "🥟",
-                    "🥢"
+                    "🎂",
+                    "🎈"
                 ],
-                10,
+                12,
                 3
             );
+
         }
     );
+
 })();
 
 
 /* ==========================================================================
-   TAB RETURN SECRET
+   MUTE BUTTON — TEN CLICKS
 ========================================================================== */
 
-document.addEventListener(
-    "visibilitychange",
-    function () {
-        if (
-            document.hidden
-        ) {
-            hiddenAt =
-                Date.now();
+(function setupMuteSecret() {
 
-            return;
-        }
+    if (!muteBtn) {
+        return;
+    }
 
-        if (
-            !isUnlocked() ||
-            hiddenAt === null
-        ) {
-            return;
-        }
 
-        const awayTime =
-            Date.now() -
-            hiddenAt;
+    let clicks =
+        0;
 
-        hiddenAt =
-            null;
 
-        if (
-            awayTime >=
-            10000
-        ) {
-            document.body.classList.add(
-                "tab-return-flash"
+    let timer =
+        null;
+
+
+    muteBtn.addEventListener(
+        "click",
+        function () {
+
+            if (!isUnlocked()) {
+                return;
+            }
+
+
+            clicks++;
+
+
+            clearTimeout(
+                timer
             );
+
+
+            timer =
+                setTimeout(
+                    function () {
+
+                        clicks =
+                            0;
+
+                    },
+                    2000
+                );
+
+
+            if (
+                clicks <
+                10
+            ) {
+                return;
+            }
+
+
+            clicks =
+                0;
+
+
+            document.body.classList.remove(
+                "screen-shake"
+            );
+
+
+            void document.body.offsetWidth;
+
+
+            document.body.classList.add(
+                "screen-shake"
+            );
+
 
             showSecretToast(
-                "👀 welcome back."
+                "BIRTHDAY.EXE AUDIO SYSTEM PANIC"
             );
 
-            createScanline(
-                "#4fffe8"
+
+            flashPage(
+                "rgba(255,60,110,.08)",
+                450
             );
+
 
             setTimeout(
                 function () {
+
                     document.body.classList.remove(
-                        "tab-return-flash"
+                        "screen-shake"
                     );
+
                 },
-                1100
+                400
             );
+
         }
+    );
+
+})();
+
+
+/* ==========================================================================
+   THEME ICON — SEVEN CLICKS
+========================================================================== */
+
+(function setupMysteryMode() {
+
+    if (!themeIcon) {
+        return;
     }
-);
+
+
+    let clicks =
+        0;
+
+
+    let timer =
+        null;
+
+
+    themeIcon.addEventListener(
+        "click",
+        function (event) {
+
+            if (!isUnlocked()) {
+                return;
+            }
+
+
+            clicks++;
+
+
+            clearTimeout(
+                timer
+            );
+
+
+            timer =
+                setTimeout(
+                    function () {
+
+                        clicks =
+                            0;
+
+                    },
+                    1800
+                );
+
+
+            if (
+                clicks <
+                7
+            ) {
+                return;
+            }
+
+
+            clicks =
+                0;
+
+
+            event.stopPropagation();
+
+
+            showSecretToast(
+                "BIRTHDAY MYSTERY MODE"
+            );
+
+
+            document.body.classList.remove(
+                "invert-flash"
+            );
+
+
+            void document.body.offsetWidth;
+
+
+            document.body.style.filter =
+                "grayscale(1) invert(1)";
+
+
+            setTimeout(
+                function () {
+
+                    document.body.style.filter =
+                        "";
+
+                },
+                2000
+            );
+
+        },
+        true
+    );
+
+})();
+
+
+/* ==========================================================================
+   START BUTTON — LONG PRESS
+========================================================================== */
+
+(function setupFakeLoadingStart() {
+
+    const startButton =
+        document.querySelector(
+            'a[href="#about"].button'
+        );
+
+
+    if (!startButton) {
+        return;
+    }
+
+
+    let pressTimer =
+        null;
+
+
+    const loadingLines = [
+
+        "Booting BIRTHDAY.EXE...",
+
+        "Loading birthday subject...",
+
+        "Verifying 29 August...",
+
+        "Calculating goofiness levels...",
+
+        "Loading 1 (one) friendship...",
+
+        "Checking cake requirements..."
+
+    ];
+
+
+    function startPress() {
+
+        pressTimer =
+            setTimeout(
+                function () {
+
+                    playClick();
+
+
+                    const overlay =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    overlay.className =
+                        "fake-loading-overlay";
+
+
+                    overlay.innerHTML = `
+
+                        <div>
+                            BIRTHDAY.EXE
+                        </div>
+
+                        <div>
+                            INITIALIZING...
+                        </div>
+
+                        <div
+                            class="fake-loading-bar-track"
+                        >
+
+                            <div
+                                class="fake-loading-bar-fill"
+                            ></div>
+
+                        </div>
+
+                        <div
+                            class="fake-loading-line"
+                        ></div>
+
+                    `;
+
+
+                    document.body.appendChild(
+                        overlay
+                    );
+
+
+                    const fill =
+                        overlay.querySelector(
+                            ".fake-loading-bar-fill"
+                        );
+
+
+                    const line =
+                        overlay.querySelector(
+                            ".fake-loading-line"
+                        );
+
+
+                    let progress =
+                        0;
+
+
+                    let lineIndex =
+                        0;
+
+
+                    line.textContent =
+                        loadingLines[0];
+
+
+                    const timer =
+                        setInterval(
+                            function () {
+
+                                progress +=
+                                    8 +
+                                    Math.random() *
+                                    10;
+
+
+                                if (
+                                    progress >
+                                    100
+                                ) {
+
+                                    progress =
+                                        100;
+                                }
+
+
+                                fill.style.width =
+                                    progress +
+                                    "%";
+
+
+                                const expected =
+                                    Math.floor(
+                                        (
+                                            progress /
+                                            100
+                                        ) *
+                                        loadingLines.length
+                                    );
+
+
+                                if (
+                                    expected !==
+                                        lineIndex &&
+                                    expected <
+                                        loadingLines.length
+                                ) {
+
+                                    lineIndex =
+                                        expected;
+
+
+                                    line.textContent =
+                                        loadingLines[
+                                            lineIndex
+                                        ];
+                                }
+
+
+                                if (
+                                    progress >=
+                                    100
+                                ) {
+
+                                    clearInterval(
+                                        timer
+                                    );
+
+
+                                    setTimeout(
+                                        function () {
+
+                                            overlay.remove();
+
+
+                                            const about =
+                                                document.getElementById(
+                                                    "about"
+                                                );
+
+
+                                            if (about) {
+
+                                                about.scrollIntoView(
+                                                    {
+                                                        behavior:
+                                                            "smooth"
+                                                    }
+                                                );
+                                            }
+
+                                        },
+                                        500
+                                    );
+
+                                }
+
+                            },
+                            220
+                        );
+
+                },
+                2500
+            );
+    }
+
+
+    function cancelPress() {
+
+        clearTimeout(
+            pressTimer
+        );
+    }
+
+
+    startButton.addEventListener(
+        "mousedown",
+        startPress
+    );
+
+
+    startButton.addEventListener(
+        "mouseup",
+        cancelPress
+    );
+
+
+    startButton.addEventListener(
+        "mouseleave",
+        cancelPress
+    );
+
+
+    startButton.addEventListener(
+        "touchstart",
+        startPress,
+        {
+            passive:
+                true
+        }
+    );
+
+
+    startButton.addEventListener(
+        "touchend",
+        cancelPress
+    );
+
+})();
+
+
+/* ==========================================================================
+   SHOP DESCRIPTION — THREE CLICKS
+========================================================================== */
+
+(function setupShopDescriptionSecret() {
+
+    const paragraphs =
+        document.querySelectorAll(
+            ".shop-option p"
+        );
+
+
+    if (!paragraphs.length) {
+        return;
+    }
+
+
+    const paragraph =
+        paragraphs[1];
+
+
+    if (!paragraph) {
+        return;
+    }
+
+
+    let clicks =
+        0;
+
+
+    paragraph.style.cursor =
+        "pointer";
+
+
+    paragraph.addEventListener(
+        "click",
+        function () {
+
+            clicks++;
+
+
+            playClick();
+
+
+            if (
+                clicks <
+                3
+            ) {
+                return;
+            }
+
+
+            clicks =
+                0;
+
+
+            paragraph.classList.add(
+                "secret-target-highlight"
+            );
+
+
+            showSecretToast(
+                "HUNGER WAS A BIRTHDAY FEATURE"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    paragraph.classList.remove(
+                        "secret-target-highlight"
+                    );
+
+                },
+                1000
+            );
+
+        }
+    );
+
+})();
+
+
+/* ==========================================================================
+   FOOD SECTION DOUBLE CLICK
+========================================================================== */
+
+(function setupFoodSectionDoubleClick() {
+
+    const eatSection =
+        document.querySelector(
+            ".eat-section"
+        );
+
+
+    if (!eatSection) {
+        return;
+    }
+
+
+    eatSection.addEventListener(
+        "dblclick",
+        function (event) {
+
+            if (
+                !isUnlocked() ||
+                event.target.closest(
+                    ".food-card"
+                )
+            ) {
+                return;
+            }
+
+
+            playClick();
+
+
+            showSecretToast(
+                "BIRTHDAY BUFFET STORM"
+            );
+
+
+            spawnEmojiRain(
+                [
+                    "🍕",
+                    "🍔",
+                    "🥟",
+                    "🍜",
+                    "🧋",
+                    "🎂"
+                ],
+                18,
+                3.5
+            );
+
+        }
+    );
+
+})();
 
 
 /* ==========================================================================
@@ -5274,15 +8253,19 @@ document.addEventListener(
 document.addEventListener(
     "contextmenu",
     function (event) {
+
         if (!isUnlocked()) {
             return;
         }
 
+
         event.preventDefault();
 
+
         showSecretToast(
-            "🖱️ nice try."
+            "BIRTHDAY.EXE // NICE TRY"
         );
+
 
         createScanline(
             "#4fffe8"
@@ -5298,6 +8281,7 @@ document.addEventListener(
 document.addEventListener(
     "auxclick",
     function (event) {
+
         if (
             event.button !== 1 ||
             !isUnlocked()
@@ -5305,10 +8289,17 @@ document.addEventListener(
             return;
         }
 
+
         event.preventDefault();
 
+
         showSecretToast(
-            "🖱️ middle click?"
+            "BIRTHDAY.EXE // MIDDLE CLICK?"
+        );
+
+
+        createScanline(
+            "#ffd86b"
         );
     }
 );
@@ -5319,16 +8310,24 @@ document.addEventListener(
 ========================================================================== */
 
 (function setupShiftClick() {
+
     const lines = [
-        "you clicked with shift held.",
-        "shift clicking won't give you admin access.",
-        "achievement unlocked: pointless discovery.",
-        "yes, this was intentional."
+
+        "you found a hidden birthday input.",
+
+        "shift-click detected by Birthday.EXE.",
+
+        "birthday admin privileges: still denied.",
+
+        "achievement unlocked: unnecessarily curious."
+
     ];
+
 
     document.addEventListener(
         "click",
         function (event) {
+
             if (
                 !event.shiftKey ||
                 !isUnlocked()
@@ -5336,13 +8335,16 @@ document.addEventListener(
                 return;
             }
 
+
             const bubble =
                 document.createElement(
                     "div"
                 );
 
+
             bubble.className =
                 "meme-bubble";
+
 
             bubble.textContent =
                 lines[
@@ -5352,28 +8354,163 @@ document.addEventListener(
                     )
                 ];
 
+
             bubble.style.left =
                 event.clientX +
                 "px";
+
 
             bubble.style.top =
                 event.clientY -
                 20 +
                 "px";
 
+
             document.body.appendChild(
                 bubble
             );
 
+
             setTimeout(
                 function () {
+
                     bubble.remove();
+
                 },
                 2500
             );
+
         }
     );
+
 })();
+
+
+/* ==========================================================================
+   TAB TITLE — COME BACK PLEASE
+========================================================================== */
+
+const originalTitle =
+    document.title;
+
+
+document.addEventListener(
+    "visibilitychange",
+    function () {
+
+        if (document.hidden) {
+
+            document.title =
+                "come back pleamseee 🥺";
+
+        }
+
+        else {
+
+            document.title =
+                originalTitle;
+        }
+
+    }
+);
+
+
+/* ==========================================================================
+   TAB RETURN SECRET — 10+ SECONDS
+========================================================================== */
+
+document.addEventListener(
+    "visibilitychange",
+    function () {
+
+        if (document.hidden) {
+
+            hiddenAt =
+                Date.now();
+
+            return;
+        }
+
+
+        if (
+            !isUnlocked() ||
+            hiddenAt === null
+        ) {
+            return;
+        }
+
+
+        const awayTime =
+            Date.now() -
+            hiddenAt;
+
+
+        hiddenAt =
+            null;
+
+
+        if (
+            awayTime >=
+            10000
+        ) {
+
+            document.body.classList.add(
+                "tab-return-flash"
+            );
+
+
+            showSecretToast(
+                "WELCOME BACK TO THE BIRTHDAY"
+            );
+
+
+            createScanline(
+                "#ffd86b"
+            );
+
+
+            if (
+                typeof confetti ===
+                "function"
+            ) {
+
+                confetti({
+
+                    particleCount:
+                        45,
+
+                    spread:
+                        90,
+
+                    startVelocity:
+                        30,
+
+                    origin: {
+                        x:
+                            .5,
+
+                        y:
+                            .2
+                    }
+
+                });
+            }
+
+
+            setTimeout(
+                function () {
+
+                    document.body.classList.remove(
+                        "tab-return-flash"
+                    );
+
+                },
+                1100
+            );
+        }
+
+    }
+);
 
 
 /* ==========================================================================
@@ -5381,44 +8518,61 @@ document.addEventListener(
 ========================================================================== */
 
 const idleMessages = [
-    "👀 You still there?",
-    "The website is getting lonely.",
-    "There are secrets hidden here.",
-    "You're really just gonna stare at it?"
+
+    "👀 birthday.exe is waiting.",
+
+    "🎂 still exploring?",
+
+    "🎈 there are secrets hidden here.",
+
+    "🧁 birthday.exe has not finished with you.",
+
+    "🎉 maybe there's something you missed."
+
 ];
 
+
 function resetIdleTimer() {
+
     if (!isUnlocked()) {
         return;
     }
+
 
     clearTimeout(
         idleTimer
     );
 
+
     idleTimer =
         setTimeout(
-            showIdleMessage,
+            showIdleNudge,
             20000
         );
 }
 
-function showIdleMessage() {
+
+function showIdleNudge() {
+
     if (!isUnlocked()) {
         return;
     }
 
-    showToast(
+
+    showAvignaToast(
         idleMessages[
-            idleIndex %
+            idleNudgeCount %
             idleMessages.length
         ]
     );
 
-    idleIndex++;
+
+    idleNudgeCount++;
+
 
     resetIdleTimer();
 }
+
 
 [
     "mousemove",
@@ -5428,15 +8582,18 @@ function showIdleMessage() {
     "touchstart"
 ].forEach(
     function (eventName) {
+
         document.addEventListener(
             eventName,
             resetIdleTimer,
             {
-                passive: true
+                passive:
+                    true
             }
         );
     }
 );
+
 
 resetIdleTimer();
 
@@ -5446,26 +8603,34 @@ resetIdleTimer();
 ========================================================================== */
 
 refreshMoneyDisplay();
+
 refreshHungerDisplay();
+
 updatePageFilter();
+
 updateScrollProgress();
 
 
 /* ==========================================================================
-   DEVTOOLS MESSAGE
+   CONSOLE
 ========================================================================== */
 
 console.log(
-    "%c🎂 hii nosy person",
-    "font-size:20px;font-weight:bold;color:#4fffe8;"
+    "%c🎂 BIRTHDAY.EXE",
+    "font-size:24px;font-weight:bold;color:#ffd86b;"
 );
 
 console.log(
-    "%cThere are secrets hidden throughout this website.",
-    "font-size:14px;color:#baff6a;"
+    "%cAvigna's birthday system is running.",
+    "font-size:14px;color:#4fffe8;"
 );
 
 console.log(
-    "%cTry the Konami code: ↑ ↑ ↓ ↓ ← → ← → B A",
+    "%cThere are hidden features throughout the website.",
+    "font-size:13px;color:#baff6a;"
+);
+
+console.log(
+    "%cKonami: ↑ ↑ ↓ ↓ ← → ← → B A",
     "font-size:12px;color:#ff8cd9;"
 );
