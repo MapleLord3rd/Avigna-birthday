@@ -1,13 +1,50 @@
 /* ==========================================================================
    BIRTHDAY WEBSITE — CLEAN SECRET EDITION
 
-   Normal browsing stays normal.
-   Major discoveries create meaningful changes.
+   MAIN SYSTEMS
+   - Birthday countdown + IST lock
+   - Countdown stages + countdown parties
+   - Blue / Pink theme
+   - Money system
+   - Hunger system
+   - Food system
+   - Shop progression
+   - Gift progression
+   - Dance / Movies / Books
+   - Cinema Mode + Exit
+   - Birthday poem
+   - Konami / Anti-Konami
+   - Typing secrets
+   - Logo secrets
+   - Quote secrets
+   - Stats combo
+   - Message postscript
+   - Food ending
+   - Final gift + confetti
 
-   REMOVED:
-   - Automatic fast-mouse sparkle
-   - Mouse-leaving ghost
-   - Excessive random reactions
+   EXPLORATION / MECHANIC SECRETS
+   - Tab return
+   - Scroll direction combo
+   - Perfect pause
+   - 100% completion
+   - $500 milestone
+   - Hunger survival
+
+   REMOVED FROM OLDER VERSION
+   - Fast mouse sparkle
+   - Mouse leaving ghost
+   - Midpoint portal
+   - Top-left corner secret
+   - Hero edge secret
+   - Serial hover secret
+   - Text selection secret
+   - Two-minute visitor timer
+   - Print secret
+   - Fullscreen secret
+   - Offline / online secrets
+   - Orientation secret
+   - Resize secret
+   - 29-second event
 ========================================================================== */
 
 
@@ -180,6 +217,7 @@ let discoModeOn = false;
 let rainbowModeOn = false;
 
 let foodBought = 0;
+
 let warningGiven = false;
 let foodieEndingTriggered = false;
 
@@ -202,6 +240,53 @@ let debugHudInterval = null;
 
 
 /* ==========================================================================
+   EXPLORATION SECRET STATE
+========================================================================== */
+
+/* Secret #1:
+   Returning to the tab after 10+ seconds. */
+
+let hiddenAt = null;
+
+
+/* Secret #2:
+   Reverse scroll direction 3 times quickly. */
+
+let lastScrollPosition = window.scrollY;
+let lastScrollDirection = 0;
+let scrollDirectionChanges = 0;
+let scrollComboTimer = null;
+let scrollComboTriggered = false;
+
+
+/* Secret #3:
+   Stay still for 8 seconds over the birthday message. */
+
+let pauseTimer = null;
+let pauseCandidate = null;
+let pauseTriggered = false;
+
+
+/* Secret #4:
+   Reach 100% scroll progress. */
+
+let completionSecretTriggered = false;
+
+
+/* Secret #5:
+   Reach exactly $500. */
+
+let fiveHundredTriggered = false;
+
+
+/* Secret #6:
+   Survive 100% hunger and then eat. */
+
+let hungerSurvivalTriggered = false;
+let hungerReachedMaximum = false;
+
+
+/* ==========================================================================
    BASIC HELPERS
 ========================================================================== */
 
@@ -221,7 +306,9 @@ function playClick() {
 
     clickAudio.currentTime = 0;
 
-    clickAudio.play().catch(function () {});
+    clickAudio.play().catch(
+        function () {}
+    );
 }
 
 function showToast(message) {
@@ -229,7 +316,9 @@ function showToast(message) {
         return;
     }
 
-    clearTimeout(showToast.timeout);
+    clearTimeout(
+        showToast.timeout
+    );
 
     avignaToast.textContent =
         message;
@@ -239,11 +328,14 @@ function showToast(message) {
     );
 
     showToast.timeout =
-        setTimeout(function () {
-            avignaToast.classList.remove(
-                "show"
-            );
-        }, 2600);
+        setTimeout(
+            function () {
+                avignaToast.classList.remove(
+                    "show"
+                );
+            },
+            2600
+        );
 }
 
 function showSecretToast(message) {
@@ -279,15 +371,21 @@ function flashPage(
         }
     );
 
-    setTimeout(function () {
-        overlay.classList.remove(
-            "visible"
-        );
-    }, duration / 2);
+    setTimeout(
+        function () {
+            overlay.classList.remove(
+                "visible"
+            );
+        },
+        duration / 2
+    );
 
-    setTimeout(function () {
-        overlay.remove();
-    }, duration);
+    setTimeout(
+        function () {
+            overlay.remove();
+        },
+        duration
+    );
 }
 
 function createScanline(
@@ -308,9 +406,12 @@ function createScanline(
         scan
     );
 
-    setTimeout(function () {
-        scan.remove();
-    }, 1400);
+    setTimeout(
+        function () {
+            scan.remove();
+        },
+        1400
+    );
 }
 
 function createShockwave() {
@@ -326,9 +427,12 @@ function createShockwave() {
         wave
     );
 
-    setTimeout(function () {
-        wave.remove();
-    }, 1100);
+    setTimeout(
+        function () {
+            wave.remove();
+        },
+        1100
+    );
 }
 
 function glitchElement(element) {
@@ -346,11 +450,14 @@ function glitchElement(element) {
         "secret-glitch"
     );
 
-    setTimeout(function () {
-        element.classList.remove(
-            "secret-glitch"
-        );
-    }, 700);
+    setTimeout(
+        function () {
+            element.classList.remove(
+                "secret-glitch"
+            );
+        },
+        700
+    );
 }
 
 function pageGlow(
@@ -371,11 +478,14 @@ function pageGlow(
         "secret-glow-pulse"
     );
 
-    setTimeout(function () {
-        element.classList.remove(
-            "secret-glow-pulse"
-        );
-    }, duration);
+    setTimeout(
+        function () {
+            element.classList.remove(
+                "secret-glow-pulse"
+            );
+        },
+        duration
+    );
 }
 
 function spotlightElement(
@@ -441,18 +551,24 @@ function spotlightElement(
         }
     );
 
-    setTimeout(function () {
-        spotlight.style.opacity =
-            "0";
+    setTimeout(
+        function () {
+            spotlight.style.opacity =
+                "0";
 
-        element.classList.remove(
-            "secret-target-highlight"
-        );
-    }, duration);
+            element.classList.remove(
+                "secret-target-highlight"
+            );
+        },
+        duration
+    );
 
-    setTimeout(function () {
-        spotlight.remove();
-    }, duration + 600);
+    setTimeout(
+        function () {
+            spotlight.remove();
+        },
+        duration + 600
+    );
 }
 
 function starBurst(
@@ -506,9 +622,12 @@ function starBurst(
             star
         );
 
-        setTimeout(function () {
-            star.remove();
-        }, 1300);
+        setTimeout(
+            function () {
+                star.remove();
+            },
+            1300
+        );
     }
 }
 
@@ -517,7 +636,8 @@ function starBurst(
    BIRTHDAY COUNTDOWN
 ========================================================================== */
 
-let birthdayCountdownInterval = null;
+let birthdayCountdownInterval =
+    null;
 
 function getIndiaDateParts() {
     const formatter =
@@ -1353,6 +1473,8 @@ function updateMoney() {
     money += 25;
 
     refreshMoneyDisplay();
+
+    checkMoneyMilestone();
 }
 
 function reduceMoney(price) {
@@ -1363,6 +1485,87 @@ function reduceMoney(price) {
         );
 
     refreshMoneyDisplay();
+}
+
+function checkMoneyMilestone() {
+    if (
+        fiveHundredTriggered ||
+        money !== 500
+    ) {
+        return;
+    }
+
+    fiveHundredTriggered =
+        true;
+
+    const display =
+        document.getElementById(
+            "display-money"
+        );
+
+    if (display) {
+        display.classList.add(
+            "secret-money-milestone"
+        );
+    }
+
+    showSecretToast(
+        "💰 $500 MILESTONE"
+    );
+
+    flashPage(
+        "rgba(255,216,107,.18)",
+        900
+    );
+
+    const badge =
+        document.createElement(
+            "div"
+        );
+
+    badge.className =
+        "money-milestone-badge";
+
+    badge.innerHTML = `
+        <strong>$500 ACHIEVEMENT</strong>
+        <span>Financially irresponsible. Respectable.</span>
+    `;
+
+    document.body.appendChild(
+        badge
+    );
+
+    requestAnimationFrame(
+        function () {
+            badge.classList.add(
+                "visible"
+            );
+        }
+    );
+
+    setTimeout(
+        function () {
+            badge.classList.remove(
+                "visible"
+            );
+        },
+        4200
+    );
+
+    if (
+        typeof confetti ===
+        "function"
+    ) {
+        confetti({
+            particleCount: 90,
+            spread: 100,
+            startVelocity: 45,
+            origin: {
+                x: .5,
+                y: .3
+            }
+        });
+    }
 }
 
 setInterval(
@@ -1413,6 +1616,17 @@ function hungerUpdate() {
         hungerPercent++;
     }
 
+    if (
+        hungerPercent >=
+        100
+    ) {
+        hungerPercent =
+            100;
+
+        hungerReachedMaximum =
+            true;
+    }
+
     refreshHungerDisplay();
     updatePageFilter();
 
@@ -1437,7 +1651,94 @@ const hungerInterval =
 
 
 /* ==========================================================================
-   SCROLL PROGRESS
+   HUNGER SURVIVAL SECRET
+========================================================================== */
+
+function checkHungerSurvival() {
+    if (
+        hungerSurvivalTriggered ||
+        !hungerReachedMaximum
+    ) {
+        return;
+    }
+
+    hungerSurvivalTriggered =
+        true;
+
+    const section =
+        document.querySelector(
+            ".eat-section"
+        );
+
+    if (section) {
+        section.classList.add(
+            "hunger-recovery-mode"
+        );
+
+        setTimeout(
+            function () {
+                section.classList.remove(
+                    "hunger-recovery-mode"
+                );
+            },
+            3500
+        );
+    }
+
+    showSecretToast(
+        "🍽️ SURVIVAL MODE"
+    );
+
+    flashPage(
+        "rgba(255,216,107,.13)",
+        700
+    );
+
+    const recovery =
+        document.createElement(
+            "div"
+        );
+
+    recovery.className =
+        "hunger-recovery-secret";
+
+    recovery.innerHTML = `
+        <strong>RECOVERY MODE</strong>
+        <span>you actually waited until 100% hunger.</span>
+    `;
+
+    document.body.appendChild(
+        recovery
+    );
+
+    requestAnimationFrame(
+        function () {
+            recovery.classList.add(
+                "visible"
+            );
+        }
+    );
+
+    setTimeout(
+        function () {
+            recovery.classList.remove(
+                "visible"
+            );
+        },
+        3000
+    );
+
+    setTimeout(
+        function () {
+            recovery.remove();
+        },
+        3600
+    );
+}
+
+
+/* ==========================================================================
+   SCROLL PROGRESS + COMPLETION SECRET
 ========================================================================== */
 
 function updateScrollProgress() {
@@ -1465,6 +1766,78 @@ function updateScrollProgress() {
 
     scrollProgress.style.width =
         percent + "%";
+
+    if (
+        !completionSecretTriggered &&
+        percent >= 99.5 &&
+        isUnlocked()
+    ) {
+        completionSecretTriggered =
+            true;
+
+        triggerCompletionSecret();
+    }
+}
+
+function triggerCompletionSecret() {
+    const progress =
+        document.getElementById(
+            "scroll-progress"
+        );
+
+    showSecretToast(
+        "100% — YOU MADE IT"
+    );
+
+    flashPage(
+        "rgba(79,255,232,.12)",
+        700
+    );
+
+    if (progress) {
+        progress.classList.add(
+            "completion-progress"
+        );
+    }
+
+    const badge =
+        document.createElement(
+            "div"
+        );
+
+    badge.className =
+        "completion-secret";
+
+    badge.textContent =
+        "100% — YOU MADE IT";
+
+    document.body.appendChild(
+        badge
+    );
+
+    requestAnimationFrame(
+        function () {
+            badge.classList.add(
+                "visible"
+            );
+        }
+    );
+
+    setTimeout(
+        function () {
+            badge.classList.remove(
+                "visible"
+            );
+        },
+        3000
+    );
+
+    setTimeout(
+        function () {
+            badge.remove();
+        },
+        3600
+    );
 }
 
 window.addEventListener(
@@ -1484,26 +1857,249 @@ updateScrollProgress();
 
 
 /* ==========================================================================
-   TAB TITLE
+   EXPLORATION SECRET #2
+   REVERSE SCROLL DIRECTION 3 TIMES
 ========================================================================== */
 
-const originalTitle =
-    document.title;
-
-document.addEventListener(
-    "visibilitychange",
+window.addEventListener(
+    "scroll",
     function () {
-        if (
-            document.hidden
-        ) {
-            document.title =
-                "come back pleamseee 🥺";
-        } else {
-            document.title =
-                originalTitle;
+        if (!isUnlocked()) {
+            return;
         }
+
+        const currentY =
+            window.scrollY;
+
+        const delta =
+            currentY -
+            lastScrollPosition;
+
+        if (
+            Math.abs(delta) <
+            4
+        ) {
+            return;
+        }
+
+        const direction =
+            delta > 0
+                ? 1
+                : -1;
+
+        if (
+            lastScrollDirection !==
+                0 &&
+            direction !==
+                lastScrollDirection
+        ) {
+            scrollDirectionChanges++;
+
+            clearTimeout(
+                scrollComboTimer
+            );
+
+            scrollComboTimer =
+                setTimeout(
+                    function () {
+                        scrollDirectionChanges =
+                            0;
+                    },
+                    2500
+                );
+
+            if (
+                scrollDirectionChanges >=
+                    3 &&
+                !scrollComboTriggered
+            ) {
+                scrollComboTriggered =
+                    true;
+
+                triggerScrollDirectionSecret();
+            }
+        }
+
+        lastScrollDirection =
+            direction;
+
+        lastScrollPosition =
+            currentY;
+    },
+    {
+        passive: true
     }
 );
+
+function triggerScrollDirectionSecret() {
+    const bar =
+        document.getElementById(
+            "scroll-progress"
+        );
+
+    showSecretToast(
+        "↕️ you found the rewind"
+    );
+
+    document.body.classList.add(
+        "scroll-rewind-secret"
+    );
+
+    if (bar) {
+        bar.classList.add(
+            "rewind-progress"
+        );
+    }
+
+    flashPage(
+        "rgba(123,91,255,.12)",
+        650
+    );
+
+    setTimeout(
+        function () {
+            document.body.classList.remove(
+                "scroll-rewind-secret"
+            );
+
+            if (bar) {
+                bar.classList.remove(
+                    "rewind-progress"
+                );
+            }
+        },
+        1100
+    );
+}
+
+
+/* ==========================================================================
+   EXPLORATION SECRET #3
+   PERFECT PAUSE OVER THE BIRTHDAY MESSAGE
+========================================================================== */
+
+const birthdayMessage =
+    document.getElementById(
+        "message"
+    );
+
+if (birthdayMessage) {
+    birthdayMessage.addEventListener(
+        "mouseenter",
+        function () {
+            if (
+                pauseTriggered ||
+                !isUnlocked()
+            ) {
+                return;
+            }
+
+            pauseCandidate = true;
+
+            clearTimeout(
+                pauseTimer
+            );
+
+            pauseTimer =
+                setTimeout(
+                    function () {
+                        if (
+                            pauseCandidate
+                        ) {
+                            triggerPerfectPauseSecret();
+                        }
+                    },
+                    8000
+                );
+        }
+    );
+
+    birthdayMessage.addEventListener(
+        "mouseleave",
+        function () {
+            pauseCandidate =
+                false;
+
+            clearTimeout(
+                pauseTimer
+            );
+        }
+    );
+}
+
+function triggerPerfectPauseSecret() {
+    if (pauseTriggered) {
+        return;
+    }
+
+    pauseTriggered =
+        true;
+
+    const area =
+        document.querySelector(
+            ".message-area"
+        );
+
+    if (area) {
+        area.classList.add(
+            "memory-mode"
+        );
+
+        setTimeout(
+            function () {
+                area.classList.remove(
+                    "memory-mode"
+                );
+            },
+            5000
+        );
+    }
+
+    const memory =
+        document.createElement(
+            "div"
+        );
+
+    memory.className =
+        "memory-secret";
+
+    memory.innerHTML = `
+        <strong>MEMORY FOUND</strong>
+        <span>you stopped long enough to actually read this.</span>
+    `;
+
+    document.body.appendChild(
+        memory
+    );
+
+    requestAnimationFrame(
+        function () {
+            memory.classList.add(
+                "visible"
+            );
+        }
+    );
+
+    showSecretToast(
+        "🕰️ memory found"
+    );
+
+    setTimeout(
+        function () {
+            memory.classList.remove(
+                "visible"
+            );
+        },
+        3800
+    );
+
+    setTimeout(
+        function () {
+            memory.remove();
+        },
+        4400
+    );
+}
 
 
 /* ==========================================================================
@@ -1639,6 +2235,9 @@ foodButtons.forEach(
                     return;
                 }
 
+                const survivedHunger =
+                    hungerReachedMaximum;
+
                 reduceMoney(price);
 
                 foodBought++;
@@ -1650,11 +2249,18 @@ foodButtons.forEach(
                     hungerPercent <
                     0
                 ) {
-                    hungerPercent = 0;
+                    hungerPercent =
+                        0;
                 }
 
                 refreshHungerDisplay();
                 updatePageFilter();
+
+                if (
+                    survivedHunger
+                ) {
+                    checkHungerSurvival();
+                }
 
                 if (
                     foodBought > 45 &&
@@ -1685,7 +2291,9 @@ foodButtons.forEach(
 ========================================================================== */
 
 function activateFoodieEnding() {
-    if (foodieEndingTriggered) {
+    if (
+        foodieEndingTriggered
+    ) {
         return;
     }
 
@@ -1786,6 +2394,11 @@ function activateFoodieEnding() {
 
     createRestartButton();
 }
+
+
+/* ==========================================================================
+   RESTART
+========================================================================== */
 
 function createRestartButton() {
     if (
@@ -1957,7 +2570,9 @@ shopButtons.forEach(
     }
 );
 
-function installShopUpgrade(button) {
+function installShopUpgrade(
+    button
+) {
     const option =
         button.closest(
             ".shop-option"
@@ -2034,6 +2649,66 @@ function checkGiftUnlock() {
         }
     }
 }
+
+
+/* ==========================================================================
+   GIFT LOCK TAUNTS
+========================================================================== */
+
+(function setupGiftLockTaunts() {
+    const locked =
+        document.getElementById(
+            "gift-locked-notice"
+        );
+
+    if (!locked) {
+        return;
+    }
+
+    const taunts = [
+        "🔒 nope.",
+        "🔒 still nope.",
+        "🔒 the shop is right above you.",
+        "🔒 buy the three upgrades.",
+        "🔒 clicking harder won't help."
+    ];
+
+    let index = 0;
+
+    locked.addEventListener(
+        "click",
+        function () {
+            if (
+                boughtConvo &&
+                boughtMsg &&
+                boughtBlur
+            ) {
+                return;
+            }
+
+            playClick();
+
+            locked.classList.remove(
+                "gift-taunt-shake"
+            );
+
+            void locked.offsetWidth;
+
+            locked.classList.add(
+                "gift-taunt-shake"
+            );
+
+            showToast(
+                taunts[
+                    index %
+                    taunts.length
+                ]
+            );
+
+            index++;
+        }
+    );
+})();
 
 
 /* ==========================================================================
@@ -2125,8 +2800,7 @@ if (bdayBtn) {
 
 /* ==========================================================================
    FINAL GIFT CONFETTI
-   IMPORTANT:
-   Append canvas to BODY rather than #page-content.
+   Canvas is attached directly to BODY so it covers the visible gift screen.
 ========================================================================== */
 
 function setupFinalConfettiButton() {
@@ -2211,66 +2885,6 @@ function setupFinalConfettiButton() {
         }
     );
 }
-
-
-/* ==========================================================================
-   GIFT LOCK TAUNTS
-========================================================================== */
-
-(function setupGiftLockTaunts() {
-    const locked =
-        document.getElementById(
-            "gift-locked-notice"
-        );
-
-    if (!locked) {
-        return;
-    }
-
-    const taunts = [
-        "🔒 nope.",
-        "🔒 still nope.",
-        "🔒 the shop is right above you.",
-        "🔒 buying the three upgrades is the trick.",
-        "🔒 clicking harder won't help."
-    ];
-
-    let index = 0;
-
-    locked.addEventListener(
-        "click",
-        function () {
-            if (
-                boughtConvo &&
-                boughtMsg &&
-                boughtBlur
-            ) {
-                return;
-            }
-
-            playClick();
-
-            locked.classList.remove(
-                "gift-taunt-shake"
-            );
-
-            void locked.offsetWidth;
-
-            locked.classList.add(
-                "gift-taunt-shake"
-            );
-
-            showToast(
-                taunts[
-                    index %
-                    taunts.length
-                ]
-            );
-
-            index++;
-        }
-    );
-})();
 
 
 /* ==========================================================================
@@ -2542,11 +3156,6 @@ function createCinemaExitButton() {
     cinemaExitButton.textContent =
         "EXIT CINEMA MODE";
 
-    cinemaExitButton.setAttribute(
-        "aria-label",
-        "Exit Cinema Mode"
-    );
-
     cinemaExitButton.addEventListener(
         "click",
         function () {
@@ -2614,7 +3223,8 @@ document.addEventListener(
     "keydown",
     function (event) {
         if (
-            event.key === "Escape" &&
+            event.key ===
+                "Escape" &&
             cinemaModeOn
         ) {
             exitCinemaMode();
@@ -3212,7 +3822,8 @@ function spawnMatrixRain() {
                     ctx.fillText(
                         char,
                         i * size,
-                        drops[i] * size
+                        drops[i] *
+                        size
                     );
 
                     if (
@@ -3524,7 +4135,7 @@ function toggleDebugHud() {
 
 
 /* ==========================================================================
-   TYPING SECRET TABLE
+   TYPING SECRETS
 ========================================================================== */
 
 const typingSecrets = {
@@ -3534,7 +4145,9 @@ const typingSecrets = {
             "YOU FOUND THE NAME SECRET"
         );
 
-        chromaticPage();
+        document.body.classList.add(
+            "secret-chromatic"
+        );
 
         starBurst(
             innerWidth / 2,
@@ -3544,6 +4157,15 @@ const typingSecrets = {
                 "💚",
                 "✨"
             ]
+        );
+
+        setTimeout(
+            function () {
+                document.body.classList.remove(
+                    "secret-chromatic"
+                );
+            },
+            800
         );
     },
 
@@ -3720,7 +4342,170 @@ document.addEventListener(
 
 
 /* ==========================================================================
-   LOGO — FIVE CLICKS
+   KONAMI CODE
+========================================================================== */
+
+const konamiCode = [
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "b",
+    "a"
+];
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+        if (!isUnlocked()) {
+            return;
+        }
+
+        const key =
+            event.key.length === 1
+                ? event.key.toLowerCase()
+                : event.key;
+
+        if (
+            key ===
+            konamiCode[
+                konamiIndex
+            ]
+        ) {
+            konamiIndex++;
+
+            if (
+                konamiIndex ===
+                konamiCode.length
+            ) {
+                konamiIndex =
+                    0;
+
+                activateKonami();
+            }
+        } else {
+            konamiIndex =
+                key ===
+                konamiCode[0]
+                    ? 1
+                    : 0;
+        }
+    }
+);
+
+function activateKonami() {
+    showSecretToast(
+        "🎮 KONAMI CODE ACTIVATED"
+    );
+
+    document.body.classList.add(
+        "arcade-secret-active"
+    );
+
+    createScanline(
+        "#ff8cd9"
+    );
+
+    createScanline(
+        "#4fffe8"
+    );
+
+    if (
+        typeof confetti ===
+        "function"
+    ) {
+        confetti({
+            particleCount: 220,
+            spread: 180,
+            startVelocity: 65,
+            gravity: .75,
+            origin: {
+                x: .5,
+                y: .5
+            }
+        });
+    }
+
+    setTimeout(
+        function () {
+            document.body.classList.remove(
+                "arcade-secret-active"
+            );
+        },
+        2500
+    );
+}
+
+
+/* ==========================================================================
+   ANTI-KONAMI
+========================================================================== */
+
+const antiKonamiCode = [
+    "ArrowDown",
+    "ArrowDown",
+    "ArrowUp",
+    "ArrowUp",
+    "ArrowRight",
+    "ArrowLeft",
+    "ArrowRight",
+    "ArrowLeft",
+    "a",
+    "b"
+];
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+        if (!isUnlocked()) {
+            return;
+        }
+
+        const key =
+            event.key.length === 1
+                ? event.key.toLowerCase()
+                : event.key;
+
+        if (
+            key ===
+            antiKonamiCode[
+                antiKonamiIndex
+            ]
+        ) {
+            antiKonamiIndex++;
+
+            if (
+                antiKonamiIndex ===
+                antiKonamiCode.length
+            ) {
+                antiKonamiIndex =
+                    0;
+
+                showSecretToast(
+                    "🔄 anti-konami detected"
+                );
+
+                triggerInvertFlash();
+
+                createShockwave();
+            }
+        } else {
+            antiKonamiIndex =
+                key ===
+                antiKonamiCode[0]
+                    ? 1
+                    : 0;
+        }
+    }
+);
+
+
+/* ==========================================================================
+   LOGO — FIVE CLICKS + LONG PRESS
 ========================================================================== */
 
 if (secretLogo) {
@@ -3846,7 +4631,7 @@ function triggerRootAccessSecret() {
 
 
 /* ==========================================================================
-   QUOTE FOUR-CLICK SECRET
+   QUOTE — FOUR CLICKS
 ========================================================================== */
 
 (function setupQuoteMarkSecret() {
@@ -3926,6 +4711,11 @@ function triggerRootAccessSecret() {
    QUOTE DOUBLE CLICK
 ========================================================================== */
 
+const quoteSection =
+    document.querySelector(
+        ".trust-text"
+    );
+
 if (quoteSection) {
     quoteSection.addEventListener(
         "dblclick",
@@ -3956,7 +4746,7 @@ if (quoteSection) {
 
 
 /* ==========================================================================
-   STAT ORDER SECRET
+   STATS ORDER SECRET
 ========================================================================== */
 
 (function setupStatCombo() {
@@ -4186,7 +4976,7 @@ if (quoteSection) {
 
 
 /* ==========================================================================
-   MONEY ATM
+   MONEY DISPLAY ATM
 ========================================================================== */
 
 (function setupMoneyATM() {
@@ -4339,10 +5129,12 @@ if (quoteSection) {
                         starBurst(
                             card.getBoundingClientRect()
                                 .left +
-                                card.offsetWidth / 2,
+                                card.offsetWidth /
+                                    2,
                             card.getBoundingClientRect()
                                 .top +
-                                card.offsetHeight / 2,
+                                card.offsetHeight /
+                                    2,
                             [
                                 "🍴",
                                 "💰",
@@ -4417,47 +5209,109 @@ if (quoteSection) {
 
 
 /* ==========================================================================
-   FOOD SECTION DOUBLE CLICK
+   TAB RETURN SECRET
 ========================================================================== */
 
-(function setupFoodSectionSecret() {
-    const section =
-        document.querySelector(
-            ".eat-section"
-        );
+document.addEventListener(
+    "visibilitychange",
+    function () {
+        if (
+            document.hidden
+        ) {
+            hiddenAt =
+                Date.now();
 
-    if (!section) {
-        return;
-    }
+            return;
+        }
 
-    section.addEventListener(
-        "dblclick",
-        function (event) {
-            if (
-                event.target.closest(
-                    ".food-card"
-                )
-            ) {
-                return;
-            }
+        if (
+            !isUnlocked() ||
+            hiddenAt === null
+        ) {
+            return;
+        }
+
+        const awayTime =
+            Date.now() -
+            hiddenAt;
+
+        hiddenAt =
+            null;
+
+        if (
+            awayTime >=
+            10000
+        ) {
+            document.body.classList.add(
+                "tab-return-flash"
+            );
 
             showSecretToast(
-                "🍜 food storm"
+                "👀 welcome back."
             );
 
-            spawnEmojiRain(
-                [
-                    "🍕",
-                    "🍔",
-                    "🥟",
-                    "🍜"
-                ],
-                14,
-                3.5
+            createScanline(
+                "#4fffe8"
+            );
+
+            setTimeout(
+                function () {
+                    document.body.classList.remove(
+                        "tab-return-flash"
+                    );
+                },
+                1100
             );
         }
-    );
-})();
+    }
+);
+
+
+/* ==========================================================================
+   RIGHT CLICK
+========================================================================== */
+
+document.addEventListener(
+    "contextmenu",
+    function (event) {
+        if (!isUnlocked()) {
+            return;
+        }
+
+        event.preventDefault();
+
+        showSecretToast(
+            "🖱️ nice try."
+        );
+
+        createScanline(
+            "#4fffe8"
+        );
+    }
+);
+
+
+/* ==========================================================================
+   MIDDLE CLICK
+========================================================================== */
+
+document.addEventListener(
+    "auxclick",
+    function (event) {
+        if (
+            event.button !== 1 ||
+            !isUnlocked()
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+
+        showSecretToast(
+            "🖱️ middle click?"
+        );
+    }
+);
 
 
 /* ==========================================================================
@@ -4523,969 +5377,7 @@ if (quoteSection) {
 
 
 /* ==========================================================================
-   RIGHT CLICK
-========================================================================== */
-
-document.addEventListener(
-    "contextmenu",
-    function (event) {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        event.preventDefault();
-
-        showSecretToast(
-            "🖱️ nice try."
-        );
-
-        createScanline(
-            "#4fffe8"
-        );
-    }
-);
-
-
-/* ==========================================================================
-   MIDDLE CLICK
-========================================================================== */
-
-document.addEventListener(
-    "auxclick",
-    function (event) {
-        if (
-            event.button !== 1 ||
-            !isUnlocked()
-        ) {
-            return;
-        }
-
-        event.preventDefault();
-
-        showSecretToast(
-            "🖱️ middle click?"
-        );
-    }
-);
-
-
-/* ==========================================================================
-   FAST SCROLL SECRET
-========================================================================== */
-
-(function setupFastScrollSecret() {
-    let lastY =
-        window.scrollY;
-
-    let lastTime =
-        Date.now();
-
-    let warned =
-        false;
-
-    window.addEventListener(
-        "scroll",
-        function () {
-            if (
-                !isUnlocked() ||
-                warned
-            ) {
-                return;
-            }
-
-            const now =
-                Date.now();
-
-            const deltaY =
-                Math.abs(
-                    scrollY -
-                    lastY
-                );
-
-            const deltaTime =
-                now -
-                lastTime;
-
-            const height =
-                document.documentElement
-                    .scrollHeight -
-                innerHeight;
-
-            const nearBottom =
-                height > 0 &&
-                scrollY /
-                    height >
-                    .92;
-
-            if (
-                deltaTime > 0 &&
-                deltaTime < 120 &&
-                deltaY > 900 &&
-                nearBottom
-            ) {
-                warned = true;
-
-                showToast(
-                    "🏃 okay slow down."
-                );
-
-                document.body.classList.add(
-                    "scroll-chaos"
-                );
-
-                setTimeout(
-                    function () {
-                        document.body.classList.remove(
-                            "scroll-chaos"
-                        );
-                    },
-                    900
-                );
-
-                setTimeout(
-                    function () {
-                        warned = false;
-                    },
-                    15000
-                );
-            }
-
-            lastY =
-                scrollY;
-
-            lastTime =
-                now;
-        },
-        {
-            passive: true
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   RESIZE SECRET
-========================================================================== */
-
-(function setupResizeSecret() {
-    let count = 0;
-    let timer = null;
-
-    window.addEventListener(
-        "resize",
-        function () {
-            if (!isUnlocked()) {
-                return;
-            }
-
-            count++;
-
-            clearTimeout(
-                timer
-            );
-
-            timer =
-                setTimeout(
-                    function () {
-                        count = 0;
-                    },
-                    4000
-                );
-
-            if (
-                count >=
-                5
-            ) {
-                count = 0;
-
-                showSecretToast(
-                    "📐 you broke responsive design."
-                );
-
-                document.body.classList.add(
-                    "resize-panic"
-                );
-
-                createScanline(
-                    "#42d9ff"
-                );
-
-                setTimeout(
-                    function () {
-                        document.body.classList.remove(
-                            "resize-panic"
-                        );
-                    },
-                    1500
-                );
-            }
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   ORIENTATION SECRET
-========================================================================== */
-
-window.addEventListener(
-    "orientationchange",
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        showSecretToast(
-            "📱 orientation changed."
-        );
-
-        const flash =
-            document.createElement(
-                "div"
-            );
-
-        flash.className =
-            "orientation-secret";
-
-        document.body.appendChild(
-            flash
-        );
-
-        setTimeout(
-            function () {
-                flash.remove();
-            },
-            1600
-        );
-    }
-);
-
-
-/* ==========================================================================
-   FULLSCREEN SECRET
-========================================================================== */
-
-document.addEventListener(
-    "fullscreenchange",
-    function () {
-        if (
-            !isUnlocked() ||
-            !document.fullscreenElement
-        ) {
-            return;
-        }
-
-        showSecretToast(
-            "🎬 DIRECTOR'S CUT"
-        );
-
-        createScanline(
-            "#ff79b5"
-        );
-
-        flashPage(
-            "rgba(255,120,220,.1)",
-            600
-        );
-    }
-);
-
-
-/* ==========================================================================
-   OFFLINE / ONLINE
-========================================================================== */
-
-window.addEventListener(
-    "offline",
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        if (
-            document.getElementById(
-                "offline-secret"
-            )
-        ) {
-            return;
-        }
-
-        const banner =
-            document.createElement(
-                "div"
-            );
-
-        banner.className =
-            "offline-secret";
-
-        banner.id =
-            "offline-secret";
-
-        banner.textContent =
-            "⚠ CONNECTION LOST — birthday.exe is confused";
-
-        document.body.appendChild(
-            banner
-        );
-    }
-);
-
-window.addEventListener(
-    "online",
-    function () {
-        const banner =
-            document.getElementById(
-                "offline-secret"
-            );
-
-        if (banner) {
-            banner.remove();
-        }
-
-        if (!isUnlocked()) {
-            return;
-        }
-
-        showSecretToast(
-            "📡 connection restored."
-        );
-
-        if (
-            typeof confetti ===
-            "function"
-        ) {
-            confetti({
-                particleCount: 35,
-                spread: 70,
-                origin: {
-                    x: .5,
-                    y: .3
-                }
-            });
-        }
-    }
-);
-
-
-/* ==========================================================================
-   TEXT SELECTION SECRET
-========================================================================== */
-
-let loreTriggered =
-    false;
-
-document.addEventListener(
-    "selectionchange",
-    function () {
-        if (
-            loreTriggered ||
-            !isUnlocked()
-        ) {
-            return;
-        }
-
-        const selection =
-            window.getSelection();
-
-        if (!selection) {
-            return;
-        }
-
-        const text =
-            selection
-                .toString()
-                .trim();
-
-        if (
-            text.length >=
-            100
-        ) {
-            loreTriggered =
-                true;
-
-            const lore =
-                document.createElement(
-                    "div"
-                );
-
-            lore.className =
-                "lore-secret";
-
-            lore.innerHTML = `
-                <strong>
-                    CLASSIFIED BIRTHDAY LORE
-                </strong>
-
-                <br><br>
-
-                You selected enough text to
-                qualify as a suspicious investigator.
-
-                <br><br>
-
-                Unfortunately:
-
-                <br><br>
-
-                there is no classified information.
-            `;
-
-            document.body.appendChild(
-                lore
-            );
-
-            requestAnimationFrame(
-                function () {
-                    lore.classList.add(
-                        "visible"
-                    );
-                }
-            );
-
-            setTimeout(
-                function () {
-                    lore.classList.remove(
-                        "visible"
-                    );
-                },
-                4500
-            );
-
-            setTimeout(
-                function () {
-                    lore.remove();
-                },
-                5100
-            );
-        }
-    }
-);
-
-
-/* ==========================================================================
-   29-SECOND SECRET
-========================================================================== */
-
-let last29SecondMinute =
-    -1;
-
-setInterval(
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        const now =
-            new Date();
-
-        if (
-            now.getSeconds() ===
-                29 &&
-            now.getMinutes() !==
-                last29SecondMinute
-        ) {
-            last29SecondMinute =
-                now.getMinutes();
-
-            document.body.classList.add(
-                "golden-second-event"
-            );
-
-            showSecretToast(
-                "✨ 29 seconds."
-            );
-
-            starBurst(
-                innerWidth / 2,
-                innerHeight / 2,
-                [
-                    "29",
-                    "✦",
-                    "✨"
-                ]
-            );
-
-            setTimeout(
-                function () {
-                    document.body.classList.remove(
-                        "golden-second-event"
-                    );
-                },
-                800
-            );
-        }
-    },
-    1000
-);
-
-
-/* ==========================================================================
-   MIDPOINT SECRET
-========================================================================== */
-
-let midpointTriggered =
-    false;
-
-window.addEventListener(
-    "scroll",
-    function () {
-        if (
-            midpointTriggered ||
-            !isUnlocked()
-        ) {
-            return;
-        }
-
-        const maxScroll =
-            document.documentElement
-                .scrollHeight -
-            innerHeight;
-
-        if (
-            maxScroll <= 0
-        ) {
-            return;
-        }
-
-        const progress =
-            scrollY /
-            maxScroll;
-
-        if (
-            progress >= .49 &&
-            progress <= .52
-        ) {
-            midpointTriggered =
-                true;
-
-            showSecretToast(
-                "🌀 you found the middle."
-            );
-
-            const portal =
-                document.createElement(
-                    "div"
-                );
-
-            portal.className =
-                "midpoint-portal";
-
-            document.body.appendChild(
-                portal
-            );
-
-            requestAnimationFrame(
-                function () {
-                    portal.classList.add(
-                        "active"
-                    );
-                }
-            );
-
-            setTimeout(
-                function () {
-                    portal.classList.remove(
-                        "active"
-                    );
-                },
-                100
-            );
-
-            setTimeout(
-                function () {
-                    portal.remove();
-                },
-                1400
-            );
-        }
-    },
-    {
-        passive: true
-    }
-);
-
-
-/* ==========================================================================
-   BOTTOM → TOP SECRET
-========================================================================== */
-
-let reachedBottom =
-    false;
-
-let returnedFromBottom =
-    false;
-
-window.addEventListener(
-    "scroll",
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        const height =
-            document.documentElement
-                .scrollHeight -
-            innerHeight;
-
-        if (
-            height <= 0
-        ) {
-            return;
-        }
-
-        const progress =
-            scrollY /
-            height;
-
-        if (
-            progress >
-            .97
-        ) {
-            reachedBottom =
-                true;
-        }
-
-        if (
-            reachedBottom &&
-            progress <
-                .08 &&
-            !returnedFromBottom
-        ) {
-            returnedFromBottom =
-                true;
-
-            showSecretToast(
-                "🔄 all the way down, then back."
-            );
-
-            spawnEmojiRain(
-                [
-                    "⬆️",
-                    "✨",
-                    "💫"
-                ],
-                8,
-                3
-            );
-        }
-    },
-    {
-        passive: true
-    }
-);
-
-
-/* ==========================================================================
-   HERO EDGE
-========================================================================== */
-
-(function setupHeroEdgeSecret() {
-    const hero =
-        document.querySelector(
-            ".hero"
-        );
-
-    if (!hero) {
-        return;
-    }
-
-    let triggered =
-        false;
-
-    hero.addEventListener(
-        "mousemove",
-        function (event) {
-            if (
-                triggered ||
-                !isUnlocked()
-            ) {
-                return;
-            }
-
-            const rect =
-                hero.getBoundingClientRect();
-
-            if (
-                rect.right -
-                event.clientX <
-                14
-            ) {
-                triggered =
-                    true;
-
-                const whisper =
-                    document.createElement(
-                        "div"
-                    );
-
-                whisper.className =
-                    "hero-edge-secret";
-
-                whisper.textContent =
-                    "psst...";
-
-                document.body.appendChild(
-                    whisper
-                );
-
-                requestAnimationFrame(
-                    function () {
-                        whisper.style.opacity =
-                            "1";
-
-                        whisper.style.transform =
-                            "translateY(-50%) translateX(0)";
-                    }
-                );
-
-                createScanline(
-                    "#4fffe8"
-                );
-
-                setTimeout(
-                    function () {
-                        whisper.style.opacity =
-                            "0";
-                    },
-                    2200
-                );
-
-                setTimeout(
-                    function () {
-                        whisper.remove();
-                    },
-                    2800
-                );
-            }
-        },
-        {
-            passive: true
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   CORNER SECRET
-========================================================================== */
-
-(function setupCornerSecret() {
-    let triggered =
-        false;
-
-    document.addEventListener(
-        "mousemove",
-        function (event) {
-            if (
-                triggered ||
-                !isUnlocked()
-            ) {
-                return;
-            }
-
-            if (
-                event.clientX <= 10 &&
-                event.clientY <= 10
-            ) {
-                triggered =
-                    true;
-
-                const panel =
-                    document.createElement(
-                        "div"
-                    );
-
-                panel.className =
-                    "corner-coordinate-secret";
-
-                panel.innerHTML = `
-                    LAT: 29.08<br>
-                    MEM: FRIENDSHIP<br>
-                    STATUS: CLASSIFIED
-                `;
-
-                document.body.appendChild(
-                    panel
-                );
-
-                requestAnimationFrame(
-                    function () {
-                        panel.classList.add(
-                            "visible"
-                        );
-                    }
-                );
-
-                setTimeout(
-                    function () {
-                        panel.classList.remove(
-                            "visible"
-                        );
-                    },
-                    4500
-                );
-
-                setTimeout(
-                    function () {
-                        panel.remove();
-                    },
-                    5100
-                );
-            }
-        },
-        {
-            passive: true
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   SERIAL NUMBER SECRET
-========================================================================== */
-
-(function setupSerialSecret() {
-    const serial =
-        document.querySelector(
-            ".serial-number"
-        );
-
-    if (!serial) {
-        return;
-    }
-
-    let found = false;
-
-    serial.addEventListener(
-        "mouseenter",
-        function () {
-            if (found) {
-                return;
-            }
-
-            found =
-                true;
-
-            const original =
-                serial.textContent;
-
-            showSecretToast(
-                "📁 FILE DETECTED"
-            );
-
-            let count = 0;
-
-            const timer =
-                setInterval(
-                    function () {
-                        let result =
-                            "";
-
-                        const chars =
-                            "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-                        for (
-                            let i = 0;
-                            i <
-                            original.length;
-                            i++
-                        ) {
-                            result +=
-                                original[i] ===
-                                " "
-                                    ? " "
-                                    : chars[
-                                        Math.floor(
-                                            Math.random() *
-                                            chars.length
-                                        )
-                                    ];
-                        }
-
-                        serial.textContent =
-                            result;
-
-                        count++;
-
-                        if (
-                            count >=
-                            6
-                        ) {
-                            clearInterval(
-                                timer
-                            );
-
-                            serial.textContent =
-                                original;
-                        }
-                    },
-                    80
-                );
-        }
-    );
-})();
-
-
-/* ==========================================================================
-   TAB RETURN
-========================================================================== */
-
-let hiddenAt =
-    null;
-
-document.addEventListener(
-    "visibilitychange",
-    function () {
-        if (
-            document.hidden
-        ) {
-            hiddenAt =
-                Date.now();
-
-            return;
-        }
-
-        if (
-            !isUnlocked() ||
-            hiddenAt === null
-        ) {
-            return;
-        }
-
-        const awayTime =
-            Date.now() -
-            hiddenAt;
-
-        hiddenAt =
-            null;
-
-        if (
-            awayTime >=
-            10000
-        ) {
-            document.body.classList.add(
-                "tab-return-flash"
-            );
-
-            showToast(
-                "👀 welcome back."
-            );
-
-            setTimeout(
-                function () {
-                    document.body.classList.remove(
-                        "tab-return-flash"
-                    );
-                },
-                1100
-            );
-        }
-    }
-);
-
-
-/* ==========================================================================
-   IDLE
+   IDLE SYSTEM
 ========================================================================== */
 
 const idleMessages = [
@@ -5550,432 +5442,13 @@ resetIdleTimer();
 
 
 /* ==========================================================================
-   PRINT
-========================================================================== */
-
-window.addEventListener(
-    "beforeprint",
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        showSecretToast(
-            "🖨️ CLASSIFIED DOCUMENT MODE"
-        );
-    }
-);
-
-window.addEventListener(
-    "afterprint",
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        showToast(
-            "🖨️ document escaped."
-        );
-    }
-);
-
-
-/* ==========================================================================
-   TWO-MINUTE VISITOR SECRET
-========================================================================== */
-
-setTimeout(
-    function () {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        const panel =
-            document.createElement(
-                "div"
-            );
-
-        panel.className =
-            "visitor-secret";
-
-        panel.innerHTML = `
-            <div class="visitor-secret-title">
-                VISITOR TIMEOUT
-            </div>
-
-            <div>
-                You have officially spent too long
-                investigating this birthday website.
-            </div>
-
-            <br>
-
-            <div>
-                Achievement unlocked:
-                🏆 TOO CURIOUS
-            </div>
-        `;
-
-        document.body.appendChild(
-            panel
-        );
-
-        requestAnimationFrame(
-            function () {
-                panel.classList.add(
-                    "visible"
-                );
-            }
-        );
-
-        if (
-            typeof confetti ===
-            "function"
-        ) {
-            confetti({
-                particleCount: 70,
-                spread: 100,
-                startVelocity: 40,
-                origin: {
-                    x: .5,
-                    y: .35
-                }
-            });
-        }
-
-        setTimeout(
-            function () {
-                panel.classList.remove(
-                    "visible"
-                );
-            },
-            5000
-        );
-
-        setTimeout(
-            function () {
-                panel.remove();
-            },
-            5600
-        );
-    },
-    120000
-);
-
-
-/* ==========================================================================
-   KONAMI
-========================================================================== */
-
-const konamiCode = [
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "b",
-    "a"
-];
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        const key =
-            event.key.length === 1
-                ? event.key.toLowerCase()
-                : event.key;
-
-        if (
-            key ===
-            konamiCode[
-                konamiIndex
-            ]
-        ) {
-            konamiIndex++;
-
-            if (
-                konamiIndex ===
-                konamiCode.length
-            ) {
-                konamiIndex =
-                    0;
-
-                activateKonami();
-            }
-        } else {
-            konamiIndex =
-                key ===
-                konamiCode[0]
-                    ? 1
-                    : 0;
-        }
-    }
-);
-
-function activateKonami() {
-    showSecretToast(
-        "🎮 KONAMI CODE ACTIVATED"
-    );
-
-    document.body.classList.add(
-        "arcade-secret-active"
-    );
-
-    createScanline(
-        "#ff8cd9"
-    );
-
-    createScanline(
-        "#4fffe8"
-    );
-
-    if (
-        typeof confetti ===
-        "function"
-    ) {
-        confetti({
-            particleCount: 220,
-            spread: 180,
-            startVelocity: 65,
-            gravity: .75,
-            origin: {
-                x: .5,
-                y: .5
-            }
-        });
-    }
-
-    setTimeout(
-        function () {
-            document.body.classList.remove(
-                "arcade-secret-active"
-            );
-        },
-        2500
-    );
-}
-
-
-/* ==========================================================================
-   ANTI-KONAMI
-========================================================================== */
-
-const antiKonamiCode = [
-    "ArrowDown",
-    "ArrowDown",
-    "ArrowUp",
-    "ArrowUp",
-    "ArrowRight",
-    "ArrowLeft",
-    "ArrowRight",
-    "ArrowLeft",
-    "a",
-    "b"
-];
-
-document.addEventListener(
-    "keydown",
-    function (event) {
-        if (!isUnlocked()) {
-            return;
-        }
-
-        const key =
-            event.key.length === 1
-                ? event.key.toLowerCase()
-                : event.key;
-
-        if (
-            key ===
-            antiKonamiCode[
-                antiKonamiIndex
-            ]
-        ) {
-            antiKonamiIndex++;
-
-            if (
-                antiKonamiIndex ===
-                antiKonamiCode.length
-            ) {
-                antiKonamiIndex =
-                    0;
-
-                showSecretToast(
-                    "🔄 anti-konami detected"
-                );
-
-                triggerInvertFlash();
-
-                createShockwave();
-            }
-        } else {
-            antiKonamiIndex =
-                key ===
-                antiKonamiCode[0]
-                    ? 1
-                    : 0;
-        }
-    }
-);
-
-
-/* ==========================================================================
-   SHAKE TO PARTY
-========================================================================== */
-
-let lastShakeTime = 0;
-
-let lastAcceleration = {
-    x: 0,
-    y: 0,
-    z: 0
-};
-
-const SHAKE_THRESHOLD =
-    18;
-
-function handleDeviceMotion(event) {
-    const acceleration =
-        event.accelerationIncludingGravity;
-
-    if (!acceleration) {
-        return;
-    }
-
-    const deltaX =
-        Math.abs(
-            acceleration.x -
-            lastAcceleration.x
-        );
-
-    const deltaY =
-        Math.abs(
-            acceleration.y -
-            lastAcceleration.y
-        );
-
-    const deltaZ =
-        Math.abs(
-            acceleration.z -
-            lastAcceleration.z
-        );
-
-    lastAcceleration = {
-        x: acceleration.x,
-        y: acceleration.y,
-        z: acceleration.z
-    };
-
-    const total =
-        deltaX +
-        deltaY +
-        deltaZ;
-
-    const now =
-        Date.now();
-
-    if (
-        total >
-            SHAKE_THRESHOLD &&
-        now -
-            lastShakeTime >
-            2000 &&
-        isUnlocked()
-    ) {
-        lastShakeTime =
-            now;
-
-        showSecretToast(
-            "📱 shake detected."
-        );
-
-        createShockwave();
-
-        if (
-            typeof confetti ===
-            "function"
-        ) {
-            confetti({
-                particleCount: 120,
-                spread: 140,
-                startVelocity: 50,
-                origin: {
-                    x: .5,
-                    y: .5
-                }
-            });
-        }
-    }
-}
-
-function enableShakeDetection() {
-    if (
-        typeof DeviceMotionEvent ===
-        "undefined"
-    ) {
-        return;
-    }
-
-    if (
-        typeof DeviceMotionEvent.requestPermission ===
-        "function"
-    ) {
-        document.addEventListener(
-            "click",
-            function requestMotionOnce() {
-                DeviceMotionEvent
-                    .requestPermission()
-                    .then(
-                        function (state) {
-                            if (
-                                state ===
-                                "granted"
-                            ) {
-                                window.addEventListener(
-                                    "devicemotion",
-                                    handleDeviceMotion
-                                );
-                            }
-                        }
-                    )
-                    .catch(
-                        function () {}
-                    );
-
-                document.removeEventListener(
-                    "click",
-                    requestMotionOnce
-                );
-            },
-            {
-                once: true
-            }
-        );
-    } else {
-        window.addEventListener(
-            "devicemotion",
-            handleDeviceMotion
-        );
-    }
-}
-
-enableShakeDetection();
-
-
-/* ==========================================================================
    INITIAL DISPLAY
 ========================================================================== */
 
 refreshMoneyDisplay();
 refreshHungerDisplay();
 updatePageFilter();
+updateScrollProgress();
 
 
 /* ==========================================================================
