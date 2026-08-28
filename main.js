@@ -3515,7 +3515,7 @@ shopButtons.forEach(
         );
 
     }
-);
+});
 
 
 function checkGiftUnlock() {
