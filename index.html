@@ -1,25 +1,81 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
+    <!-- =========================================================
+         HTML CODE MAP
+
+         [HEAD]
+         ├── Page metadata
+         ├── Google/website title
+         ├── styles.css
+         ├── canvas-confetti library
+         └── main.js
+
+         [BODY]
+         ├── Theme switch
+         ├── Birthday countdown / lock screen
+         ├── Scroll progress bar
+         ├── SVG grain effect
+         ├── Main page content
+         │   ├── Hero
+         │   ├── Intro
+         │   ├── Quote
+         │   ├── Stats
+         │   ├── Hobbies
+         │   ├── Chat
+         │   ├── Food
+         │   ├── Birthday message
+         │   ├── Shop
+         │   ├── Locked gift
+         │   └── Unlocked gift
+         └── Toast notifications
+
+    ========================================================= -->
+
+
+    <!-- =========================================================
+         PAGE METADATA
+    ========================================================== -->
+
     <meta charset="UTF-8">
+
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Happy Birthday</title>
+
+    <title>
+        Happy Birthday
+    </title>
+
+
+    <!-- =========================================================
+         MAIN CSS
+    ========================================================== -->
 
     <link
         rel="stylesheet"
         href="styles.css"
     >
 
+
+    <!-- =========================================================
+         CONFETTI LIBRARY
+    ========================================================== -->
+
     <script
         src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js">
     </script>
+
+
+    <!-- =========================================================
+         MAIN JAVASCRIPT
+    ========================================================== -->
 
     <script
         type="module"
@@ -32,34 +88,111 @@
 
 <body>
 
-    <!-- =========================================
-         BIRTHDAY LOCK SCREEN
-    ========================================== -->
 
-    <div id="birthday-lock-screen">
+    <!-- =========================================================
+         THEME SWITCH
+         
+         Used by main.js to switch:
+         BLUE / GREEN
+         ↔
+         PINK / PURPLE
+    ========================================================== -->
 
-        <div class="countdown-container">
+    <button
+        id="theme-switch"
+        class="theme-switch"
+        type="button"
+        aria-label="Switch to pink theme"
+    >
 
-            <p class="countdown-eyebrow">
+        <span
+            id="theme-icon"
+            class="theme-icon"
+        >
+            🌲
+        </span>
+
+
+        <span
+            id="theme-switch-text"
+            class="theme-switch-text"
+        >
+            BLUE MODE
+        </span>
+
+    </button>
+
+
+    <!-- =========================================================
+         BIRTHDAY LOCK SCREEN + COUNTDOWN
+         
+         This is visible before 29 August.
+
+         main.js controls:
+         ├── Days
+         ├── Hours
+         ├── Minutes
+         ├── Seconds
+         ├── Countdown intensity
+         ├── 10-minute celebration
+         └── 1-minute celebration
+    ========================================================== -->
+
+    <div
+        id="birthday-lock-screen"
+    >
+
+        <div
+            class="countdown-container"
+        >
+
+
+            <p
+                class="countdown-eyebrow"
+            >
+
                 SOMETHING IS WAITING...
+
             </p>
 
-            <h1 class="countdown-title">
+
+            <h1
+                class="countdown-title"
+            >
+
                 Almost time.
+
             </h1>
 
-            <p class="countdown-subtitle">
+
+            <p
+                class="countdown-subtitle"
+            >
+
                 The website unlocks on
-                <strong>29 August</strong>
+
+                <strong>
+                    29 August
+                </strong>
+
             </p>
 
+
+            <!-- ===============================================
+                 COUNTDOWN NUMBERS
+            ================================================ -->
 
             <div
                 id="birthday-countdown"
                 class="birthday-countdown"
             >
 
-                <div class="countdown-unit">
+
+                <!-- DAYS -->
+
+                <div
+                    class="countdown-unit"
+                >
 
                     <span
                         id="countdown-days"
@@ -68,19 +201,28 @@
                         00
                     </span>
 
-                    <span class="countdown-label">
+
+                    <span
+                        class="countdown-label"
+                    >
                         DAYS
                     </span>
 
                 </div>
 
 
-                <span class="countdown-colon">
+                <span
+                    class="countdown-colon"
+                >
                     :
                 </span>
 
 
-                <div class="countdown-unit">
+                <!-- HOURS -->
+
+                <div
+                    class="countdown-unit"
+                >
 
                     <span
                         id="countdown-hours"
@@ -89,19 +231,28 @@
                         00
                     </span>
 
-                    <span class="countdown-label">
+
+                    <span
+                        class="countdown-label"
+                    >
                         HOURS
                     </span>
 
                 </div>
 
 
-                <span class="countdown-colon">
+                <span
+                    class="countdown-colon"
+                >
                     :
                 </span>
 
 
-                <div class="countdown-unit">
+                <!-- MINUTES -->
+
+                <div
+                    class="countdown-unit"
+                >
 
                     <span
                         id="countdown-minutes"
@@ -110,19 +261,28 @@
                         00
                     </span>
 
-                    <span class="countdown-label">
+
+                    <span
+                        class="countdown-label"
+                    >
                         MINUTES
                     </span>
 
                 </div>
 
 
-                <span class="countdown-colon">
+                <span
+                    class="countdown-colon"
+                >
                     :
                 </span>
 
 
-                <div class="countdown-unit">
+                <!-- SECONDS -->
+
+                <div
+                    class="countdown-unit"
+                >
 
                     <span
                         id="countdown-seconds"
@@ -131,7 +291,10 @@
                         00
                     </span>
 
-                    <span class="countdown-label">
+
+                    <span
+                        class="countdown-label"
+                    >
                         SECONDS
                     </span>
 
@@ -140,11 +303,15 @@
             </div>
 
 
+            <!-- COUNTDOWN STATUS -->
+
             <p
                 id="countdown-status"
                 class="countdown-status"
             >
+
                 SYSTEM LOCKED
+
             </p>
 
         </div>
@@ -152,20 +319,26 @@
     </div>
 
 
-    <!-- =========================================
+    <!-- =========================================================
          SCROLL PROGRESS BAR
-    ========================================== -->
+    ========================================================== -->
 
-    <div id="scroll-progress"></div>
+    <div
+        id="scroll-progress"
+    ></div>
 
 
-    <!-- =========================================
+    <!-- =========================================================
          SVG GRAIN EFFECT
-    ========================================== -->
+    ========================================================== -->
 
-    <svg class="grain">
+    <svg
+        class="grain"
+    >
 
-        <filter id="noise">
+        <filter
+            id="noise"
+        >
 
             <feTurbulence
                 id="turbulence"
@@ -176,6 +349,7 @@
                 seed="2"
                 result="noise"
             />
+
 
             <feColorMatrix
                 in="noise"
@@ -190,6 +364,7 @@
 
         </filter>
 
+
         <rect
             width="100%"
             height="100%"
@@ -199,27 +374,52 @@
     </svg>
 
 
-    <!-- =========================================
+    <!-- =========================================================
          PAGE CONTENT
-    ========================================== -->
+    ========================================================== -->
 
-    <div id="page-content">
+    <div
+        id="page-content"
+    >
 
 
-        <!-- BLACK SCREEN -->
+        <!-- =====================================================
+             BLACK SCREEN
+        ====================================================== -->
 
         <div>
-            <span class="black-screen"></span>
+
+            <span
+                class="black-screen"
+            ></span>
+
         </div>
 
 
-        <!-- =====================================
+        <!-- =====================================================
              AUDIO
-        ====================================== -->
+             
+             Background:
+             background.mp3
+
+             Birthday:
+             HappyBirthday.mp3
+
+             Dance:
+             DanceSong.mp3
+
+             Click:
+             click.mp3
+        ====================================================== -->
 
         <div>
 
-            <audio id="bday-audio">
+
+            <!-- BIRTHDAY AUDIO -->
+
+            <audio
+                id="bday-audio"
+            >
 
                 <source
                     src="Audio/HappyBirthday.mp3"
@@ -232,7 +432,11 @@
             </audio>
 
 
-            <audio id="click-audio">
+            <!-- CLICK AUDIO -->
+
+            <audio
+                id="click-audio"
+            >
 
                 <source
                     src="Audio/click.mp3"
@@ -245,7 +449,11 @@
             </audio>
 
 
-            <audio id="background-audio">
+            <!-- BACKGROUND AUDIO -->
+
+            <audio
+                id="background-audio"
+            >
 
                 <source
                     src="Audio/background.mp3"
@@ -258,7 +466,11 @@
             </audio>
 
 
-            <audio id="dance-audio">
+            <!-- DANCE AUDIO -->
+
+            <audio
+                id="dance-audio"
+            >
 
                 <source
                     src="Audio/DanceSong.mp3"
@@ -273,28 +485,51 @@
         </div>
 
 
-        <!-- =====================================
-             HERO
-        ====================================== -->
+        <!-- =====================================================
+             HERO SECTION
+        ====================================================== -->
 
         <header
             class="hero"
             id="start"
         >
 
-            <div class="top-bar">
 
-                <h2 id="secret-logo">
+            <!-- TOP BAR -->
+
+            <div
+                class="top-bar"
+            >
+
+
+                <!-- SECRET LOGO -->
+
+                <h2
+                    id="secret-logo"
+                >
+
                     A.
+
                 </h2>
 
 
-                <div class="top-bar-right">
+                <div
+                    class="top-bar-right"
+                >
 
-                    <p id="display-money">
+
+                    <!-- MONEY -->
+
+                    <p
+                        id="display-money"
+                    >
+
                         Money: $
+
                     </p>
 
+
+                    <!-- MUTE -->
 
                     <button
                         id="mute-toggle"
@@ -302,7 +537,9 @@
                         type="button"
                         aria-label="Mute audio"
                     >
+
                         🔊
+
                     </button>
 
                 </div>
@@ -310,7 +547,11 @@
             </div>
 
 
-            <p class="eyebrow">
+            <!-- HERO EYEBROW -->
+
+            <p
+                class="eyebrow"
+            >
 
                 29 · AUGUST · A NOT VERY IMPORTANT DAY
                 FOR A DUMB PERSON
@@ -318,24 +559,42 @@
             </p>
 
 
-            <h1 class="hero-title">
+            <!-- HERO TITLE -->
+
+            <h1
+                class="hero-title"
+            >
 
                 <span>
+
                     A Very Happy
+
                 </span>
 
-                <span>
-                    <em>Birthday</em>
-                </span>
 
                 <span>
+
+                    <em>
+                        Birthday
+                    </em>
+
+                </span>
+
+
+                <span>
+
                     Avigna
+
                 </span>
 
             </h1>
 
 
-            <div class="hero-subtitle">
+            <!-- HERO SUBTITLE -->
+
+            <div
+                class="hero-subtitle"
+            >
 
                 <p>
 
@@ -349,24 +608,30 @@
             </div>
 
 
+            <!-- START BUTTON -->
+
             <a
                 href="#about"
                 class="button"
             >
+
                 START THE JOURNEY
+
             </a>
 
         </header>
 
 
-        <!-- =====================================
+        <!-- =====================================================
              MAIN
-        ====================================== -->
+        ====================================================== -->
 
         <main>
 
 
-            <!-- INTRO -->
+            <!-- =================================================
+                 INTRO SECTION
+            ================================================== -->
 
             <section
                 class="intro"
@@ -375,8 +640,13 @@
 
                 <div>
 
-                    <p class="serial-number">
+
+                    <p
+                        class="serial-number"
+                    >
+
                         01 / The Subject
+
                     </p>
 
 
@@ -384,8 +654,10 @@
 
                         There are many ways to
                         <br>
+
                         describe
                         <br>
+
                         Avigna.
 
                     </h2>
@@ -393,9 +665,14 @@
                 </div>
 
 
-                <p class="description">
+                <p
+                    class="description"
+                >
 
-                    <span class="description-big">
+
+                    <span
+                        class="description-big"
+                    >
 
                         Emotionally smart...not really.
                         Goofy. Energetic.
@@ -404,24 +681,31 @@
 
                     </span>
 
-                    <br>
 
-
-                    <span class="description-small">
+                    <span
+                        class="description-small"
+                    >
 
                         Smart....again, not really.
+
                         Can make judgements that are reasonable
                         to her...and only her.
 
+
                         <br>
                         <br>
+
 
                         Avigna:
+
                         Yeah, Perfect judgement.
+
 
                         <br>
 
+
                         others:
+
                         🤨
 
                     </span>
@@ -431,27 +715,44 @@
             </section>
 
 
-            <!-- QUOTE -->
+            <!-- =================================================
+                 QUOTE SECTION
+            ================================================== -->
 
-            <section class="trust-text">
+            <section
+                class="trust-text"
+            >
 
                 <p>
 
-                    <span class="quote-mark">
+
+                    <span
+                        class="quote-mark"
+                    >
+
                         "
+
                     </span>
+
 
                     <br>
 
-                    <span class="quote">
+
+                    <span
+                        class="quote"
+                    >
 
                         I CALL AVIGNA A DIARY THAT STARTED ON ---
                         <br>
+
                         FEBURARY 10TH
 
                     </span>
 
-                    <span class="quote-maker">
+
+                    <span
+                        class="quote-maker"
+                    >
 
                         — Neerav,
                         pretty sick quote btw if u get it
@@ -463,16 +764,27 @@
             </section>
 
 
-            <!-- STATS -->
+            <!-- =================================================
+                 STATS
+            ================================================== -->
 
-            <section class="stats">
+            <section
+                class="stats"
+            >
 
-                <p class="serial-number">
+
+                <p
+                    class="serial-number"
+                >
+
                     02 / The Stats
+
                 </p>
 
 
-                <h2 class="section-header">
+                <h2
+                    class="section-header"
+                >
 
                     Avigna, according to extremely
                     reliable statistical data
@@ -480,81 +792,171 @@
                 </h2>
 
 
-                <div class="stat">
+                <!-- GOOFINESS -->
 
-                    <div class="stat-top">
+                <div
+                    class="stat"
+                >
 
-                        <span>GOOFINESS</span>
-                        <span>98%</span>
+                    <div
+                        class="stat-top"
+                    >
 
-                    </div>
+                        <span>
+                            GOOFINESS
+                        </span>
 
-                    <div class="bar">
-                        <span style="width:98%"></span>
-                    </div>
-
-                </div>
-
-
-                <div class="stat">
-
-                    <div class="stat-top">
-
-                        <span>ENERGY</span>
-                        <span>ERROR 404</span>
+                        <span>
+                            98%
+                        </span>
 
                     </div>
 
-                    <div class="bar">
-                        <span style="width:100%"></span>
-                    </div>
 
-                </div>
+                    <div
+                        class="bar"
+                    >
 
+                        <span
+                            style="width:98%"
+                        ></span>
 
-                <div class="stat">
-
-                    <div class="stat-top">
-
-                        <span>EMOTIONAL INTELLIGENCE</span>
-                        <span>81%</span>
-
-                    </div>
-
-                    <div class="bar">
-                        <span style="width:81%"></span>
                     </div>
 
                 </div>
 
 
-                <div class="stat">
+                <!-- ENERGY -->
 
-                    <div class="stat-top">
+                <div
+                    class="stat"
+                >
 
-                        <span>EXTRA CIRRICULAR</span>
-                        <span>75%</span>
+                    <div
+                        class="stat-top"
+                    >
+
+                        <span>
+                            ENERGY
+                        </span>
+
+                        <span>
+                            ERROR 404
+                        </span>
 
                     </div>
 
-                    <div class="bar">
-                        <span style="width:75%"></span>
+
+                    <div
+                        class="bar"
+                    >
+
+                        <span
+                            style="width:100%"
+                        ></span>
+
                     </div>
 
                 </div>
 
 
-                <div class="stat">
+                <!-- EMOTIONAL INTELLIGENCE -->
 
-                    <div class="stat-top">
+                <div
+                    class="stat"
+                >
 
-                        <span>JUDGEMENT</span>
-                        <span>WE CAN'T GO LOWER</span>
+                    <div
+                        class="stat-top"
+                    >
+
+                        <span>
+                            EMOTIONAL INTELLIGENCE
+                        </span>
+
+                        <span>
+                            81%
+                        </span>
 
                     </div>
 
-                    <div class="bar">
-                        <span style="width:0%"></span>
+
+                    <div
+                        class="bar"
+                    >
+
+                        <span
+                            style="width:81%"
+                        ></span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXTRA CURRICULAR -->
+
+                <div
+                    class="stat"
+                >
+
+                    <div
+                        class="stat-top"
+                    >
+
+                        <span>
+                            EXTRA CIRRICULAR
+                        </span>
+
+                        <span>
+                            75%
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="bar"
+                    >
+
+                        <span
+                            style="width:75%"
+                        ></span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- JUDGEMENT -->
+
+                <div
+                    class="stat"
+                >
+
+                    <div
+                        class="stat-top"
+                    >
+
+                        <span>
+                            JUDGEMENT
+                        </span>
+
+                        <span>
+                            WE CAN'T GO LOWER
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="bar"
+                    >
+
+                        <span
+                            style="width:0%"
+                        ></span>
+
                     </div>
 
                 </div>
@@ -562,73 +964,129 @@
             </section>
 
 
-            <!-- HOBBIES -->
+            <!-- =================================================
+                 HOBBIES
+            ================================================== -->
 
-            <section class="hobbies">
+            <section
+                class="hobbies"
+            >
 
-                <p class="serial-number">
+
+                <p
+                    class="serial-number"
+                >
+
                     03 / Hobbies
+
                 </p>
 
 
-                <h2 class="section-header">
+                <h2
+                    class="section-header"
+                >
 
                     Things Avigna Apparently Enjoys
 
                 </h2>
 
 
-                <div class="card">
+                <div
+                    class="card"
+                >
 
-                    <article class="cards dance">
 
-                        <span class="emoji">
+                    <!-- DANCE CARD -->
+
+                    <article
+                        class="cards dance"
+                    >
+
+                        <span
+                            class="emoji"
+                        >
+
                             💃
+
                         </span>
 
+
                         <h3>
+
                             Dancing
+
                         </h3>
 
+
                         <p>
+
                             Energy levels:
                             suspiciously high.
+
                         </p>
 
                     </article>
 
 
-                    <article class="cards movies">
+                    <!-- MOVIE CARD -->
 
-                        <span class="emoji">
+                    <article
+                        class="cards movies"
+                    >
+
+                        <span
+                            class="emoji"
+                        >
+
                             🎬
+
                         </span>
 
+
                         <h3>
+
                             Movies
+
                         </h3>
 
+
                         <p>
+
                             Because apparently one
                             can never watch just one.
+
                         </p>
 
                     </article>
 
 
-                    <article class="cards books">
+                    <!-- BOOK CARD -->
 
-                        <span class="emoji">
+                    <article
+                        class="cards books"
+                    >
+
+                        <span
+                            class="emoji"
+                        >
+
                             📚
+
                         </span>
 
+
                         <h3>
+
                             Books
+
                         </h3>
 
+
                         <p>
+
                             Escaping reality,
                             but with better vocabulary.
+
                         </p>
 
                     </article>
@@ -638,29 +1096,52 @@
             </section>
 
 
-            <!-- CHAT -->
+            <!-- =================================================
+                 CHAT SECTION
+            ================================================== -->
 
-            <section class="chat-section">
+            <section
+                class="chat-section"
+            >
 
-                <span id="locked-chat">
+
+                <!-- CHAT LOCK -->
+
+                <span
+                    id="locked-chat"
+                >
+
                     🔒
+
                 </span>
 
 
-                <p class="serial-number">
+                <p
+                    class="serial-number"
+                >
+
                     04 / A Small Conversation
+
                 </p>
 
 
-                <h2 class="section-header black">
+                <h2
+                    class="section-header black"
+                >
+
                     Wanna know a secret?
+
                 </h2>
 
 
                 <br>
 
 
-                <div id="chat">
+                <!-- CHAT MESSAGES ARE ADDED BY JS -->
+
+                <div
+                    id="chat"
+                >
 
                     <div
                         class="msg-card"
@@ -670,10 +1151,13 @@
                 </div>
 
 
+                <!-- NEXT MESSAGE -->
+
                 <button
                     id="nextMessage"
                     class="button"
                 >
+
                     NEXT MESSAGE →
 
                 </button>
@@ -681,38 +1165,63 @@
             </section>
 
 
-            <!-- FOOD -->
+            <!-- =================================================
+                 FOOD SECTION
+            ================================================== -->
 
-            <section class="eat-section">
+            <section
+                class="eat-section"
+            >
 
-                <p class="serial-number">
+
+                <p
+                    class="serial-number"
+                >
+
                     04 / Food
+
                 </p>
 
 
-                <h2 class="section-header">
+                <h2
+                    class="section-header"
+                >
+
                     Welcome to our Restaurant:
+
                 </h2>
 
 
-                <div class="food-cards">
+                <div
+                    class="food-cards"
+                >
 
 
-                    <div class="food-card">
+                    <!-- PIZZA -->
+
+                    <div
+                        class="food-card"
+                    >
 
                         <button
                             class="food-button"
                             data-price="60"
                             data-saturation="30"
                         >
+
                             Pizza
+
                         </button>
+
 
                         <p>
 
-                            <span>Price - 60</span>
+                            <span>
+                                Price - 60
+                            </span>
 
-                            <br><br>
+                            <br>
+                            <br>
 
                             Good choice
                             <br>
@@ -727,21 +1236,31 @@
                     </div>
 
 
-                    <div class="food-card">
+                    <!-- BURGER -->
+
+                    <div
+                        class="food-card"
+                    >
 
                         <button
                             class="food-button"
                             data-price="50"
                             data-saturation="25"
                         >
+
                             Burger
+
                         </button>
+
 
                         <p>
 
-                            <span>Price - 50</span>
+                            <span>
+                                Price - 50
+                            </span>
 
-                            <br><br>
+                            <br>
+                            <br>
 
                             Good choice
                             <br>
@@ -756,21 +1275,31 @@
                     </div>
 
 
-                    <div class="food-card">
+                    <!-- MOMO -->
+
+                    <div
+                        class="food-card"
+                    >
 
                         <button
                             class="food-button"
                             data-price="25"
                             data-saturation="12"
                         >
+
                             Momo
+
                         </button>
+
 
                         <p>
 
-                            <span>Price - 25</span>
+                            <span>
+                                Price - 25
+                            </span>
 
-                            <br><br>
+                            <br>
+                            <br>
 
                             Excellent choice
                             <br>
@@ -785,21 +1314,31 @@
                     </div>
 
 
-                    <div class="food-card">
+                    <!-- WONTON -->
+
+                    <div
+                        class="food-card"
+                    >
 
                         <button
                             class="food-button"
                             data-price="30"
                             data-saturation="15"
                         >
+
                             Wonton
+
                         </button>
+
 
                         <p>
 
-                            <span>Price - 30</span>
+                            <span>
+                                Price - 30
+                            </span>
 
-                            <br><br>
+                            <br>
+                            <br>
 
                             Excellent choice
                             <br>
@@ -816,63 +1355,109 @@
                 </div>
 
 
-                <div class="hunger">
+                <!-- HUNGER DISPLAY -->
+
+                <div
+                    class="hunger"
+                >
 
                     <span>
                         Hunger
                     </span>
 
-                    <span class="hunger-percentage">
+
+                    <span
+                        class="hunger-percentage"
+                    >
+
                         0%
+
                     </span>
 
                 </div>
 
 
-                <div class="hunger-bar">
+                <!-- HUNGER BAR -->
 
-                    <span style="width:0%"></span>
+                <div
+                    class="hunger-bar"
+                >
+
+                    <span
+                        style="width:0%"
+                    ></span>
 
                 </div>
 
 
-                <span id="afford-text"></span>
+                <!-- CURRENT MONEY -->
+
+                <span
+                    id="afford-text"
+                ></span>
 
             </section>
 
 
-            <!-- MESSAGE -->
+            <!-- =================================================
+                 MESSAGE SECTION
+            ================================================== -->
 
-            <section class="ending">
+            <section
+                class="ending"
+            >
 
-                <span id="locked-message">
+
+                <!-- MESSAGE LOCK -->
+
+                <span
+                    id="locked-message"
+                >
+
                     🔒
+
                 </span>
 
 
-                <p class="serial-number">
+                <p
+                    class="serial-number"
+                >
+
                     05 / A message
+
                 </p>
 
 
-                <div class="message-area">
+                <div
+                    class="message-area"
+                >
+
 
                     <p
                         class="message"
                         id="message"
                     >
 
+
                         <strong>
+
                             🎂Happy birthday, Avigna.🎂
+
                         </strong>
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         I don't really have much to say
                         to u that i havent already...
                         but here is what I will say ->
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         you have been one of the best friends
                         if not THE best friend i have had,
@@ -880,7 +1465,10 @@
                         how it started because I insulted u...
                         Best insult definitely
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         I never thought that I would find
                         a friend in u,
@@ -888,35 +1476,51 @@
                         could be so bizzare for me to make
                         a friend ONLINE.
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         The Debate was well worth it,
                         not only for the experience,
                         but because I met a friend that
                         I will truly remember.
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         In all honesty, I have changed a lot
                         because of being your friend,
                         I found sides of me i never knew existed...
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         Didn't think I could get comfortable
                         with someone enough to share all my secrets.
 
+
                         <br>
+
 
                         Didn't think I could talk to someone
                         for so long without being bored asf
 
+
                         <br>
+
 
                         Didn't think I could grow as a person...
                         but I did...and a lot at that.
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         Things recently haven't been too good
                         with u...
@@ -925,73 +1529,109 @@
                         and with your friends making things
                         unnecessarily stressful.
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         You know, its been so long that I have grown
                         numb to ur friend's stupidity.
 
+
                         <br>
+
 
                         I wished to say this before
                         but held back due to them being ur friends...
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         <strong>
                             <em>
+
                                 YOUR FRIENDS...
                                 ARE ABSOLUTE MORONS
+
                             </em>
                         </strong>
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         I honestly wish that you find people
                         who are actually good to you,
                         understand you
                         and side with you even in the hardest times.
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         <strong>
+
                             Best of wishes for the next year
                             and your life,
                             may u reach heights that you always
                             wished for and truly live....
                             for urself
+
                         </strong>
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         And btw,
                         You are nice, smart and pretty
                         and I hope no one makes you believe otherwise.
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         Alrrr, now just chill...
                         and know that there are people who care
                         for u and wish the best for u.
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         <strong>
                             <em>
+
                                 BYEEEEE
+
                             </em>
                         </strong>
 
-                        <br><br>
+
+                        <br>
+                        <br>
+
 
                         btw,
                         this msg got a bit too serious,
                         sooo for fun....
 
+
                         <strong>
                             <em>
+
                                 FACKK UUUU
+
                             </em>
                         </strong>
+
 
                     </p>
 
@@ -1000,31 +1640,53 @@
             </section>
 
 
-            <!-- SHOP -->
+            <!-- =================================================
+                 SHOP SECTION
+            ================================================== -->
 
-            <section class="shop-section">
+            <section
+                class="shop-section"
+            >
 
-                <p class="serial-number">
+
+                <p
+                    class="serial-number"
+                >
+
                     06 / Shopping
+
                 </p>
 
 
-                <h2 class="section-header black">
+                <h2
+                    class="section-header black"
+                >
+
                     Shop for hidden features:
+
                 </h2>
 
 
-                <div class="shop-option">
+                <!-- CONVERSATION -->
+
+                <div
+                    class="shop-option"
+                >
 
                     <button
                         class="shop-button button"
                         data-price="500"
                         data-unlock="conversation"
                     >
+
                         CONVERSATION
+
                     </button>
 
-                    <p class="black">
+
+                    <p
+                        class="black"
+                    >
 
                         Interested in finding out
                         the secrets in the conversation?
@@ -1038,17 +1700,26 @@
                 </div>
 
 
-                <div class="shop-option">
+                <!-- BLUR -->
+
+                <div
+                    class="shop-option"
+                >
 
                     <button
                         class="shop-button button"
                         data-price="1200"
                         data-unlock="blur"
                     >
+
                         REMOVE HUNGER DEFECT
+
                     </button>
 
-                    <p class="black">
+
+                    <p
+                        class="black"
+                    >
 
                         Interested in getting rid
                         of that pesky blur effect
@@ -1062,17 +1733,26 @@
                 </div>
 
 
-                <div class="shop-option">
+                <!-- MESSAGE -->
+
+                <div
+                    class="shop-option"
+                >
 
                     <button
                         class="shop-button button"
                         data-price="2500"
                         data-unlock="message"
                     >
+
                         MESSAGE
+
                     </button>
 
-                    <p class="black">
+
+                    <p
+                        class="black"
+                    >
 
                         Interested in finding out
                         the message i left u
@@ -1086,6 +1766,8 @@
                 </div>
 
 
+                <!-- SHOP MONEY -->
+
                 <span
                     id="shop-afford-text"
                     class="black"
@@ -1094,31 +1776,49 @@
             </section>
 
 
-            <!-- LOCKED GIFT -->
+            <!-- =================================================
+                 LOCKED GIFT
+            ================================================== -->
 
             <section
                 class="gift-section"
                 id="gift-locked-notice"
             >
 
-                <p class="serial-number">
+
+                <p
+                    class="serial-number"
+                >
+
                     06 / Best Wishes
+
                 </p>
 
 
-                <h2 class="section-header black no-margin">
+                <h2
+                    class="section-header black no-margin"
+                >
+
                     Not Yet
+
                 </h2>
 
 
-                <p class="black no-margin">
-                    Buy everything in the shop above to unlock this section...
+                <p
+                    class="black no-margin"
+                >
+
+                    Buy everything in the shop above
+                    to unlock this section...
+
                 </p>
 
             </section>
 
 
-            <!-- UNLOCKED GIFT -->
+            <!-- =================================================
+                 UNLOCKED GIFT
+            ================================================== -->
 
             <section
                 class="gift-section"
@@ -1126,19 +1826,31 @@
                 style="display:none;"
             >
 
-                <p class="serial-number">
+
+                <p
+                    class="serial-number"
+                >
+
                     06 / Best Wishes
+
                 </p>
 
 
-                <div class="gift-card">
+                <div
+                    class="gift-card"
+                >
 
-                    <h2 class="section-header black no-margin">
+
+                    <h2
+                        class="section-header black no-margin"
+                    >
 
                         🎂
 
                         <em>
+
                             Happy birthday Avigna
+
                         </em>
 
                         🎂
@@ -1146,9 +1858,12 @@
                     </h2>
 
 
-                    <p class="black no-margin">
+                    <p
+                        class="black no-margin"
+                    >
 
-                        Wishing you the best for your next 365 days...
+                        Wishing you the best
+                        for your next 365 days...
                         and exams
 
                     </p>
@@ -1158,22 +1873,30 @@
                         class="gift-button"
                         id="confettiBtn"
                     >
+
                         Want a gift?
+
                     </button>
 
                 </div>
 
             </section>
 
-
         </main>
 
     </div>
 
 
-    <!-- =========================================
+    <!-- =========================================================
          AVIGNA TOAST
-    ========================================== -->
+         
+         Used for:
+         ├── typing "avigna"
+         ├── typing "secret"
+         ├── idle messages
+         ├── A. ×5
+         └── other notifications
+    ========================================================== -->
 
     <div
         id="avigna-toast"
@@ -1184,24 +1907,5 @@
 
 </body>
 
-<button
-    id="theme-switch"
-    class="theme-switch"
-    type="button"
-    aria-label="Switch website theme"
->
-
-    <span class="theme-icon">
-        🌲
-    </span>
-
-    <span
-        id="theme-switch-text"
-        class="theme-switch-text"
-    >
-        BLUE MODE
-    </span>
-
-</button>
-
 </html>
+```
