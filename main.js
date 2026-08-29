@@ -439,157 +439,55 @@ function starBurst(x, y, symbols) {
     }
 }
 
-
 /* ==========================================================================
-   IST TIME
-========================================================================== */
-
-function getIndiaDateParts() {
-    const formatter = new Intl.DateTimeFormat("en-CA", {
-        timeZone: "Asia/Kolkata",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hourCycle: "h23"
-    });
-
-    const parts = formatter.formatToParts(new Date());
-    const values = {};
-
-    parts.forEach(function (part) {
-        if (part.type !== "literal") {
-            values[part.type] = part.value;
-        }
-    });
-
-    return {
-        year: Number(values.year),
-        month: Number(values.month),
-        day: Number(values.day),
-        hour: Number(values.hour),
-        minute: Number(values.minute),
-        second: Number(values.second)
-    };
-}
-
-
-function isBirthdayToday() {
-    const india = getIndiaDateParts();
-
-    return india.month === 8 && india.day === 29;
-}
-
+   BIRTHDAY LOCK
+   ========================================================================== */
 
 function getBirthdayTarget() {
-    const india = getIndiaDateParts();
 
+    const now = new Date();
+
+    // August 29 at midnight this year
     let target = new Date(
-        Date.UTC(
-            india.year,
-            7,
-            28,
-            18,
-            30,
-            0,
-            0
-        )
+        now.getFullYear(),
+        7,      // August
+        29,     // 29th
+        0,      // 12:00 AM
+        0,
+        0,
+        0
     );
 
-    if (india.month === 8 && india.day >= 29) {
+    // If today is August 29,
+    // the website stays unlocked for the entire day.
+    if (
+        now.getMonth() === 7 &&
+        now.getDate() === 29
+    ) {
+        return now;
+    }
+
+    // If August 29 has already passed,
+    // target next year's August 29.
+    if (now > target) {
+
         target = new Date(
-            Date.UTC(
-                india.year + 1,
-                7,
-                28,
-                18,
-                30,
-                0,
-                0
-            )
+            now.getFullYear() + 1,
+            7,
+            29,
+            0,
+            0,
+            0,
+            0
         );
     }
 
     return target;
 }
 
-
-function formatNumber(number) {
-    return String(number).padStart(2, "0");
-}
-
-
-/* ==========================================================================
-   COUNTDOWN
-========================================================================== */
-
-function resetCountdownEffectClasses() {
-    document.body.classList.remove(
-        "countdown-normal",
-        "countdown-3-hours",
-        "countdown-2-hours",
-        "countdown-1-hour",
-        "countdown-30-minutes",
-        "countdown-10-minutes",
-        "countdown-1-minute"
-    );
-}
-
-
-function updateCountdownEffects(totalSeconds) {
-    let newStage = "normal";
-
-    if (totalSeconds <= 60) {
-        newStage = "1-minute";
-    } else if (totalSeconds <= 600) {
-        newStage = "10-minutes";
-    } else if (totalSeconds <= 1800) {
-        newStage = "30-minutes";
-    } else if (totalSeconds <= 3600) {
-        newStage = "1-hour";
-    } else if (totalSeconds <= 7200) {
-        newStage = "2-hours";
-    } else if (totalSeconds <= 10800) {
-        newStage = "3-hours";
-    }
-
-    if (newStage !== countdownEffectStage) {
-        countdownEffectStage = newStage;
-
-        resetCountdownEffectClasses();
-
-        document.body.classList.add(
-            "countdown-" + newStage
-        );
-    }
-
-    if (
-        totalSeconds <= 600 &&
-        !tenMinutePartyStarted
-    ) {
-        tenMinutePartyStarted = true;
-        triggerTenMinuteParty();
-    }
-
-    if (
-        totalSeconds <= 60 &&
-        !oneMinutePartyStarted
-    ) {
-        oneMinutePartyStarted = true;
-        triggerOneMinuteParty();
-    }
-}
-
-
 function updateBirthdayCountdown() {
-    if (!lockScreen) {
-        return;
-    }
 
-    if (isBirthdayToday()) {
-        unlockBirthdayWebsite();
+    if (!lockScreen) {
         return;
     }
 
@@ -598,128 +496,103 @@ function updateBirthdayCountdown() {
     const difference =
         target.getTime() - Date.now();
 
+
+    // Birthday reached
     if (difference <= 0) {
+
         unlockBirthdayWebsite();
+
         return;
     }
+
 
     const totalSeconds =
         Math.floor(difference / 1000);
 
+
     const days =
-        Math.floor(totalSeconds / 86400);
+        Math.floor(
+            totalSeconds / 86400
+        );
+
 
     const hours =
         Math.floor(
             (totalSeconds % 86400) / 3600
         );
 
+
     const minutes =
         Math.floor(
             (totalSeconds % 3600) / 60
         );
 
+
     const seconds =
         totalSeconds % 60;
 
+
     if (countdownDays) {
         countdownDays.textContent =
-            formatNumber(days);
+            String(days).padStart(2, "0");
     }
+
 
     if (countdownHours) {
         countdownHours.textContent =
-            formatNumber(hours);
+            String(hours).padStart(2, "0");
     }
+
 
     if (countdownMinutes) {
         countdownMinutes.textContent =
-            formatNumber(minutes);
+            String(minutes).padStart(2, "0");
     }
+
 
     if (countdownSeconds) {
         countdownSeconds.textContent =
-            formatNumber(seconds);
+            String(seconds).padStart(2, "0");
     }
+
 
     if (countdownStatus) {
         countdownStatus.textContent =
-            "still waiting for you...";
+            "SYSTEM LOCKED";
     }
-
-    updateCountdownEffects(
-        totalSeconds
-    );
-}
-
-
-function unlockBirthdayWebsite() {
-    if (birthdayCountdownInterval) {
-        clearInterval(
-            birthdayCountdownInterval
-        );
-
-        birthdayCountdownInterval = null;
-    }
-
-    resetCountdownEffectClasses();
-
-    document.body.classList.remove(
-        "birthday-locked"
-    );
-
-    document.body.classList.add(
-        "birthday-unlocked"
-    );
-
-    if (countdownStatus) {
-        countdownStatus.textContent =
-            "it's finally today 🎂";
-    }
-
-    flashPage(
-        "rgba(255,216,107,.16)",
-        1000
-    );
-
-    showAvignaToast(
-        "🎂 happy birthday, gurl."
-    );
-
-    setTimeout(function () {
-        if (lockScreen) {
-            lockScreen.remove();
-        }
-    }, 2200);
 }
 
 
 function initializeBirthdayLock() {
-    if (isBirthdayToday()) {
+
+    const now = new Date();
+
+    // August 29 = unlocked all day
+    if (
+        now.getMonth() === 7 &&
+        now.getDate() === 29
+    ) {
+
         document.body.classList.add(
             "birthday-unlocked"
         );
 
-        if (countdownStatus) {
-            countdownStatus.textContent =
-                "it's finally today 🎂";
+        if (lockScreen) {
+            lockScreen.remove();
         }
-
-        setTimeout(function () {
-            if (lockScreen) {
-                lockScreen.remove();
-            }
-        }, 2200);
 
         return;
     }
 
+    // Every other day = locked
     document.body.classList.add(
         "birthday-locked"
     );
 
+    // Show countdown immediately
     updateBirthdayCountdown();
 
+    // Update countdown every second
     birthdayCountdownInterval =
         setInterval(
             updateBirthdayCountdown,
@@ -727,7 +600,77 @@ function initializeBirthdayLock() {
         );
 }
 
+
+function unlockBirthdayWebsite() {
+
+    if (birthdayCountdownInterval) {
+
+        clearInterval(
+            birthdayCountdownInterval
+        );
+
+        birthdayCountdownInterval = null;
+    }
+
+
+    if (typeof resetCountdownEffectClasses === "function") {
+
+        resetCountdownEffectClasses();
+
+    }
+
+
+    document.body.classList.remove(
+        "birthday-locked"
+    );
+
+
+    document.body.classList.add(
+        "birthday-unlocked"
+    );
+
+
+    if (countdownStatus) {
+
+        countdownStatus.textContent =
+            "it's finally today 🎂";
+
+    }
+
+
+    if (typeof flashPage === "function") {
+
+        flashPage(
+            "rgba(255,216,107,.16)",
+            1000
+        );
+
+    }
+
+
+    if (typeof showAvignaToast === "function") {
+
+        showAvignaToast(
+            "🎂 happy birthday, gurl."
+        );
+
+    }
+
+
+    setTimeout(function () {
+
+        if (lockScreen) {
+
+            lockScreen.remove();
+
+        }
+
+    }, 2200);
+}
+
+
 initializeBirthdayLock();
+
 
 
 /* ==========================================================================
