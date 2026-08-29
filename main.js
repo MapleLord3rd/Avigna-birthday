@@ -3387,7 +3387,7 @@ function activateAvignaTypingSecret() {
             heroName.textContent;
 
         heroName.textContent =
-            "BIRTHDAY GIRL";
+            "GURL";
 
         pageGlow(
             heroName,
