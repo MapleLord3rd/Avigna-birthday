@@ -3412,7 +3412,7 @@ function activateAvignaTypingSecret() {
         innerHeight / 3,
         [
             "🎂",
-            "💗",
+            "🤍",
             "🎈",
             "✨"
         ]
@@ -5007,7 +5007,7 @@ function triggerRootAccessSecret() {
 
                 [
                     "🎂",
-                    "💗",
+                    "🤍",
                     "🎈",
                     "✨"
                 ]
@@ -6710,7 +6710,7 @@ function scheduleStillHereNudge() {
                 Math.floor(Math.random() * stillHereMessages.length)
             ];
 
-        showAvignaToast("💗 " + message);
+        showAvignaToast("🤍 " + message);
 
         scheduleStillHereNudge();
     }, delay);
@@ -7051,13 +7051,19 @@ triggerCompletionSecret = function () {
 
 (function setupComplimentRoulette() {
     const compliments = [
-        "you make every group chat funnier just by being in it.",
-        "you're way more thoughtful than you give yourself credit for.",
-        "your taste in everything is annoyingly good.",
-        "you remember tiny details about people. that's a rare kind of kind.",
-        "you're the friend people actually want around, not just tolerate.",
-        "you're doing better than you think you are.",
-        "you have genuinely great judgement, even when you doubt it."
+        { text: "you make every group chat funnier just by being in it.", type: "🤍" },
+        { text: "you're way more thoughtful than you give yourself credit for.", type: "🤍" },
+        { text: "your taste in everything is annoyingly good.", type: "🤍" },
+        { text: "you remember tiny details about people. that's a rare kind of kind.", type: "🤍" },
+        { text: "you're the friend people actually want around, not just tolerate.", type: "🤍" },
+        { text: "you're doing better than you think you are.", type: "🤍" },
+        { text: "you have genuinely great judgement, even when you doubt it.", type: "🤍" },
+        { text: "you argue like you're being paid per word.", type: "💀" },
+        { text: "your sleep schedule is a cry for help.", type: "💀" },
+        { text: "you have the attention span of a goldfish on a good day.", type: "💀" },
+        { text: "you say \"one sec\" and mean thirty minutes, every single time.", type: "💀" },
+        { text: "you're one bad decision away from a group chat intervention.", type: "💀" },
+        { text: "you clicked a button called 'need a compliment' and got roasted. skill issue.", type: "💀" }
     ];
 
     const button = document.createElement("button");
@@ -7071,9 +7077,10 @@ triggerCompletionSecret = function () {
 
         playClick();
 
-        showAvignaToast(
-            "💗 " + compliments[Math.floor(Math.random() * compliments.length)]
-        );
+        const pick =
+            compliments[Math.floor(Math.random() * compliments.length)];
+
+        showAvignaToast(pick.type + " " + pick.text);
     });
 })();
 
