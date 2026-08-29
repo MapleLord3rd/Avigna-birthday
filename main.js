@@ -272,7 +272,7 @@ function showAvignaToast(message) {
 
 
 function showSecretToast(message) {
-    showAvignaToast("🎂 BIRTHDAY.EXE // " + message);
+    showAvignaToast("🎂 " + message);
 }
 
 
@@ -644,7 +644,7 @@ function updateBirthdayCountdown() {
 
     if (countdownStatus) {
         countdownStatus.textContent =
-            "SYSTEM LOCKED";
+            "still waiting for you...";
     }
 
     updateCountdownEffects(
@@ -674,7 +674,7 @@ function unlockBirthdayWebsite() {
 
     if (countdownStatus) {
         countdownStatus.textContent =
-            "ACCESS GRANTED";
+            "it's finally today 🎂";
     }
 
     flashPage(
@@ -683,7 +683,7 @@ function unlockBirthdayWebsite() {
     );
 
     showAvignaToast(
-        "🎂 BIRTHDAY.EXE // ACCESS GRANTED"
+        "🎂 happy birthday, gurl."
     );
 
     setTimeout(function () {
@@ -702,7 +702,7 @@ function initializeBirthdayLock() {
 
         if (countdownStatus) {
             countdownStatus.textContent =
-                "ACCESS GRANTED";
+                "it's finally today 🎂";
         }
 
         setTimeout(function () {
@@ -741,7 +741,7 @@ function triggerTenMinuteParty() {
     );
 
     showAvignaToast(
-        "🎉 BIRTHDAY.EXE // PARTY INITIALIZED"
+        "🎉 ten minutes left. get ready."
     );
 
     if (typeof confetti !== "function") {
@@ -808,7 +808,7 @@ function triggerOneMinuteParty() {
     createShockwave();
 
     showAvignaToast(
-        "🎂 BIRTHDAY.EXE // FINAL COUNTDOWN"
+        "🎂 one minute. i can't wait."
     );
 
     if (typeof confetti === "function") {
@@ -1229,8 +1229,8 @@ function checkMoneyMilestone() {
         "money-milestone-badge";
 
     badge.innerHTML = `
-        <strong>BIRTHDAY BUDGET: $500</strong>
-        <span>BIRTHDAY.EXE financial milestone reached.</span>
+        <strong>okay you actually got to $500</strong>
+        <span>i'm mildly impressed. happy birthday.</span>
     `;
 
     document.body.appendChild(
@@ -1379,7 +1379,7 @@ function triggerHungerSurvivalSecret() {
     }
 
     showSecretToast(
-        "BIRTHDAY BUFFET SURVIVOR"
+        "you waited until 100% hunger. why."
     );
 
     flashPage(
@@ -1396,8 +1396,8 @@ function triggerHungerSurvivalSecret() {
         "hunger-recovery-secret";
 
     recovery.innerHTML = `
-        <strong>BIRTHDAY BUFFET SURVIVOR</strong>
-        <span>You actually waited until 100% hunger.</span>
+        <strong>you survived 100% hunger</strong>
+        <span>that says a lot about you honestly.</span>
     `;
 
     document.body.appendChild(
@@ -1486,7 +1486,7 @@ window.addEventListener(
 function triggerCompletionSecret() {
 
     showSecretToast(
-        "BIRTHDAY JOURNEY COMPLETE"
+        "okay wow, you actually made it to the end."
     );
 
     flashPage(
@@ -1509,7 +1509,7 @@ function triggerCompletionSecret() {
         "completion-secret";
 
     badge.textContent =
-        "🎂 BIRTHDAY JOURNEY COMPLETE";
+        "🎂 you scrolled through the whole thing";
 
     document.body.appendChild(
         badge
@@ -1641,7 +1641,7 @@ window.addEventListener(
                 scrollComboTriggered = true;
 
                 showSecretToast(
-                    "BIRTHDAY TIMELINE REWOUND"
+                    "did you just scroll back on purpose?"
                 );
 
                 document.body.classList.add(
@@ -1793,8 +1793,8 @@ function triggerPerfectPauseSecret() {
         "memory-secret";
 
     memory.innerHTML = `
-        <strong>BIRTHDAY MEMORY FOUND</strong>
-        <span>You stopped long enough to actually read it.</span>
+        <strong>you actually stopped to read it</strong>
+        <span>that means more to me than you know.</span>
     `;
 
     document.body.appendChild(
@@ -1802,7 +1802,7 @@ function triggerPerfectPauseSecret() {
     );
 
     showSecretToast(
-        "BIRTHDAY MEMORY FOUND"
+        "you stopped long enough to actually read it"
     );
 
     requestAnimationFrame(
@@ -1914,7 +1914,7 @@ if (nextMsg) {
             if (!boughtConvo) {
 
                 showAvignaToast(
-                    "🔒 BIRTHDAY CHAT LOCKED"
+                    "🔒 not yet. unlock it first."
                 );
 
                 return;
@@ -1993,7 +1993,7 @@ foodButtons.forEach(
                 ) {
 
                     showAvignaToast(
-                        "💸 BIRTHDAY.EXE // FUNDS LOW"
+                        "💸 you're broke, come back later"
                     );
 
                     return;
@@ -2035,7 +2035,7 @@ foodButtons.forEach(
                     warningGiven = true;
 
                     alert(
-                        "Birthday.EXE warning: stomach capacity reaching concerning levels."
+                        "okay this is genuinely concerning. slow down."
                     );
                 }
 
@@ -2045,6 +2045,8 @@ foodButtons.forEach(
 
                     activateFoodieEnding();
                 }
+
+                notePlayfulMemory("food");
 
             }
         );
@@ -2089,13 +2091,12 @@ function activateFoodieEnding() {
     ending.innerHTML = `
 
         <div class="foodie-header">
-            🎂 BIRTHDAY FOOD EMERGENCY 🎂
+            🎂 okay you've eaten SO much 🎂
         </div>
 
         <p>
-            BIRTHDAY.EXE has detected
-            an absolutely unreasonable
-            amount of food consumption.
+            i genuinely did not think you'd
+            actually click through all of this.
         </p>
 
         <p>
@@ -2117,21 +2118,20 @@ function activateFoodieEnding() {
         </p>
 
         <p>
-            The birthday buffet has officially
-            entered emergency mode.
+            You have officially broken the
+            birthday buffet. congrats I guess.
         </p>
 
         <p>
             <strong>
                 <em>
-                    SECRET BIRTHDAY ENDING UNLOCKED 💀
+                    you found the secret ending 💀
                 </em>
             </strong>
         </p>
 
         <p>
-            Next birthday,
-            maybe eat slightly less.
+            next year, maybe pace yourself.
         </p>
 
     `;
@@ -2167,7 +2167,7 @@ function createRestartButton() {
         "restart-button";
 
     button.textContent =
-        "Restart Birthday.EXE";
+        "do it all again";
 
     button.addEventListener(
         "click",
@@ -2213,7 +2213,7 @@ shopButtons.forEach(function (button) {
         if (money < price) {
 
             showAvignaToast(
-                "💸 BIRTHDAY.EXE // INSUFFICIENT FUNDS"
+                "💸 you can't afford that yet"
             );
 
             return;
@@ -2239,7 +2239,7 @@ shopButtons.forEach(function (button) {
             }
 
             showAvignaToast(
-                "🎂 BIRTHDAY CHAT UNLOCKED"
+                "🎂 okay fine, here's our chat"
             );
         }
 
@@ -2273,7 +2273,7 @@ shopButtons.forEach(function (button) {
             }
 
             showAvignaToast(
-                "💌 BIRTHDAY MESSAGE UNLOCKED"
+                "💌 okay here's what I actually wanted to say"
             );
         }
 
@@ -2292,7 +2292,7 @@ shopButtons.forEach(function (button) {
             updatePageFilter();
 
             showAvignaToast(
-                "✨ BIRTHDAY DEFECT REMOVED"
+                "✨ there, fixed it for you"
             );
         }
 
@@ -2332,7 +2332,7 @@ shopButtons.forEach(function (button) {
                     "secret-installation";
 
                 install.textContent =
-                    "✓ BIRTHDAY.EXE INSTALLED";
+                    "✓ got it, thank you";
 
                 option.appendChild(
                     install
@@ -2394,7 +2394,7 @@ function checkGiftUnlock() {
             );
 
             showAvignaToast(
-                "🎁 BIRTHDAY GIFT UNLOCKED"
+                "🎁 okay okay, here's your gift"
             );
         }
     }
@@ -2418,13 +2418,13 @@ function checkGiftUnlock() {
 
     const taunts = [
 
-        "🔒 BIRTHDAY.EXE // ACCESS DENIED",
+        "🔒 nope, not yet",
 
         "🔒 still locked.",
 
         "🔒 the shop is right above you.",
 
-        "🔒 buy the three birthday upgrades.",
+        "🔒 buy the three things above first.",
 
         "🔒 clicking harder won't help.",
 
@@ -2502,7 +2502,7 @@ if (initialGiftButton) {
             pageContent.innerHTML = `
 
                 <h2 class="section-header white appear">
-                    🎂 Gift Unlocked 🎂
+                    🎂 here it is 🎂
                 </h2>
 
                 <img
@@ -2512,7 +2512,7 @@ if (initialGiftButton) {
                 >
 
                 <p class="white appear">
-                    The audacity for u to ask more
+                    the audacity for u to ask more
                     after all this btw... sighhh
                 </p>
 
@@ -2533,7 +2533,7 @@ if (initialGiftButton) {
             );
 
             showAvignaToast(
-                "🎁 BIRTHDAY.EXE // FINAL GIFT"
+                "🎁 here's the actual gift"
             );
 
             if (backgroundAudio) {
@@ -2597,7 +2597,7 @@ function setupFinalConfetti() {
             confettiStarted = true;
 
             showAvignaToast(
-                "🎉 BIRTHDAY.EXE // PARTY MODE"
+                "🎉 happy birthday, gurl"
             );
 
             const canvas =
@@ -2759,7 +2759,7 @@ setupHobbyEasterEgg(
                 "hobby-unlock-text dance-label";
 
             label.textContent =
-                "BIRTHDAY PARTY MODE 💃";
+                "okay let's actually dance 💃";
 
             card.appendChild(
                 label
@@ -2767,7 +2767,7 @@ setupHobbyEasterEgg(
         }
 
         showSecretToast(
-            "BIRTHDAY PARTY MODE"
+            "party mode, let's go"
         );
 
         pageGlow(
@@ -2857,8 +2857,10 @@ function startCinemaMode(card) {
     cinemaModeOn = true;
     movieModeOn = true;
 
+    notePlayfulMemory("movie");
+
     showSecretToast(
-        "AVIGNA'S BIRTHDAY PREMIERE"
+        "so we're apparently watching a movie now"
     );
 
     pageGlow(
@@ -2907,7 +2909,7 @@ function startCinemaMode(card) {
                 else if (count === 0) {
 
                     number.textContent =
-                        "AVIGNA'S BIRTHDAY PREMIERE 🎬";
+                        "avigna's birthday premiere 🎬";
 
                 }
 
@@ -2997,7 +2999,7 @@ function createCinemaExitButton() {
         "cinema-exit-button";
 
     cinemaExitButton.textContent =
-        "EXIT CINEMA MODE";
+        "exit movie mode";
 
     cinemaExitButton.addEventListener(
         "click",
@@ -3066,7 +3068,7 @@ function exitCinemaMode() {
     updatePageFilter();
 
     showAvignaToast(
-        "🎬 BIRTHDAY PREMIERE ENDED"
+        "🎬 movie's over I guess"
     );
 }
 
@@ -3114,7 +3116,7 @@ setupHobbyEasterEgg(
                 "hobby-unlock-text books-label";
 
             label.textContent =
-                "BIRTHDAY DIARY ENTRY UNLOCKED 📖";
+                "found the diary page 📖";
 
             card.appendChild(
                 label
@@ -3162,7 +3164,7 @@ function showBirthdayPoem() {
 
             <p>
                 <strong>
-                    BIRTHDAY DIARY ENTRY
+                    a page from the diary
                 </strong>
             </p>
 
@@ -3236,7 +3238,7 @@ function showBirthdayPoem() {
         </div>
 
         <button class="button poem-return-button">
-            ← Return to Birthday.EXE
+            ← back to the site
         </button>
 
     `;
@@ -3355,7 +3357,7 @@ function spawnEmojiRain(
 function activateAvignaTypingSecret() {
 
     showSecretToast(
-        "AVIGNA // BIRTHDAY GIRL IDENTIFIED"
+        "yes, this is about you"
     );
 
     if (pageContent) {
@@ -3425,7 +3427,7 @@ function activateAvignaTypingSecret() {
 function activateSecretTypingSecret() {
 
     showSecretToast(
-        "CLASSIFIED: AVIGNA'S BIRTHDAY FILE"
+        "okay fine, here's a real file"
     );
 
     flashPage(
@@ -3448,19 +3450,19 @@ function activateSecretTypingSecret() {
     file.innerHTML = `
 
         <strong>
-            CLASSIFIED BIRTHDAY FILE
+            things I know about you
         </strong>
 
         <span>
-            SUBJECT: AVIGNA
+            you're stubborn in the best way
         </span>
 
         <span>
-            DATE: 29 AUGUST
+            you notice things most people miss
         </span>
 
         <span>
-            STATUS: BIRTHDAY GIRL
+            you're a genuinely great friend
         </span>
 
     `;
@@ -3502,7 +3504,7 @@ function activateSecretTypingSecret() {
 function activateCakeSecret() {
 
     showSecretToast(
-        "BIRTHDAY CAKE PARADE"
+        "cake parade, obviously"
     );
 
     spawnEmojiRain(
@@ -3533,7 +3535,7 @@ function spawnMatrixRain() {
     }
 
     showSecretToast(
-        "BIRTHDAY MATRIX // MEMORY OVERFLOW"
+        "okay nerd, matrix mode"
     );
 
     const canvas =
@@ -3702,7 +3704,7 @@ function activateDiscoMode() {
         true;
 
     showSecretToast(
-        "BIRTHDAY PARTY MODE"
+        "party mode, let's go"
     );
 
     const overlay =
@@ -3788,7 +3790,7 @@ function activateRainbowMode() {
         true;
 
     showSecretToast(
-        "BIRTHDAY RAINBOW MODE"
+        "rainbow mode, why not"
     );
 
     let hue = 0;
@@ -3854,7 +3856,7 @@ function activatePageFlip() {
     }
 
     showSecretToast(
-        "BIRTHDAY HAS BEEN TURNED UPSIDE DOWN"
+        "everything is upside down now, sorry"
     );
 
     pageContent.style.transition =
@@ -3898,7 +3900,7 @@ function toggleDebugHud() {
     }
 
     showSecretToast(
-        "BIRTHDAY DIAGNOSTICS ONLINE"
+        "here's what's going on behind the scenes"
     );
 
     const hud =
@@ -3913,11 +3915,11 @@ function toggleDebugHud() {
 
         hud.innerHTML =
 
-            "<strong>BIRTHDAY.EXE</strong><br>" +
+            "<strong>behind the scenes</strong><br>" +
 
             "DATE: 29 AUGUST<br>" +
 
-            "STATUS: ACTIVE<br>" +
+            "STATUS: still going<br>" +
 
             "MONEY: $" +
             money +
@@ -3989,7 +3991,7 @@ function toggleDebugHud() {
 function activateBananaSecret() {
 
     showSecretToast(
-        "BIRTHDAY BANANA EMERGENCY"
+        "banana emergency, deal with it"
     );
 
     spawnEmojiRain(
@@ -4011,7 +4013,7 @@ function activateBananaSecret() {
 function activateCatSecret() {
 
     showSecretToast(
-        "MEOWDY BIRTHDAY"
+        "meowdy birthday"
     );
 
     spawnEmojiRain(
@@ -4034,7 +4036,7 @@ function activateCatSecret() {
 function activatePizzaSecret() {
 
     showSecretToast(
-        "BIRTHDAY PIZZA DELIVERY"
+        "pizza's here"
     );
 
     const pizza =
@@ -4100,7 +4102,7 @@ function activatePizzaSecret() {
 function activateBoomSecret() {
 
     showSecretToast(
-        "BIRTHDAY.EXE HAS EXPLODED"
+        "oops, that broke something"
     );
 
     const overlay =
@@ -4206,7 +4208,7 @@ function activateYoloSecret() {
     }
 
     showSecretToast(
-        "ANOTHER YEAR UNLOCKED"
+        "another year older, apparently"
     );
 
     const year =
@@ -4270,7 +4272,7 @@ function activateTrailMode() {
         true;
 
     showSecretToast(
-        "BIRTHDAY CELEBRATION TRAIL"
+        "leaving a little trail for you"
     );
 
     const trailEmojis = [
@@ -4354,7 +4356,7 @@ function activateTrailMode() {
 function activateInvertSecret() {
 
     showSecretToast(
-        "ANTI-BIRTHDAY MODE"
+        "anti-birthday mode, don't ask"
     );
 
     document.body.classList.remove(
@@ -4568,7 +4570,7 @@ document.addEventListener(
 function activateKonamiCode() {
 
     showSecretToast(
-        "BIRTHDAY CHEAT CODE ACTIVATED"
+        "cheat code accepted"
     );
 
     document.body.classList.add(
@@ -4683,7 +4685,7 @@ document.addEventListener(
                     0;
 
                 showSecretToast(
-                    "ANTI-BIRTHDAY CODE DETECTED"
+                    "opposite day detected"
                 );
 
                 activateInvertSecret();
@@ -4750,7 +4752,7 @@ if (secretLogo) {
             logoClicks = 0;
 
             showSecretToast(
-                "BIRTHDAY ADMIN ACCESS"
+                "okay, admin access granted"
             );
 
             secretLogo.animate(
@@ -4845,7 +4847,7 @@ function triggerRootAccessSecret() {
     }
 
     showSecretToast(
-        "BIRTHDAY ADMIN ACCESS GRANTED"
+        "you found the deepest part of this site"
     );
 
     const panel =
@@ -4859,23 +4861,19 @@ function triggerRootAccessSecret() {
     panel.innerHTML = `
 
         <strong>
-            BIRTHDAY.EXE // ROOT ACCESS
+            a quick honest note
         </strong>
 
         <span>
-            ACCESSING AVIGNA...
+            I put more time into this than I'll admit
         </span>
 
         <span>
-            VERIFYING BIRTHDAY...
+            because you're worth it
         </span>
 
         <span>
-            29 AUGUST: CONFIRMED
-        </span>
-
-        <span>
-            CAKE REQUIREMENT: CRITICAL
+            29 August: confirmed, it's your day
         </span>
 
     `;
@@ -4989,11 +4987,11 @@ function triggerRootAccessSecret() {
                 heroName.textContent;
 
             showSecretToast(
-                "BIRTHDAY GIRL IDENTIFIED"
+                "yeah, it's you"
             );
 
             heroName.textContent =
-                "GURL";
+                "GIRL";
 
             pageGlow(
                 heroName,
@@ -5046,13 +5044,13 @@ function triggerRootAccessSecret() {
 
     const messages = [
 
-        "birthday report: certified goofball.",
+        "official report: certified goofball.",
 
-        "birthday report: attention span still questionable.",
+        "official report: attention span still questionable.",
 
-        "birthday report: no refunds.",
+        "official report: no refunds.",
 
-        "birthday report: subject appears to be having a birthday."
+        "official report: subject appears to be having a birthday."
 
     ];
 
@@ -5156,7 +5154,7 @@ function triggerRootAccessSecret() {
                 "quote-secret-line";
 
             secretLine.textContent =
-                "(birthday diary entry #2: somehow you're still reading this.)";
+                "(diary entry #2: somehow you're still reading this.)";
 
             quoteMaker.insertAdjacentElement(
                 "afterend",
@@ -5174,7 +5172,7 @@ function triggerRootAccessSecret() {
             );
 
             showSecretToast(
-                "BIRTHDAY DIARY FOOTNOTE"
+                "found a little footnote"
             );
 
             spotlightElement(
@@ -5205,7 +5203,7 @@ if (quoteSection) {
             playClick();
 
             showAvignaToast(
-                "🎆 BIRTHDAY FIREWORK"
+                "🎆 fireworks, because why not"
             );
 
             if (
@@ -5308,7 +5306,7 @@ if (quoteSection) {
                             index = 0;
 
                             showSecretToast(
-                                "BIRTHDAY STATISTICS VERIFIED"
+                                "stats confirmed. you check out."
                             );
 
                             spotlightElement(
@@ -5410,14 +5408,14 @@ if (quoteSection) {
             "roast-tooltip visible";
 
         tooltip.textContent =
-            "(birthday judgement reviewed by Neerav, who is extremely biased)";
+            "(judgement reviewed by Neerav, who is extremely biased)";
 
         judgement.appendChild(
             tooltip
         );
 
         showSecretToast(
-            "BIRTHDAY JUDGEMENT FILE FOUND"
+            "found the judgement file"
         );
 
         spotlightElement(
@@ -5538,7 +5536,7 @@ if (quoteSection) {
                         "message-ps";
 
                     ps.textContent =
-                        "P.S. — Birthday.EXE says you're still reading this. Respect.";
+                        "P.S. — you're still reading this. respect.";
 
                     birthdayMessage.appendChild(
                         ps
@@ -5555,7 +5553,7 @@ if (quoteSection) {
                     );
 
                     showSecretToast(
-                        "HIDDEN BIRTHDAY POSTSCRIPT"
+                        "found a hidden postscript"
                     );
 
                     spotlightElement(
@@ -5634,7 +5632,7 @@ if (quoteSection) {
             refreshMoneyDisplay();
 
             showSecretToast(
-                "BIRTHDAY FUND FOUND // +$200"
+                "found some spare cash // +$200"
             );
 
             const amount =
@@ -5646,7 +5644,7 @@ if (quoteSection) {
                 "money-float-secret";
 
             amount.textContent =
-                "+$200 BIRTHDAY MONEY";
+                "+$200 birthday fund";
 
             const rect =
                 display.getBoundingClientRect();
@@ -5737,7 +5735,7 @@ foodCards.forEach(
                 );
 
                 showSecretToast(
-                    "BIRTHDAY SPECIAL // +$30"
+                    "little bonus for you // +$30"
                 );
 
                 const rect =
@@ -5812,7 +5810,7 @@ foodCards.forEach(
             updatePageFilter();
 
             showSecretToast(
-                "BIRTHDAY BUFFET RESET"
+                "buffet reset, you're welcome"
             );
 
             spawnEmojiRain(
@@ -5888,7 +5886,7 @@ foodCards.forEach(
             );
 
             showSecretToast(
-                "BIRTHDAY.EXE AUDIO SYSTEM PANIC"
+                "okay the audio panicked a bit"
             );
 
             flashPage(
@@ -5960,7 +5958,7 @@ foodCards.forEach(
             event.stopPropagation();
 
             showSecretToast(
-                "BIRTHDAY MYSTERY MODE"
+                "mystery mode, don't ask why"
             );
 
             document.body.classList.remove(
@@ -6008,17 +6006,17 @@ foodCards.forEach(
 
     const loadingLines = [
 
-        "Booting BIRTHDAY.EXE...",
+        "booting things up...",
 
-        "Loading birthday subject...",
+        "loading birthday subject...",
 
-        "Verifying 29 August...",
+        "verifying it's actually the 29th...",
 
-        "Calculating goofiness levels...",
+        "calculating goofiness levels...",
 
-        "Loading 1 (one) friendship...",
+        "loading one (1) friendship...",
 
-        "Checking cake requirements..."
+        "checking cake requirements..."
 
     ];
 
@@ -6042,11 +6040,11 @@ foodCards.forEach(
                     overlay.innerHTML = `
 
                         <div>
-                            BIRTHDAY.EXE
+                            one sec
                         </div>
 
                         <div>
-                            INITIALIZING...
+                            initializing...
                         </div>
 
                         <div
@@ -6260,7 +6258,7 @@ foodCards.forEach(
             );
 
             showSecretToast(
-                "HUNGER WAS A BIRTHDAY FEATURE"
+                "the hunger thing was intentional, promise"
             );
 
             setTimeout(
@@ -6311,7 +6309,7 @@ foodCards.forEach(
             playClick();
 
             showSecretToast(
-                "BIRTHDAY BUFFET STORM"
+                "buffet storm incoming"
             );
 
             spawnEmojiRain(
@@ -6348,7 +6346,7 @@ document.addEventListener(
         event.preventDefault();
 
         showSecretToast(
-            "BIRTHDAY.EXE // NICE TRY"
+            "nice try"
         );
 
         createScanline(
@@ -6377,7 +6375,7 @@ document.addEventListener(
         event.preventDefault();
 
         showSecretToast(
-            "BIRTHDAY.EXE // MIDDLE CLICK?"
+            "middle click? really?"
         );
 
         createScanline(
@@ -6396,11 +6394,11 @@ document.addEventListener(
 
     const lines = [
 
-        "you found a hidden birthday input.",
+        "you found a hidden little input.",
 
-        "shift-click detected by Birthday.EXE.",
+        "shift-click detected. curious as always.",
 
-        "birthday admin privileges: still denied.",
+        "admin privileges: still denied.",
 
         "achievement unlocked: unnecessarily curious."
 
@@ -6527,7 +6525,7 @@ document.addEventListener(
             );
 
             showSecretToast(
-                "WELCOME BACK TO THE BIRTHDAY"
+                "welcome back, I missed you"
             );
 
             createScanline(
@@ -6583,13 +6581,13 @@ document.addEventListener(
 
 const idleMessages = [
 
-    "👀 birthday.exe is waiting.",
+    "👀 still here?",
 
     "🎂 still exploring?",
 
-    "🎈 there are secrets hidden here.",
+    "🎈 there's more hidden here than you think.",
 
-    "🧁 birthday.exe has not finished with you.",
+    "🧁 I'm not done with you yet.",
 
     "🎉 maybe there's something you missed."
 
@@ -6659,6 +6657,570 @@ resetIdleTimer();
 
 
 /* ==========================================================================
+   ==========================================================================
+   PERSONAL TOUCHES
+   (things that make this feel like it was made for one specific person)
+   ==========================================================================
+   ========================================================================== */
+
+const personalMemory = {};
+
+function notePlayfulMemory(key) {
+    if (personalMemory[key]) return;
+    personalMemory[key] = Date.now();
+
+    const followUps = {
+        food: "you've already eaten enough btw.",
+        movie: "so we're apparently watching a movie now.",
+        dance: "still thinking about that dance mode.",
+        books: "you actually read the diary page. wild."
+    };
+
+    if (!followUps[key]) return;
+
+    setTimeout(function () {
+        if (!isUnlocked()) return;
+        showAvignaToast("💭 " + followUps[key]);
+    }, 14000 + Math.random() * 8000);
+}
+
+
+/* --------------------------------------------------------------------------
+   1. "I know you're still here" — dwell-time toasts
+-------------------------------------------------------------------------- */
+
+const stillHereMessages = [
+    "you're still here 😭\nhonestly that's kinda cute.",
+    "still scrolling around huh. I like that.",
+    "you've been here a while now. good.",
+    "not gonna lie, I didn't expect you to stick around this long.",
+    "you're the kind of person who reads everything, aren't you."
+];
+
+function scheduleStillHereNudge() {
+    if (!isUnlocked()) return;
+
+    const delay = 30000 + Math.random() * 30000;
+
+    setTimeout(function () {
+        if (!isUnlocked()) return;
+
+        const message =
+            stillHereMessages[
+                Math.floor(Math.random() * stillHereMessages.length)
+            ];
+
+        showAvignaToast("💗 " + message);
+
+        scheduleStillHereNudge();
+    }, delay);
+}
+
+scheduleStillHereNudge();
+
+
+/* --------------------------------------------------------------------------
+   2 & 7. Scroll-memory moments / "you made it this far"
+-------------------------------------------------------------------------- */
+
+const scrollMoments = [
+    { percent: 15, shown: false, text: "wait… you actually read this part?" },
+    { percent: 35, shown: false, text: "okay wow, you're actually reading everything." },
+    { percent: 55, shown: false, text: "this is one of my favourite parts btw." },
+    { percent: 75, shown: false, text: "wait you're STILL here?" },
+    { percent: 92, shown: false, text: "alright nerd, you've officially seen most of it." }
+];
+
+window.addEventListener("scroll", function () {
+    if (!isUnlocked()) return;
+
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+    scrollMoments.forEach(function (moment) {
+        if (moment.shown || percent < moment.percent) return;
+        moment.shown = true;
+        showAvignaToast("📍 " + moment.text);
+    });
+}, { passive: true });
+
+
+/* --------------------------------------------------------------------------
+   3. Mouse-following little notes
+-------------------------------------------------------------------------- */
+
+(function setupMouseNotes() {
+    let distanceTravelled = 0;
+    let lastX = null;
+    let lastY = null;
+    let cooldown = false;
+
+    const notes = [
+        "stop looking around, you'll find something 😭",
+        "keep going, you're close to something.",
+        "just saying, there's more hidden around here."
+    ];
+
+    document.addEventListener("mousemove", function (event) {
+        if (!isUnlocked() || cooldown) return;
+
+        if (lastX !== null) {
+            distanceTravelled +=
+                Math.hypot(event.clientX - lastX, event.clientY - lastY);
+        }
+
+        lastX = event.clientX;
+        lastY = event.clientY;
+
+        if (distanceTravelled < 2200) return;
+
+        distanceTravelled = 0;
+
+        if (Math.random() > 0.4) return;
+
+        cooldown = true;
+
+        const note = document.createElement("div");
+        note.className = "mouse-note-secret";
+        note.textContent =
+            notes[Math.floor(Math.random() * notes.length)];
+
+        note.style.left = event.clientX + 14 + "px";
+        note.style.top = event.clientY - 10 + "px";
+
+        document.body.appendChild(note);
+
+        requestAnimationFrame(function () {
+            note.classList.add("visible");
+        });
+
+        setTimeout(function () {
+            note.classList.remove("visible");
+        }, 2200);
+
+        setTimeout(function () {
+            note.remove();
+            cooldown = false;
+        }, 2800);
+    }, { passive: true });
+})();
+
+
+/* --------------------------------------------------------------------------
+   4. Birthday photo-frame moment
+-------------------------------------------------------------------------- */
+
+(function setupPhotoFrameSecret() {
+    const images = document.querySelectorAll(
+        "#page-content img, .gallery img, .hero img"
+    );
+
+    if (!images.length) return;
+
+    images.forEach(function (image) {
+        let hoverTimer = null;
+        let triggered = false;
+
+        image.addEventListener("mouseenter", function () {
+            if (triggered || !isUnlocked()) return;
+
+            hoverTimer = setTimeout(function () {
+                triggered = true;
+
+                image.classList.add("photo-frame-glow");
+
+                const caption = document.createElement("div");
+                caption.className = "photo-frame-caption";
+                caption.textContent = "yes, I chose this one specifically.";
+
+                const wrapper = image.parentElement || document.body;
+                wrapper.style.position = wrapper.style.position || "relative";
+                wrapper.appendChild(caption);
+
+                requestAnimationFrame(function () {
+                    caption.classList.add("visible");
+                });
+
+                setTimeout(function () {
+                    caption.classList.remove("visible");
+                }, 3600);
+
+                setTimeout(function () {
+                    caption.remove();
+                }, 4200);
+            }, 3000);
+        });
+
+        image.addEventListener("mouseleave", function () {
+            clearTimeout(hoverTimer);
+        });
+    });
+})();
+
+
+/* --------------------------------------------------------------------------
+   5. Random "thought bubbles"
+-------------------------------------------------------------------------- */
+
+const thoughtBubbles = [
+    "wonder if she knows how much I appreciate her.",
+    "hope this made her smile at least once.",
+    "she's going to overthink this way more than I did while making it.",
+    "genuinely one of the best people I know.",
+    "okay but she better be smiling right now."
+];
+
+function scheduleThoughtBubble() {
+    if (!isUnlocked()) return;
+
+    const delay = 45000 + Math.random() * 45000;
+
+    setTimeout(function () {
+        if (!isUnlocked()) {
+            scheduleThoughtBubble();
+            return;
+        }
+
+        const bubble = document.createElement("div");
+        bubble.className = "thought-bubble-secret";
+        bubble.textContent =
+            thoughtBubbles[
+                Math.floor(Math.random() * thoughtBubbles.length)
+            ];
+
+        bubble.style.left = 10 + Math.random() * 70 + "vw";
+        bubble.style.top = 15 + Math.random() * 60 + "vh";
+
+        document.body.appendChild(bubble);
+
+        requestAnimationFrame(function () {
+            bubble.classList.add("visible");
+        });
+
+        setTimeout(function () {
+            bubble.classList.remove("visible");
+        }, 3800);
+
+        setTimeout(function () {
+            bubble.remove();
+        }, 4600);
+
+        scheduleThoughtBubble();
+    }, delay);
+}
+
+scheduleThoughtBubble();
+
+
+/* --------------------------------------------------------------------------
+   6. Friendship counter
+-------------------------------------------------------------------------- */
+
+(function setupFriendshipCounter() {
+    const statsSection = document.querySelector(".stats");
+    if (!statsSection) return;
+
+    const block = document.createElement("div");
+    block.className = "friendship-counter-secret";
+
+    block.innerHTML = `
+        <div class="friendship-bar-row">
+            <span>times you have somehow managed to annoy me</span>
+            <div class="friendship-bar-track">
+                <div class="friendship-bar-fill" style="width:99%"></div>
+            </div>
+            <span class="friendship-bar-percent">99%</span>
+        </div>
+        <div class="friendship-bar-row">
+            <span>times I'd still choose you as my best friend</span>
+            <div class="friendship-bar-track">
+                <div class="friendship-bar-fill" style="width:100%"></div>
+            </div>
+            <span class="friendship-bar-percent">100%</span>
+        </div>
+    `;
+
+    statsSection.insertAdjacentElement("afterend", block);
+})();
+
+
+/* --------------------------------------------------------------------------
+   8. Hidden handwritten letter
+-------------------------------------------------------------------------- */
+
+(function setupHiddenLetter() {
+    const button = document.createElement("button");
+    button.className = "dont-click-button";
+    button.textContent = "don't click this";
+
+    document.body.appendChild(button);
+
+    button.addEventListener("click", function () {
+        if (!isUnlocked()) return;
+
+        playClick();
+
+        if (document.querySelector(".handwritten-letter-overlay")) return;
+
+        const overlay = document.createElement("div");
+        overlay.className = "handwritten-letter-overlay";
+
+        overlay.innerHTML = `
+            <div class="handwritten-letter">
+                <p>Hey,</p>
+                <p>
+                    if you're reading this, it means you actually clicked
+                    the one button I told you not to. classic you.
+                </p>
+                <p>
+                    I built this whole ridiculous thing because a normal
+                    "happy birthday" text felt like it wasn't enough for
+                    someone who puts up with me as much as you do.
+                </p>
+                <p>
+                    You're one of the very few people I don't have to
+                    explain myself to. That's rarer than it sounds.
+                </p>
+                <p>
+                    Anyway. Happy birthday. I hope this year is loud,
+                    good, and full of things worth remembering.
+                </p>
+                <p class="handwritten-letter-signature">— Neerav</p>
+            </div>
+            <button class="button letter-return-button">← close</button>
+        `;
+
+        document.body.appendChild(overlay);
+
+        requestAnimationFrame(function () {
+            overlay.classList.add("visible");
+        });
+
+        overlay.querySelector(".letter-return-button")
+            .addEventListener("click", function () {
+                playClick();
+                overlay.classList.remove("visible");
+                setTimeout(function () {
+                    overlay.remove();
+                }, 700);
+            });
+    });
+})();
+
+
+/* --------------------------------------------------------------------------
+   10. "One last thing" — after the completion secret
+-------------------------------------------------------------------------- */
+
+const originalTriggerCompletionSecret = triggerCompletionSecret;
+
+triggerCompletionSecret = function () {
+    originalTriggerCompletionSecret();
+
+    setTimeout(function () {
+        if (!isUnlocked()) return;
+        showAvignaToast("psst.");
+
+        setTimeout(function () {
+            showAvignaToast("you didn't actually think that was the end, right?");
+
+            const button = document.createElement("button");
+            button.className = "one-last-thing-button";
+            button.textContent = "one more thing?";
+
+            document.body.appendChild(button);
+
+            requestAnimationFrame(function () {
+                button.classList.add("visible");
+            });
+
+            button.addEventListener("click", function () {
+                playClick();
+                button.remove();
+                triggerFinalPersonalEnding();
+            });
+        }, 2200);
+    }, 2600);
+};
+
+
+/* --------------------------------------------------------------------------
+   11. Compliment roulette
+-------------------------------------------------------------------------- */
+
+(function setupComplimentRoulette() {
+    const compliments = [
+        "you make every group chat funnier just by being in it.",
+        "you're way more thoughtful than you give yourself credit for.",
+        "your taste in everything is annoyingly good.",
+        "you remember tiny details about people. that's a rare kind of kind.",
+        "you're the friend people actually want around, not just tolerate.",
+        "you're doing better than you think you are.",
+        "you have genuinely great judgement, even when you doubt it."
+    ];
+
+    const button = document.createElement("button");
+    button.className = "compliment-button";
+    button.textContent = "need a compliment?";
+
+    document.body.appendChild(button);
+
+    button.addEventListener("click", function () {
+        if (!isUnlocked()) return;
+
+        playClick();
+
+        showAvignaToast(
+            "💗 " + compliments[Math.floor(Math.random() * compliments.length)]
+        );
+    });
+})();
+
+
+/* --------------------------------------------------------------------------
+   12. Tiny birthday weather (time-of-day background)
+-------------------------------------------------------------------------- */
+
+(function setupTimeOfDayMood() {
+    if (!isUnlocked()) return;
+
+    const india = getIndiaDateParts();
+    const hour = india.hour;
+
+    let stage = "morning";
+
+    if (hour >= 5 && hour < 12) stage = "morning";
+    else if (hour >= 12 && hour < 17) stage = "afternoon";
+    else if (hour >= 17 && hour < 21) stage = "evening";
+    else stage = "night";
+
+    document.body.classList.add("time-" + stage);
+
+    if (stage === "night") {
+        setTimeout(function () {
+            showAvignaToast("🌙 it's late. go sleep 😭");
+        }, 6000);
+    }
+})();
+
+
+/* --------------------------------------------------------------------------
+   13. The site gets shy
+-------------------------------------------------------------------------- */
+
+(function setupShyMessage() {
+    if (!birthdayMessage) return;
+
+    let hoverCount = 0;
+
+    birthdayMessage.addEventListener("mouseenter", function () {
+        if (!isUnlocked() || !boughtMsg) return;
+
+        hoverCount++;
+
+        if (hoverCount < 4) return;
+
+        birthdayMessage.classList.remove("message-shy");
+        void birthdayMessage.offsetWidth;
+        birthdayMessage.classList.add("message-shy");
+
+        showAvignaToast("why are you staring at it 😭");
+
+        setTimeout(function () {
+            birthdayMessage.classList.remove("message-shy");
+        }, 600);
+
+        hoverCount = 0;
+    });
+})();
+
+
+/* --------------------------------------------------------------------------
+   14. Secret "are you bored?" button after enough idle time
+-------------------------------------------------------------------------- */
+
+const boredActivities = [
+    "look behind the quote.",
+    "click the cake.",
+    "you missed something above.",
+    "try typing a word. any word.",
+    "the theme icon has a secret if you click it enough."
+];
+
+if (avignaToast) {
+    avignaToast.style.cursor = "default";
+
+    avignaToast.addEventListener("click", function () {
+        if (avignaToast.dataset.bored !== "true") return;
+
+        avignaToast.dataset.bored = "false";
+
+        showAvignaToast(
+            "🕵️ " +
+            boredActivities[
+                Math.floor(Math.random() * boredActivities.length)
+            ]
+        );
+    });
+}
+
+const originalShowIdleNudge = showIdleNudge;
+
+showIdleNudge = function () {
+    if (!isUnlocked()) return;
+
+    if (idleNudgeCount > 0 && idleNudgeCount % 3 === 0) {
+        showAvignaToast("bored already?");
+        if (avignaToast) avignaToast.dataset.bored = "true";
+        if (avignaToast) avignaToast.style.cursor = "pointer";
+    } else {
+        showAvignaToast(
+            idleMessages[idleNudgeCount % idleMessages.length]
+        );
+        if (avignaToast) avignaToast.style.cursor = "default";
+    }
+
+    idleNudgeCount++;
+    resetIdleTimer();
+};
+
+
+/* --------------------------------------------------------------------------
+   15. Final personalized ending
+-------------------------------------------------------------------------- */
+
+function triggerFinalPersonalEnding() {
+    if (!isUnlocked()) return;
+
+    const overlay = document.createElement("div");
+    overlay.className = "final-personal-ending";
+
+    overlay.innerHTML = `
+        <div class="final-ending-line line-1">Anyway…</div>
+        <div class="final-ending-line line-2">Happy Birthday, GURL.</div>
+        <div class="final-ending-line line-3">I'm really glad you're here.</div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    requestAnimationFrame(function () {
+        overlay.classList.add("visible");
+    });
+
+    document.body.classList.add("final-ending-active");
+
+    const lines = overlay.querySelectorAll(".final-ending-line");
+
+    lines.forEach(function (line, index) {
+        setTimeout(function () {
+            line.classList.add("visible");
+        }, 800 + index * 1400);
+    });
+}
+
+
+/* ==========================================================================
    INITIAL DISPLAY
 ========================================================================== */
 
@@ -6676,17 +7238,17 @@ updateScrollProgress();
 ========================================================================== */
 
 console.log(
-    "%c🎂 BIRTHDAY.EXE",
+    "%c🎂 happy birthday, gurl",
     "font-size:24px;font-weight:bold;color:#ffd86b;"
 );
 
 console.log(
-    "%cAvigna's birthday system is running.",
+    "%cyes, I know you opened devtools. of course you did.",
     "font-size:14px;color:#4fffe8;"
 );
 
 console.log(
-    "%cThere are hidden birthday features throughout the website.",
+    "%cthere's a bunch of hidden stuff scattered around this page.",
     "font-size:13px;color:#baff6a;"
 );
 
