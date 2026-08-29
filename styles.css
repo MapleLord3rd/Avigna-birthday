@@ -2504,29 +2504,21 @@ body.countdown-1-minute .countdown-status {
 ========================================================================== */
 
 .black-out {
-    position:
-        fixed;
+    position: fixed;
 
-    inset:
-        0;
+    inset: 0;
 
-    width:
-        100vw;
+    width: 100vw;
 
-    height:
-        100vh;
+    height: 100vh;
 
-    background:
-        rgba(0,0,0,.96);
+    background: rgba(0, 0, 0, 1);
 
-    pointer-events:
-        none;
+    pointer-events: none;
 
-    opacity:
-        0;
+    opacity: 0;
 
-    z-index:
-        1000;
+    z-index: 1000;
 
     animation:
         fadeOut
@@ -2669,6 +2661,12 @@ body.countdown-1-minute .countdown-status {
 
     color:
         white;
+
+    animation:
+        fadeOut
+        2s
+        ease
+        forwards;
 }
 
 .foodie-header {

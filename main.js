@@ -2004,23 +2004,20 @@ foodButtons.forEach(
 
 function activateFoodieEnding() {
 
-    if (
-        foodieEndingTriggered
-    ) {
+    if (foodieEndingTriggered) {
         return;
     }
 
-    foodieEndingTriggered =
-        true;
+    foodieEndingTriggered = true;
 
-    clearInterval(
-        hungerInterval
-    );
+    clearInterval(hungerInterval);
+
+    if (pageContent) {
+        pageContent.style.filter = "none"; // removes the containing-block problem
+    }
 
     if (blackOut) {
-        blackOut.classList.add(
-            "black-out"
-        );
+        blackOut.classList.add("black-out");
     }
 
     const ending =
@@ -2034,7 +2031,7 @@ function activateFoodieEnding() {
     ending.innerHTML = `
 
         <div class="foodie-header">
-            🎂 okay you've eaten SO much 🎂
+            FOODIE EMERGENCY
         </div>
 
         <p>
