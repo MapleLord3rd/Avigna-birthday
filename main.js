@@ -7063,7 +7063,15 @@ triggerCompletionSecret = function () {
         { text: "you have the attention span of a goldfish on a good day.", type: "💀" },
         { text: "you say \"one sec\" and mean thirty minutes, every single time.", type: "💀" },
         { text: "you're one bad decision away from a group chat intervention.", type: "💀" },
-        { text: "you clicked a button called 'need a compliment' and got roasted. skill issue.", type: "💀" }
+        { text: "you clicked a button called 'need a compliment' and got roasted. skill issue.", type: "💀" },
+        { text: "you type \"lol\" while visibly not laughing.", type: "💀" },
+        { text: "you've left me on read while typing for 10 minutes straight.", type: "💀" },
+        { text: "you have main character energy with a side character's memory.", type: "💀" },
+        { text: "your search history alone could end your career.", type: "💀" },
+        { text: "you plan things like a CEO and execute them like a raccoon.", type: "💀" },
+        { text: "you're always \"five minutes away\" from a location fifteen minutes away.", type: "💀" },
+        { text: "you have strong opinions about things you googled twenty seconds ago.", type: "💀" },
+        { text: "you're the reason autocorrect gave up on you specifically.", type: "💀" }
     ];
 
     const button = document.createElement("button");
