@@ -5044,3 +5044,25 @@ body.final-ending-active #avigna-toast {
     font-size: 2rem;
     font-weight: 700;
 }
+.final-ending-return {
+    margin-top: 22px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, .35);
+    color: #ccc;
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: .8rem;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity .6s ease, transform .6s ease, border-color .2s ease, color .2s ease;
+}
+.final-ending-return.visible {
+    opacity: .75;
+    transform: translateY(0);
+}
+.final-ending-return:hover {
+    opacity: 1;
+    border-color: rgba(255, 216, 107, .6);
+    color: #ffd86b;
+}

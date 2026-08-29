@@ -7215,6 +7215,7 @@ function triggerFinalPersonalEnding() {
         <div class="final-ending-line line-1">Anyway…</div>
         <div class="final-ending-line line-2">Happy Birthday, GURL.</div>
         <div class="final-ending-line line-3">I'm really glad you're here.</div>
+        <button class="final-ending-return">← come back</button>
     `;
 
     document.body.appendChild(overlay);
@@ -7231,6 +7232,23 @@ function triggerFinalPersonalEnding() {
         setTimeout(function () {
             line.classList.add("visible");
         }, 800 + index * 1400);
+    });
+
+    const returnButton = overlay.querySelector(".final-ending-return");
+
+    setTimeout(function () {
+        returnButton.classList.add("visible");
+    }, 800 + lines.length * 1400 + 900);
+
+    returnButton.addEventListener("click", function () {
+        playClick();
+
+        overlay.classList.remove("visible");
+        document.body.classList.remove("final-ending-active");
+
+        setTimeout(function () {
+            overlay.remove();
+        }, 900);
     });
 }
 
