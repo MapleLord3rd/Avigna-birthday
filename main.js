@@ -7025,20 +7025,35 @@ triggerCompletionSecret = function () {
         setTimeout(function () {
             showAvignaToast("you didn't actually think that was the end, right?");
 
-            const button = document.createElement("button");
-            button.className = "one-last-thing-button";
-            button.textContent = "one more thing?";
+            const wrapper = document.createElement("div");
+            wrapper.className = "one-last-thing-wrapper";
 
-            document.body.appendChild(button);
+            wrapper.innerHTML = `
+                <button class="one-last-thing-button">one more thing?</button>
+                <button class="one-last-thing-dismiss" aria-label="dismiss">×</button>
+            `;
+
+            document.body.appendChild(wrapper);
 
             requestAnimationFrame(function () {
-                button.classList.add("visible");
+                wrapper.classList.add("visible");
             });
 
-            button.addEventListener("click", function () {
+            const openButton = wrapper.querySelector(".one-last-thing-button");
+            const dismissButton = wrapper.querySelector(".one-last-thing-dismiss");
+
+            openButton.addEventListener("click", function () {
                 playClick();
-                button.remove();
+                wrapper.remove();
                 triggerFinalPersonalEnding();
+            });
+
+            dismissButton.addEventListener("click", function () {
+                playClick();
+                wrapper.classList.remove("visible");
+                setTimeout(function () {
+                    wrapper.remove();
+                }, 400);
             });
         }, 2200);
     }, 2600);
